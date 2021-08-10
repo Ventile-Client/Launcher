@@ -386,7 +386,7 @@ namespace VentileClient
             List<Version> versions = new List<Version>();
 
 
-            string[] versionArray = { "1.16.40.2", "1.16.100.4", "1.16.200.2", "1.16.201.2", "1.16.210.5", "1.16.220.2", "1.16.221.1", "1.17.0.2", "1.17.2.1", "1.17.10.4" }; //Array of all availiable versions
+            string[] versionArray = { "1.16.40.2", "1.16.100.4", "1.16.200.2", "1.16.201.2", "1.16.210.5", "1.16.220.2", "1.16.221.1", "1.17.0.2", "1.17.2.1", "1.17.10.4", "1.17.11.1" }; //Array of all availiable versions
             foreach (string versionName in versionArray)
             {
                 Version v = new Version(versionName);
