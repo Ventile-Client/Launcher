@@ -21,6 +21,7 @@ using System.Text;
 using VentileClient.JSON_Template_Classes;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using Octokit;
 
 namespace VentileClient
 {
@@ -353,7 +354,7 @@ namespace VentileClient
 
         Guna2Panel versionsPanel = new Guna2Panel();
 
-        private void InitHome() //Creates panel with versions
+        private async void InitHome() //Creates panel with versions
         {
             //Colors
             // Make the color variable smaller
@@ -380,17 +381,20 @@ namespace VentileClient
             homeTab.Controls.Add(versionsPanel);
             versionsPanel.BringToFront();
             versionsPanel.AutoScroll = true;
-            versionsPanel.Visible = false;
+            versionsPanel.Visible = true;
 
 
             List<Version> versions = new List<Version>();
 
 
-            string[] versionArray = { "1.16.40.2", "1.16.100.4", "1.16.200.2", "1.16.201.2", "1.16.210.5", "1.16.220.2", "1.16.221.1", "1.17.0.2", "1.17.2.1", "1.17.10.4", "1.17.11.1" }; //Array of all availiable versions
-            foreach (string versionName in versionArray)
+            
+            var github = new GitHubClient(new ProductHeaderValue("VentileClientLauncher"));
+            var releases = await github.Repository.Release.GetAll("Ventile-Client", "VersionChanger");
+            foreach (Release release in releases)
             {
-                Version v = new Version(versionName);
+                Version v = new Version(release.TagName);
                 versions.Add(v);
+
             }
             VersionSorter vs = new VersionSorter();
             versions.Sort(vs); //Sorts the versions becus mc versions system is trash
@@ -399,7 +403,7 @@ namespace VentileClient
             {
                 index++;
 
-                Label versionName = new Label();
+                System.Windows.Forms.Label versionName = new System.Windows.Forms.Label();
                 versionName.Name = "versionLabel" + i.ToString();
                 versionName.Text = versions[i].ToString();
                 versionName.Tag = versions[i].ToString();
@@ -505,7 +509,7 @@ namespace VentileClient
             }
             versionsPanel.Size = new Size(versionsPanel.Width, versionsPanel.Height + topOffset * 2);
 
-            Label label = new Label();
+            System.Windows.Forms.Label label = new System.Windows.Forms.Label();
             label.AutoSize = true;
             label.Text = "Version Selector";
             label.Font = new Font("Segoe UI", 20.25f, FontStyle.Bold);
@@ -1198,7 +1202,7 @@ namespace VentileClient
 
             List<Control> buttons = GetControlByType(typeof(Guna2Button), versionsPanel);
             List<Control> progressBars = GetControlByType(typeof(Guna2ProgressBar), versionsPanel);
-            List<Control> labels = GetControlByType(typeof(Label), versionsPanel);
+            List<Control> labels = GetControlByType(typeof(System.Windows.Forms.Label), versionsPanel);
 
             versionsPanel.BackColor = backColor;
 
