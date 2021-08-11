@@ -355,7 +355,7 @@ namespace VentileClient
         Guna2Panel versionsPanel = new Guna2Panel();
 
         private async void InitHome() //Creates panel with versions
-        {
+        {           
             //Colors
             // Make the color variable smaller
             Color backColor = ColorTranslator.FromHtml(themeCS.Background);
@@ -381,7 +381,7 @@ namespace VentileClient
             homeTab.Controls.Add(versionsPanel);
             versionsPanel.BringToFront();
             versionsPanel.AutoScroll = true;
-            versionsPanel.Visible = true;
+            versionsPanel.Visible = false;
 
 
             List<Version> versions = new List<Version>();
@@ -986,6 +986,7 @@ namespace VentileClient
             cosmeticsButton.Checked = false;
             settingsButton.Checked = false;
             aboutButton.Checked = false;
+            versionsPanel.Visible = false;
         }
 
         private void cosmeticsButton_Click(object sender, EventArgs e)
@@ -1281,6 +1282,15 @@ namespace VentileClient
                 }
             }
         }
+
+        private void versionSwitcherButton_Click(object sender, EventArgs e)
+        {
+            versionsPanel.Visible = true;
+            this.Refresh();
+            
+            
+        }
+
         private void selectDll_Click(object sender, EventArgs e)
         {
             OpenFileDialog FileIn = new OpenFileDialog();
@@ -3804,7 +3814,6 @@ namespace VentileClient
         }
 
         #endregion Injecting Crap
-
     }
 
     class workerThing

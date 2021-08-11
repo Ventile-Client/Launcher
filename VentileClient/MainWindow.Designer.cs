@@ -175,9 +175,9 @@ namespace VentileClient
             this.aboutBackgroundColor = new System.Windows.Forms.PictureBox();
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.TrayIconContextMenu = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.injectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButtonIcon)).BeginInit();
@@ -2691,7 +2691,13 @@ namespace VentileClient
             this.TrayIconContextMenu.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.TrayIconContextMenu.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.TrayIconContextMenu.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.TrayIconContextMenu.Size = new System.Drawing.Size(181, 92);
+            this.TrayIconContextMenu.Size = new System.Drawing.Size(104, 70);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
             // 
             // injectToolStripMenuItem
             // 
@@ -2706,12 +2712,6 @@ namespace VentileClient
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.TrayQuit_Click);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Open";
             // 
             // MainWindow
             // 
