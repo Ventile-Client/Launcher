@@ -8,6 +8,7 @@
   "RpcButtonLink": "https://none",
   "CustomDLL": true,
   "DefaultDLL": "",
+  "InjectDelay": 0,
   "BackgroundImage": false,
   "BackgroundImageLoc": null,
   "Toasts": true,

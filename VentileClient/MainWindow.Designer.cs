@@ -188,6 +188,10 @@ namespace VentileClient
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FadeEffectBetweenPages = new Guna.UI2.WinForms.Guna2Transition();
             this.internetCheckTimer = new System.Windows.Forms.Timer(this.components);
+            this.DefaultDLLSelector = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
@@ -213,6 +217,7 @@ namespace VentileClient
             ((System.ComponentModel.ISupportInitialize)(this.aboutSeparator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutBackgroundColor)).BeginInit();
             this.TrayIconContextMenu.SuspendLayout();
+            this.DefaultDLLSelector.SuspendLayout();
             this.SuspendLayout();
             // 
             // dragBar
@@ -1437,6 +1442,7 @@ namespace VentileClient
             this.injectDelay.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.injectDelay.FocusedState.Parent = this.injectDelay;
             this.injectDelay.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.injectDelay.ForeColor = System.Drawing.Color.Black;
             this.injectDelay.Location = new System.Drawing.Point(505, 112);
             this.injectDelay.Maximum = new decimal(new int[] {
             30,
@@ -2980,25 +2986,25 @@ namespace VentileClient
             this.TrayIconContextMenu.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.TrayIconContextMenu.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.TrayIconContextMenu.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.TrayIconContextMenu.Size = new System.Drawing.Size(104, 70);
+            this.TrayIconContextMenu.Size = new System.Drawing.Size(181, 92);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // injectToolStripMenuItem
             // 
             this.injectToolStripMenuItem.Name = "injectToolStripMenuItem";
-            this.injectToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.injectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.injectToolStripMenuItem.Text = "Inject";
             this.injectToolStripMenuItem.Click += new System.EventHandler(this.inject_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.TrayQuit_Click);
             // 
@@ -3031,6 +3037,43 @@ namespace VentileClient
             this.internetCheckTimer.Enabled = true;
             this.internetCheckTimer.Interval = 1;
             this.internetCheckTimer.Tick += new System.EventHandler(this.internetCheck_Tick);
+            // 
+            // DefaultDLLSelector
+            // 
+            this.FadeEffectBetweenPages.SetDecoration(this.DefaultDLLSelector, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.DefaultDLLSelector.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3});
+            this.DefaultDLLSelector.Name = "guna2ContextMenuStrip1";
+            this.DefaultDLLSelector.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
+            this.DefaultDLLSelector.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
+            this.DefaultDLLSelector.RenderStyle.ColorTable = null;
+            this.DefaultDLLSelector.RenderStyle.RoundedEdges = true;
+            this.DefaultDLLSelector.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
+            this.DefaultDLLSelector.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.DefaultDLLSelector.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.DefaultDLLSelector.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.DefaultDLLSelector.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.DefaultDLLSelector.Size = new System.Drawing.Size(104, 70);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItem1.Text = "Open";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItem2.Text = "Inject";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItem3.Text = "Quit";
             // 
             // MainWindow
             // 
@@ -3083,6 +3126,7 @@ namespace VentileClient
             ((System.ComponentModel.ISupportInitialize)(this.aboutSeparator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutBackgroundColor)).EndInit();
             this.TrayIconContextMenu.ResumeLayout(false);
+            this.DefaultDLLSelector.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3245,6 +3289,10 @@ namespace VentileClient
         private System.Windows.Forms.LinkLabel changeLogLink;
         private Guna.UI2.WinForms.Guna2NumericUpDown injectDelay;
         private System.Windows.Forms.Label injectDelayLabel;
+        private Guna.UI2.WinForms.Guna2ContextMenuStrip DefaultDLLSelector;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }
 

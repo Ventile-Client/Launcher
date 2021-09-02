@@ -6,6 +6,7 @@ using Octokit;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -17,7 +18,6 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.JSON_Template_Classes;
@@ -50,8 +50,7 @@ namespace VentileClient
             launcherVersion = "4.1.0",
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
-            isBeta = true,
-            changelog = File.ReadAllLines(Path.Combine(Environment.CurrentDirectory, "../../../ReleaseData/Changelog.txt"))
+            isBeta = false
         };
 
         public static LinkSettings LINK_SETTINGS = new LinkSettings()
@@ -66,7 +65,7 @@ namespace VentileClient
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
 
-        private GitHubClient _github = new GitHubClient(new ProductHeaderValue(LINK_SETTINGS.githubProductHeader)); // New Github Client
+        GitHubClient _github = new GitHubClient(new ProductHeaderValue(LINK_SETTINGS.githubProductHeader));
 
         //Loggers
         private Logger _defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
@@ -408,6 +407,12 @@ namespace VentileClient
             TrayIconContextMenu.RenderStyle.SelectionForeColor = foreColor;
             TrayIconContextMenu.RenderStyle.BorderColor = outlineColor;
 
+            DefaultDLLSelector.ForeColor = foreColor;
+            DefaultDLLSelector.BackColor = backColor2;
+            DefaultDLLSelector.RenderStyle.SelectionBackColor = accentColor;
+            DefaultDLLSelector.RenderStyle.SelectionForeColor = foreColor;
+            DefaultDLLSelector.RenderStyle.BorderColor = outlineColor;
+
             //Home Button
             homeButton.ForeColor = foreColor;
             if (backColor.R + 15 < 255)
@@ -613,6 +618,10 @@ namespace VentileClient
         {
             InitializeComponent();
 
+            MessageBox.Show(LINK_SETTINGS.githubToken);
+
+            //_github.Credentials = new Credentials(LINK_SETTINGS.githubToken);
+
             INSTANCE = this;
 
             // Round the form window
@@ -647,6 +656,7 @@ namespace VentileClient
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+
             ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
             if (!internet)
             {
@@ -1698,6 +1708,17 @@ namespace VentileClient
             VersionsPanel.Size = new Size(VersionsPanel.Width, VersionsPanel.Height + topOffset * 2);
             // Refreshes The Currently Installed Versions
             RefreshVersionList(versions);
+
+            if (Directory.Exists(@"C:\temp\VentileClient\Dlls")) Directory.Delete(@"C:\temp\VentileClient\DLLS", true);
+
+            Directory.CreateDirectory(@"C:\temp\VentileClient\Dlls");
+
+            IReadOnlyList<RepositoryContent> files = await _github.Repository.Content.GetAllContents(LINK_SETTINGS.repoOwner, LINK_SETTINGS.downloadRepo, @"Dlls\");
+            foreach (RepositoryContent dll in files)
+            {
+                if (dll.Type == "file")
+                    Download(dll.DownloadUrl, @"C:\temp\VentileClient\Dlls", dll.Name);
+            }
         }
 
         private void ChangeHomeColors()
@@ -4556,6 +4577,8 @@ namespace VentileClient
         public string websiteLink;
         public string discordInvite;
         public string githubProductHeader;
+
+        public string githubToken;
     }
 
     #endregion

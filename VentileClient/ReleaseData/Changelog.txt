@@ -4,6 +4,7 @@
     Animations
     Version Switcher
     Changelog
+    Inject Delay
 
  - Removed:
     Custom Resource Pack Location
