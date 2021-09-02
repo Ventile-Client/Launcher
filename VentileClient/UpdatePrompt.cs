@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
+using VentileClient.JSON_Template_Classes;
 
 namespace VentileClient
 {
@@ -17,7 +18,7 @@ namespace VentileClient
     {
         #region Downloading Code
 
-        public void download(string link, string path, string name)
+        public void Download(string link, string path, string name)
         {
             using (WebClient Client = new WebClient())
             {
@@ -34,35 +35,39 @@ namespace VentileClient
 
         #endregion Downloading Code
 
-        private MainWindow mainWndw;
+        private MainWindow _mainWndw;
+        private ThemeTemplate _themeCS;
 
         public UpdatePrompt(MainWindow form)
         {
             InitializeComponent();
-            mainWndw = form;
+            _mainWndw = form;
         }
 
         private void no_Click(object sender, EventArgs e)
         {
-            TopMost = false;
-            mainWndw.TopMost = true;
-            mainWndw.TopMost = false;
-
-            for (int i = 0; i < 25; i++)
+            if (_chnglogPrmpt != null)
             {
-                mainWndw.Opacity += 0.04;
-                Thread.Sleep(1);
+                _chnglogPrmpt.fadeOut.Start();
             }
-            this.Close();
+            fadeOut.Start();
+
+            _mainWndw.fadeIn.Start();
+            _mainWndw.BringToFront();
+
         }
 
         private void update_Click(object sender, EventArgs e)
         {
+            if (_chnglogPrmpt != null)
+            {
+                _chnglogPrmpt.fadeOut.Start();
+            }
             try
             {
                 if (!System.IO.File.Exists(@"C:\temp\VentileClient\Ventile-Updater.exe"))
                 {
-                    download(@"https://github.com/DeathlyBower959/Ventile-Client-Downloads/raw/main/Ventile-Updater.exe", @"C:\temp\VentileClient\", "Ventile-Updater.exe");
+                    Download(string.Format(@"https://github.com/" + MainWindow.LINK_SETTINGS.repoOwner + "/" + MainWindow.LINK_SETTINGS.downloadRepo + @"/blob/main/${0}?raw=true", "VentileUpdater.exe"), @"C:\temp\VentileClient\", "Ventile-Updater.exe");
                 }
                 Process.Start(@"C:\temp\VentileClient\Ventile-Updater.exe");
             }
@@ -72,13 +77,58 @@ namespace VentileClient
             }
             finally
             {
-                mainWndw.Close();
+                _mainWndw.Close();
             }
         }
 
-        public void updateVersionText(string versionParam)
+        string[] _changelog;
+        ChangelogPrompt _chnglogPrmpt;
+        public void UpdateVersionText(string[] changelogParam, string latestVersion, ThemeTemplate theme)
         {
-            version.Text = versionParam;
+            _changelog = changelogParam;
+            _themeCS = theme;
+            version.Text = latestVersion;
+            this.BackColor = ColorTranslator.FromHtml(theme.Background);
+            text1.ForeColor = ColorTranslator.FromHtml(theme.Faded);
+            version.ForeColor = ColorTranslator.FromHtml(theme.Faded);
+            text2.ForeColor = ColorTranslator.FromHtml(theme.Faded);
+            Title.ForeColor = ColorTranslator.FromHtml(theme.Foreground);
+            text1.BackColor = ColorTranslator.FromHtml(theme.Background);
+            version.BackColor = ColorTranslator.FromHtml(theme.Background);
+            text2.BackColor = ColorTranslator.FromHtml(theme.Background);
+            Title.BackColor = ColorTranslator.FromHtml(theme.Background);
+            update.ForeColor = ColorTranslator.FromHtml(theme.Foreground);
+            no.ForeColor = ColorTranslator.FromHtml(theme.Foreground);
+            update.FillColor = ColorTranslator.FromHtml(theme.SecondBackground);
+            no.FillColor = ColorTranslator.FromHtml(theme.SecondBackground);
+            this.Refresh();
+        }
+
+        private void changeLogLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // New changelog window
+            if ((ChangelogPrompt)System.Windows.Forms.Application.OpenForms["ChangelogPrompt"] != null) return;
+            _chnglogPrmpt = new ChangelogPrompt(_themeCS, _changelog);
+            _chnglogPrmpt.Show();
+        }
+
+        private void fadeIn_Tick(object sender, EventArgs e)
+        {
+            if (Opacity == 1.0)
+            {
+                fadeIn.Stop();
+            }
+            this.Opacity += 0.04;
+        }
+
+        private void fadeOut_Tick(object sender, EventArgs e)
+        {
+            if (Opacity == 1.0)
+            {
+                fadeOut.Stop();
+                this.Close();
+            }
+            this.Opacity -= 0.04;
         }
     }
 }

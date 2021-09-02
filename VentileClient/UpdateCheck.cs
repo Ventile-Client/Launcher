@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Octokit;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using VentileClient.JSON_Template_Classes;
 
 namespace VentileClient
 {
@@ -15,9 +11,9 @@ namespace VentileClient
     {
         #region Downloading Code
 
-        public void download(string link, string path, string name)
+        public void Download(string link, string path, string name)
         {
-            using (WebClient Client = new WebClient())
+            using (var Client = new WebClient())
             {
                 if (path.EndsWith(@"\"))
                 {
@@ -32,12 +28,8 @@ namespace VentileClient
 
         #endregion Downloading Code
 
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-
-        public void CheckForUpdate()
+        public async void CheckForUpdate(ThemeTemplate themeCS, VentileSettings ventileSettings, bool internet, GitHubClient github)
         {
-            timer.Tick += timer_tick;
-            timer.Interval = 1;
             if (File.Exists(@"C:\temp\VentileClient\Version.txt"))
             {
                 File.Delete(@"C:\temp\VentileClient\Version.txt");
@@ -48,34 +40,35 @@ namespace VentileClient
                 File.Delete(@"C:\temp\VentileClient\Version.zip");
             }
 
-            download(@"https://github.com/DeathlyBower959/Ventile-Client-Downloads/raw/main/Version.zip", @"C:\temp\VentileClient", "Version.zip");
-            ZipFile.ExtractToDirectory(@"C:\temp\VentileClient\Version.zip", @"C:\temp\VentileClient\");
+            if (!internet) return;
 
-            string latestVersion = File.ReadAllLines(@"C:\temp\VentileClient\Version.txt")[0];
-            
-            File.Delete(@"C:\temp\VentileClient\Version.txt");
-            File.Delete(@"C:\temp\VentileClient\Version.zip");
+            IReadOnlyList<Release> releases = await github.Repository.Release.GetAll(MainWindow.LINK_SETTINGS.repoOwner, MainWindow.LINK_SETTINGS.downloadRepo); // Gets all releases from the VersionChanger repo
 
-            if (latestVersion != Properties.Ventile.Default.Version && !Properties.Ventile.Default.IsBeta)
+            if (!(releases.Count > 0))
             {
-                UpdatePrompt updatePrompt = new UpdatePrompt(MainWindow.instance);
-                updatePrompt.Show();
-                updatePrompt.updateVersionText(latestVersion);
-                MainWindow.instance.Opacity = 0;
+                Debug.WriteLine("No releases Found!");
+                MainWindow.INSTANCE.fadeIn.Start();
                 return;
             }
-            timer.Start();
-        }
 
-        private void timer_tick(object sender, EventArgs e)
-        {
-            if (MainWindow.instance.Opacity < 1)
+            Download(string.Format(@"https://github.com/" + MainWindow.LINK_SETTINGS.repoOwner + "/" + MainWindow.LINK_SETTINGS.downloadRepo + "/releases/download/{0}/{1}", releases[0].TagName, "Changelog.txt"), @"C:\temp\VentileClient", "Changelog.txt");
+
+            string[] changelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
+
+            File.Delete(@"C:\temp\VentileClient\Changelog.txt");
+
+            if (releases[0].TagName != ventileSettings.launcherVersion && !ventileSettings.isBeta)
             {
-                MainWindow.instance.Opacity += 0.04;
-            } else
-            {
-                timer.Stop();
+                MainWindow.INSTANCE.Opacity = 0;
+
+                var updatePrompt = new UpdatePrompt(MainWindow.INSTANCE);
+                updatePrompt.UpdateVersionText(changelog, releases[0].TagName, themeCS);
+                updatePrompt.Opacity = 0;
+                updatePrompt.Show();
+
+                return;
             }
+            MainWindow.INSTANCE.fadeIn.Start();
         }
     }
 }

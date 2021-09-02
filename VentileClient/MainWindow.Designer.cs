@@ -30,12 +30,15 @@ namespace VentileClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            Guna.UI2.AnimatorNS.Animation animation1 = new Guna.UI2.AnimatorNS.Animation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dragBar = new Guna.UI2.WinForms.Guna2Panel();
             this.minimizeButton = new Guna.UI2.WinForms.Guna2Button();
             this.closeButton = new Guna.UI2.WinForms.Guna2Button();
             this.dragWindowControl = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.sidebar = new Guna.UI2.WinForms.Guna2Panel();
+            this.versionButton = new Guna.UI2.WinForms.Guna2Button();
+            this.versionButtonIcon = new FontAwesome.Sharp.IconPictureBox();
             this.homeButton = new Guna.UI2.WinForms.Guna2Button();
             this.version = new System.Windows.Forms.Label();
             this.aboutButton = new Guna.UI2.WinForms.Guna2Button();
@@ -80,10 +83,13 @@ namespace VentileClient
             this.capesTitle = new System.Windows.Forms.Label();
             this.cosmeticsTabLabel = new System.Windows.Forms.Label();
             this.cosmeticsBackground = new System.Windows.Forms.PictureBox();
+            this.versionsTab = new System.Windows.Forms.TabPage();
             this.settingsTab = new System.Windows.Forms.TabPage();
             this.settingsTabLabel = new System.Windows.Forms.Label();
             this.settingsPagesTabControl = new Guna.UI2.WinForms.Guna2TabControl();
             this.Launcher = new System.Windows.Forms.TabPage();
+            this.injectDelayLabel = new System.Windows.Forms.Label();
+            this.injectDelay = new Guna.UI2.WinForms.Guna2NumericUpDown();
             this.rpcButtonTextLabel = new System.Windows.Forms.Label();
             this.rpcLine = new System.Windows.Forms.MaskedTextBox();
             this.buttonForRpc = new Guna.UI2.WinForms.Guna2Button();
@@ -103,7 +109,6 @@ namespace VentileClient
             this.openWindow = new Guna.UI2.WinForms.Guna2Button();
             this.autoInject = new Guna.UI2.WinForms.Guna2Button();
             this.customLoc = new Guna.UI2.WinForms.Guna2Button();
-            this.resetResourceLoc = new Guna.UI2.WinForms.Guna2Button();
             this.AppearanceButton = new Guna.UI2.WinForms.Guna2Button();
             this.Appearance = new System.Windows.Forms.TabPage();
             this.foreColorLabel = new System.Windows.Forms.Label();
@@ -151,6 +156,8 @@ namespace VentileClient
             this.backgroundColorLabel = new System.Windows.Forms.Label();
             this.themeTitle = new System.Windows.Forms.Label();
             this.Extras = new System.Windows.Forms.TabPage();
+            this.performanceModeToggle = new Guna.UI2.WinForms.Guna2Button();
+            this.performanceModeTitle = new System.Windows.Forms.Label();
             this.toastsSelector = new Guna.UI2.WinForms.Guna2ComboBox();
             this.customImage = new Guna.UI2.WinForms.Guna2Button();
             this.backImageTitle = new System.Windows.Forms.Label();
@@ -160,6 +167,7 @@ namespace VentileClient
             this.AppearanceButton2 = new Guna.UI2.WinForms.Guna2Button();
             this.toastsTitle = new System.Windows.Forms.Label();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.changeLogLink = new System.Windows.Forms.LinkLabel();
             this.cosmeticsVLabel = new System.Windows.Forms.Label();
             this.clientVLabel = new System.Windows.Forms.Label();
             this.launcherVLabel = new System.Windows.Forms.Label();
@@ -178,8 +186,11 @@ namespace VentileClient
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.injectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FadeEffectBetweenPages = new Guna.UI2.WinForms.Guna2Transition();
+            this.internetCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButtonIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsButtonIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cosmeticsButtonIcon)).BeginInit();
@@ -192,6 +203,7 @@ namespace VentileClient
             this.settingsTab.SuspendLayout();
             this.settingsPagesTabControl.SuspendLayout();
             this.Launcher.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.injectDelay)).BeginInit();
             this.Appearance.SuspendLayout();
             this.presets.SuspendLayout();
             this.Extras.SuspendLayout();
@@ -208,6 +220,7 @@ namespace VentileClient
             this.dragBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.dragBar.Controls.Add(this.minimizeButton);
             this.dragBar.Controls.Add(this.closeButton);
+            this.FadeEffectBetweenPages.SetDecoration(this.dragBar, Guna.UI2.AnimatorNS.DecorationType.None);
             this.dragBar.Location = new System.Drawing.Point(0, 0);
             this.dragBar.Name = "dragBar";
             this.dragBar.ShadowDecoration.Parent = this.dragBar;
@@ -221,6 +234,7 @@ namespace VentileClient
             this.minimizeButton.CheckedState.Parent = this.minimizeButton;
             this.minimizeButton.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.minimizeButton.CustomImages.Parent = this.minimizeButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.minimizeButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.minimizeButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.minimizeButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.minimizeButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -247,6 +261,7 @@ namespace VentileClient
             this.closeButton.CheckedState.Parent = this.closeButton;
             this.closeButton.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.closeButton.CustomImages.Parent = this.closeButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.closeButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.closeButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.closeButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.closeButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -272,6 +287,8 @@ namespace VentileClient
             // sidebar
             // 
             this.sidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.sidebar.Controls.Add(this.versionButton);
+            this.sidebar.Controls.Add(this.versionButtonIcon);
             this.sidebar.Controls.Add(this.homeButton);
             this.sidebar.Controls.Add(this.version);
             this.sidebar.Controls.Add(this.aboutButton);
@@ -284,11 +301,56 @@ namespace VentileClient
             this.sidebar.Controls.Add(this.launcherTitle);
             this.sidebar.Controls.Add(this.line);
             this.sidebar.Controls.Add(this.logo);
+            this.FadeEffectBetweenPages.SetDecoration(this.sidebar, Guna.UI2.AnimatorNS.DecorationType.None);
             this.sidebar.Location = new System.Drawing.Point(0, 24);
             this.sidebar.Name = "sidebar";
             this.sidebar.ShadowDecoration.Parent = this.sidebar;
             this.sidebar.Size = new System.Drawing.Size(170, 468);
             this.sidebar.TabIndex = 1;
+            // 
+            // versionButton
+            // 
+            this.versionButton.Animated = true;
+            this.versionButton.BackColor = System.Drawing.Color.Transparent;
+            this.versionButton.CheckedState.Parent = this.versionButton;
+            this.versionButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.versionButton.CustomImages.Parent = this.versionButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.versionButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.versionButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.versionButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.versionButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.versionButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.versionButton.DisabledState.Parent = this.versionButton;
+            this.versionButton.FillColor = System.Drawing.Color.Transparent;
+            this.versionButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.versionButton.ForeColor = System.Drawing.Color.White;
+            this.versionButton.HoverState.Parent = this.versionButton;
+            this.versionButton.Location = new System.Drawing.Point(0, 264);
+            this.versionButton.Name = "versionButton";
+            this.versionButton.ShadowDecoration.Parent = this.versionButton;
+            this.versionButton.Size = new System.Drawing.Size(170, 52);
+            this.versionButton.TabIndex = 15;
+            this.versionButton.Text = "Version";
+            this.versionButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.versionButton.TextOffset = new System.Drawing.Point(55, 0);
+            this.versionButton.UseTransparentBackground = true;
+            this.versionButton.Click += new System.EventHandler(this.versionButton_Click);
+            // 
+            // versionButtonIcon
+            // 
+            this.versionButtonIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.versionButtonIcon, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.versionButtonIcon.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.versionButtonIcon.IconChar = FontAwesome.Sharp.IconChar.CodeBranch;
+            this.versionButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
+            this.versionButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.versionButtonIcon.IconSize = 48;
+            this.versionButtonIcon.Location = new System.Drawing.Point(11, 268);
+            this.versionButtonIcon.Name = "versionButtonIcon";
+            this.versionButtonIcon.Size = new System.Drawing.Size(48, 48);
+            this.versionButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.versionButtonIcon.TabIndex = 16;
+            this.versionButtonIcon.TabStop = false;
             // 
             // homeButton
             // 
@@ -297,15 +359,16 @@ namespace VentileClient
             this.homeButton.CheckedState.Parent = this.homeButton;
             this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.homeButton.CustomImages.Parent = this.homeButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.homeButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.homeButton.DisabledState.Parent = this.homeButton;
             this.homeButton.FillColor = System.Drawing.Color.Transparent;
             this.homeButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.homeButton.ForeColor = System.Drawing.Color.White;
             this.homeButton.HoverState.Parent = this.homeButton;
-            this.homeButton.Location = new System.Drawing.Point(0, 161);
+            this.homeButton.Location = new System.Drawing.Point(0, 154);
             this.homeButton.Name = "homeButton";
             this.homeButton.ShadowDecoration.Parent = this.homeButton;
-            this.homeButton.Size = new System.Drawing.Size(170, 55);
+            this.homeButton.Size = new System.Drawing.Size(170, 52);
             this.homeButton.TabIndex = 2;
             this.homeButton.Text = "Home";
             this.homeButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -315,6 +378,7 @@ namespace VentileClient
             // 
             // version
             // 
+            this.FadeEffectBetweenPages.SetDecoration(this.version, Guna.UI2.AnimatorNS.DecorationType.None);
             this.version.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.version.ForeColor = System.Drawing.Color.Silver;
             this.version.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -332,6 +396,7 @@ namespace VentileClient
             this.aboutButton.CheckedState.Parent = this.aboutButton;
             this.aboutButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.aboutButton.CustomImages.Parent = this.aboutButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.aboutButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.aboutButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -341,10 +406,10 @@ namespace VentileClient
             this.aboutButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.aboutButton.ForeColor = System.Drawing.Color.White;
             this.aboutButton.HoverState.Parent = this.aboutButton;
-            this.aboutButton.Location = new System.Drawing.Point(0, 335);
+            this.aboutButton.Location = new System.Drawing.Point(0, 374);
             this.aboutButton.Name = "aboutButton";
             this.aboutButton.ShadowDecoration.Parent = this.aboutButton;
-            this.aboutButton.Size = new System.Drawing.Size(170, 55);
+            this.aboutButton.Size = new System.Drawing.Size(170, 52);
             this.aboutButton.TabIndex = 12;
             this.aboutButton.Text = "About";
             this.aboutButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -355,12 +420,13 @@ namespace VentileClient
             // aboutButtonIcon
             // 
             this.aboutButtonIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutButtonIcon, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutButtonIcon.ForeColor = System.Drawing.Color.RoyalBlue;
             this.aboutButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Info;
             this.aboutButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.aboutButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.aboutButtonIcon.IconSize = 48;
-            this.aboutButtonIcon.Location = new System.Drawing.Point(10, 340);
+            this.aboutButtonIcon.Location = new System.Drawing.Point(10, 378);
             this.aboutButtonIcon.Name = "aboutButtonIcon";
             this.aboutButtonIcon.Size = new System.Drawing.Size(48, 48);
             this.aboutButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -374,6 +440,7 @@ namespace VentileClient
             this.settingsButton.CheckedState.Parent = this.settingsButton;
             this.settingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.settingsButton.CustomImages.Parent = this.settingsButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.settingsButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.settingsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.settingsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -383,10 +450,10 @@ namespace VentileClient
             this.settingsButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.settingsButton.ForeColor = System.Drawing.Color.White;
             this.settingsButton.HoverState.Parent = this.settingsButton;
-            this.settingsButton.Location = new System.Drawing.Point(0, 277);
+            this.settingsButton.Location = new System.Drawing.Point(0, 319);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.ShadowDecoration.Parent = this.settingsButton;
-            this.settingsButton.Size = new System.Drawing.Size(170, 55);
+            this.settingsButton.Size = new System.Drawing.Size(170, 52);
             this.settingsButton.TabIndex = 10;
             this.settingsButton.Text = "Settings";
             this.settingsButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -397,12 +464,13 @@ namespace VentileClient
             // settingsButtonIcon
             // 
             this.settingsButtonIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.settingsButtonIcon, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsButtonIcon.ForeColor = System.Drawing.Color.RoyalBlue;
             this.settingsButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Cog;
             this.settingsButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.settingsButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.settingsButtonIcon.IconSize = 48;
-            this.settingsButtonIcon.Location = new System.Drawing.Point(10, 285);
+            this.settingsButtonIcon.Location = new System.Drawing.Point(10, 323);
             this.settingsButtonIcon.Name = "settingsButtonIcon";
             this.settingsButtonIcon.Size = new System.Drawing.Size(48, 48);
             this.settingsButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -416,6 +484,7 @@ namespace VentileClient
             this.cosmeticsButton.CheckedState.Parent = this.cosmeticsButton;
             this.cosmeticsButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cosmeticsButton.CustomImages.Parent = this.cosmeticsButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.cosmeticsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.cosmeticsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -425,10 +494,10 @@ namespace VentileClient
             this.cosmeticsButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.cosmeticsButton.ForeColor = System.Drawing.Color.White;
             this.cosmeticsButton.HoverState.Parent = this.cosmeticsButton;
-            this.cosmeticsButton.Location = new System.Drawing.Point(0, 219);
+            this.cosmeticsButton.Location = new System.Drawing.Point(0, 209);
             this.cosmeticsButton.Name = "cosmeticsButton";
             this.cosmeticsButton.ShadowDecoration.Parent = this.cosmeticsButton;
-            this.cosmeticsButton.Size = new System.Drawing.Size(170, 55);
+            this.cosmeticsButton.Size = new System.Drawing.Size(170, 52);
             this.cosmeticsButton.TabIndex = 8;
             this.cosmeticsButton.Text = "Cosmetics";
             this.cosmeticsButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -439,12 +508,13 @@ namespace VentileClient
             // cosmeticsButtonIcon
             // 
             this.cosmeticsButtonIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsButtonIcon, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsButtonIcon.ForeColor = System.Drawing.Color.RoyalBlue;
             this.cosmeticsButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Tshirt;
             this.cosmeticsButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.cosmeticsButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.cosmeticsButtonIcon.IconSize = 48;
-            this.cosmeticsButtonIcon.Location = new System.Drawing.Point(10, 225);
+            this.cosmeticsButtonIcon.Location = new System.Drawing.Point(10, 212);
             this.cosmeticsButtonIcon.Name = "cosmeticsButtonIcon";
             this.cosmeticsButtonIcon.Size = new System.Drawing.Size(48, 48);
             this.cosmeticsButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -454,12 +524,13 @@ namespace VentileClient
             // homeButtonIcon
             // 
             this.homeButtonIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.homeButtonIcon, Guna.UI2.AnimatorNS.DecorationType.None);
             this.homeButtonIcon.ForeColor = System.Drawing.Color.RoyalBlue;
             this.homeButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Home;
             this.homeButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.homeButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.homeButtonIcon.IconSize = 48;
-            this.homeButtonIcon.Location = new System.Drawing.Point(10, 165);
+            this.homeButtonIcon.Location = new System.Drawing.Point(10, 157);
             this.homeButtonIcon.Name = "homeButtonIcon";
             this.homeButtonIcon.Size = new System.Drawing.Size(48, 48);
             this.homeButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -469,6 +540,7 @@ namespace VentileClient
             // launcherTitle
             // 
             this.launcherTitle.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.launcherTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launcherTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.launcherTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
             this.launcherTitle.ForeColor = System.Drawing.Color.White;
@@ -483,6 +555,7 @@ namespace VentileClient
             // 
             this.line.BackColor = System.Drawing.Color.Transparent;
             this.line.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FadeEffectBetweenPages.SetDecoration(this.line, Guna.UI2.AnimatorNS.DecorationType.None);
             this.line.FlatAppearance.BorderSize = 0;
             this.line.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.line.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -501,6 +574,7 @@ namespace VentileClient
             // logo
             // 
             this.logo.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.logo, Guna.UI2.AnimatorNS.DecorationType.None);
             this.logo.FillColor = System.Drawing.Color.Transparent;
             this.logo.Image = global::VentileClient.Properties.Resources.transparent_logo_white;
             this.logo.ImageRotate = 0F;
@@ -534,8 +608,10 @@ namespace VentileClient
             this.contentView.Alignment = System.Windows.Forms.TabAlignment.Right;
             this.contentView.Controls.Add(this.homeTab);
             this.contentView.Controls.Add(this.cosmeticsTab);
+            this.contentView.Controls.Add(this.versionsTab);
             this.contentView.Controls.Add(this.settingsTab);
             this.contentView.Controls.Add(this.aboutTab);
+            this.FadeEffectBetweenPages.SetDecoration(this.contentView, Guna.UI2.AnimatorNS.DecorationType.None);
             this.contentView.ItemSize = new System.Drawing.Size(40, 40);
             this.contentView.Location = new System.Drawing.Point(165, 21);
             this.contentView.Margin = new System.Windows.Forms.Padding(0);
@@ -574,6 +650,7 @@ namespace VentileClient
             this.homeTab.Controls.Add(this.launchMc);
             this.homeTab.Controls.Add(this.inject);
             this.homeTab.Controls.Add(this.selectDll);
+            this.FadeEffectBetweenPages.SetDecoration(this.homeTab, Guna.UI2.AnimatorNS.DecorationType.None);
             this.homeTab.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.homeTab.ForeColor = System.Drawing.Color.White;
             this.homeTab.Location = new System.Drawing.Point(4, 4);
@@ -592,6 +669,7 @@ namespace VentileClient
             this.launchMc.CustomBorderColor = System.Drawing.Color.Black;
             this.launchMc.CustomBorderThickness = new System.Windows.Forms.Padding(3);
             this.launchMc.CustomImages.Parent = this.launchMc;
+            this.FadeEffectBetweenPages.SetDecoration(this.launchMc, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launchMc.DisabledState.Parent = this.launchMc;
             this.launchMc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.launchMc.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold);
@@ -614,6 +692,7 @@ namespace VentileClient
             this.inject.CustomBorderColor = System.Drawing.Color.Black;
             this.inject.CustomBorderThickness = new System.Windows.Forms.Padding(3);
             this.inject.CustomImages.Parent = this.inject;
+            this.FadeEffectBetweenPages.SetDecoration(this.inject, Guna.UI2.AnimatorNS.DecorationType.None);
             this.inject.DisabledState.Parent = this.inject;
             this.inject.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.inject.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
@@ -636,6 +715,7 @@ namespace VentileClient
             this.selectDll.CustomBorderColor = System.Drawing.Color.Black;
             this.selectDll.CustomBorderThickness = new System.Windows.Forms.Padding(3);
             this.selectDll.CustomImages.Parent = this.selectDll;
+            this.FadeEffectBetweenPages.SetDecoration(this.selectDll, Guna.UI2.AnimatorNS.DecorationType.None);
             this.selectDll.DisabledState.Parent = this.selectDll;
             this.selectDll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.selectDll.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
@@ -678,13 +758,14 @@ namespace VentileClient
             this.cosmeticsTab.Controls.Add(this.capesTitle);
             this.cosmeticsTab.Controls.Add(this.cosmeticsTabLabel);
             this.cosmeticsTab.Controls.Add(this.cosmeticsBackground);
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsTab, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsTab.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.cosmeticsTab.ForeColor = System.Drawing.Color.White;
             this.cosmeticsTab.Location = new System.Drawing.Point(4, 4);
             this.cosmeticsTab.Name = "cosmeticsTab";
             this.cosmeticsTab.Size = new System.Drawing.Size(644, 465);
             this.cosmeticsTab.TabIndex = 1;
-            this.cosmeticsTab.Text = "cosm";
+            this.cosmeticsTab.Text = "cosmetics";
             // 
             // oKagune
             // 
@@ -697,6 +778,7 @@ namespace VentileClient
             this.oKagune.CheckedState.Parent = this.oKagune;
             this.oKagune.Cursor = System.Windows.Forms.Cursors.Hand;
             this.oKagune.CustomImages.Parent = this.oKagune;
+            this.FadeEffectBetweenPages.SetDecoration(this.oKagune, Guna.UI2.AnimatorNS.DecorationType.None);
             this.oKagune.DisabledState.Parent = this.oKagune;
             this.oKagune.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.oKagune.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -723,6 +805,7 @@ namespace VentileClient
             this.oWavy.CheckedState.Parent = this.oWavy;
             this.oWavy.Cursor = System.Windows.Forms.Cursors.Hand;
             this.oWavy.CustomImages.Parent = this.oWavy;
+            this.FadeEffectBetweenPages.SetDecoration(this.oWavy, Guna.UI2.AnimatorNS.DecorationType.None);
             this.oWavy.DisabledState.Parent = this.oWavy;
             this.oWavy.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.oWavy.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -749,6 +832,7 @@ namespace VentileClient
             this.aSlide.CheckedState.Parent = this.aSlide;
             this.aSlide.Cursor = System.Windows.Forms.Cursors.Hand;
             this.aSlide.CustomImages.Parent = this.aSlide;
+            this.FadeEffectBetweenPages.SetDecoration(this.aSlide, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aSlide.DisabledState.Parent = this.aSlide;
             this.aSlide.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.aSlide.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -775,6 +859,7 @@ namespace VentileClient
             this.aGlowing.CheckedState.Parent = this.aGlowing;
             this.aGlowing.Cursor = System.Windows.Forms.Cursors.Hand;
             this.aGlowing.CustomImages.Parent = this.aGlowing;
+            this.FadeEffectBetweenPages.SetDecoration(this.aGlowing, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aGlowing.DisabledState.Parent = this.aGlowing;
             this.aGlowing.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.aGlowing.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -801,6 +886,7 @@ namespace VentileClient
             this.mRick.CheckedState.Parent = this.mRick;
             this.mRick.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mRick.CustomImages.Parent = this.mRick;
+            this.FadeEffectBetweenPages.SetDecoration(this.mRick, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mRick.DisabledState.Parent = this.mRick;
             this.mRick.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mRick.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -827,6 +913,7 @@ namespace VentileClient
             this.mYellow.CheckedState.Parent = this.mYellow;
             this.mYellow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mYellow.CustomImages.Parent = this.mYellow;
+            this.FadeEffectBetweenPages.SetDecoration(this.mYellow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mYellow.DisabledState.Parent = this.mYellow;
             this.mYellow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mYellow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -853,6 +940,7 @@ namespace VentileClient
             this.mBlue.CheckedState.Parent = this.mBlue;
             this.mBlue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mBlue.CustomImages.Parent = this.mBlue;
+            this.FadeEffectBetweenPages.SetDecoration(this.mBlue, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mBlue.DisabledState.Parent = this.mBlue;
             this.mBlue.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mBlue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -879,6 +967,7 @@ namespace VentileClient
             this.mPink.CheckedState.Parent = this.mPink;
             this.mPink.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mPink.CustomImages.Parent = this.mPink;
+            this.FadeEffectBetweenPages.SetDecoration(this.mPink, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mPink.DisabledState.Parent = this.mPink;
             this.mPink.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mPink.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -905,6 +994,7 @@ namespace VentileClient
             this.mWhite.CheckedState.Parent = this.mWhite;
             this.mWhite.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mWhite.CustomImages.Parent = this.mWhite;
+            this.FadeEffectBetweenPages.SetDecoration(this.mWhite, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mWhite.DisabledState.Parent = this.mWhite;
             this.mWhite.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mWhite.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -931,6 +1021,7 @@ namespace VentileClient
             this.mBlack.CheckedState.Parent = this.mBlack;
             this.mBlack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mBlack.CustomImages.Parent = this.mBlack;
+            this.FadeEffectBetweenPages.SetDecoration(this.mBlack, Guna.UI2.AnimatorNS.DecorationType.None);
             this.mBlack.DisabledState.Parent = this.mBlack;
             this.mBlack.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mBlack.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -955,6 +1046,7 @@ namespace VentileClient
             this.resetAllCosmetics.CheckedState.Parent = this.resetAllCosmetics;
             this.resetAllCosmetics.Cursor = System.Windows.Forms.Cursors.Hand;
             this.resetAllCosmetics.CustomImages.Parent = this.resetAllCosmetics;
+            this.FadeEffectBetweenPages.SetDecoration(this.resetAllCosmetics, Guna.UI2.AnimatorNS.DecorationType.None);
             this.resetAllCosmetics.DisabledState.Parent = this.resetAllCosmetics;
             this.resetAllCosmetics.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.resetAllCosmetics.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -980,6 +1072,7 @@ namespace VentileClient
             this.cRick.CheckedState.Parent = this.cRick;
             this.cRick.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cRick.CustomImages.Parent = this.cRick;
+            this.FadeEffectBetweenPages.SetDecoration(this.cRick, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cRick.DisabledState.Parent = this.cRick;
             this.cRick.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cRick.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1006,6 +1099,7 @@ namespace VentileClient
             this.cYellow.CheckedState.Parent = this.cYellow;
             this.cYellow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cYellow.CustomImages.Parent = this.cYellow;
+            this.FadeEffectBetweenPages.SetDecoration(this.cYellow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cYellow.DisabledState.Parent = this.cYellow;
             this.cYellow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cYellow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1032,6 +1126,7 @@ namespace VentileClient
             this.cBlue.CheckedState.Parent = this.cBlue;
             this.cBlue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cBlue.CustomImages.Parent = this.cBlue;
+            this.FadeEffectBetweenPages.SetDecoration(this.cBlue, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cBlue.DisabledState.Parent = this.cBlue;
             this.cBlue.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cBlue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1058,6 +1153,7 @@ namespace VentileClient
             this.cPink.CheckedState.Parent = this.cPink;
             this.cPink.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cPink.CustomImages.Parent = this.cPink;
+            this.FadeEffectBetweenPages.SetDecoration(this.cPink, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cPink.DisabledState.Parent = this.cPink;
             this.cPink.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cPink.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1084,6 +1180,7 @@ namespace VentileClient
             this.cWhite.CheckedState.Parent = this.cWhite;
             this.cWhite.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cWhite.CustomImages.Parent = this.cWhite;
+            this.FadeEffectBetweenPages.SetDecoration(this.cWhite, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cWhite.DisabledState.Parent = this.cWhite;
             this.cWhite.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cWhite.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1110,6 +1207,7 @@ namespace VentileClient
             this.cBlack.CheckedState.Parent = this.cBlack;
             this.cBlack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cBlack.CustomImages.Parent = this.cBlack;
+            this.FadeEffectBetweenPages.SetDecoration(this.cBlack, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cBlack.DisabledState.Parent = this.cBlack;
             this.cBlack.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.cBlack.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1129,6 +1227,7 @@ namespace VentileClient
             // 
             this.othersTitle.AutoSize = true;
             this.othersTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.othersTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.othersTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.othersTitle.ForeColor = System.Drawing.Color.White;
             this.othersTitle.Location = new System.Drawing.Point(524, 109);
@@ -1142,6 +1241,7 @@ namespace VentileClient
             // 
             this.masksTitle.AutoSize = true;
             this.masksTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.masksTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.masksTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.masksTitle.ForeColor = System.Drawing.Color.White;
             this.masksTitle.Location = new System.Drawing.Point(212, 109);
@@ -1155,6 +1255,7 @@ namespace VentileClient
             // 
             this.animatedCapesTitle.AutoSize = true;
             this.animatedCapesTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.animatedCapesTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.animatedCapesTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.animatedCapesTitle.ForeColor = System.Drawing.Color.White;
             this.animatedCapesTitle.Location = new System.Drawing.Point(324, 109);
@@ -1168,6 +1269,7 @@ namespace VentileClient
             // 
             this.capesTitle.AutoSize = true;
             this.capesTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.capesTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.capesTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.capesTitle.ForeColor = System.Drawing.Color.White;
             this.capesTitle.Location = new System.Drawing.Point(55, 109);
@@ -1181,6 +1283,7 @@ namespace VentileClient
             // 
             this.cosmeticsTabLabel.AutoSize = true;
             this.cosmeticsTabLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsTabLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsTabLabel.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cosmeticsTabLabel.ForeColor = System.Drawing.Color.White;
             this.cosmeticsTabLabel.Location = new System.Drawing.Point(223, 20);
@@ -1193,11 +1296,24 @@ namespace VentileClient
             // cosmeticsBackground
             // 
             this.cosmeticsBackground.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsBackground, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsBackground.Location = new System.Drawing.Point(-8, 85);
             this.cosmeticsBackground.Name = "cosmeticsBackground";
             this.cosmeticsBackground.Size = new System.Drawing.Size(660, 384);
             this.cosmeticsBackground.TabIndex = 91;
             this.cosmeticsBackground.TabStop = false;
+            // 
+            // versionsTab
+            // 
+            this.versionsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.versionsTab, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.versionsTab.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.versionsTab.ForeColor = System.Drawing.Color.White;
+            this.versionsTab.Location = new System.Drawing.Point(4, 4);
+            this.versionsTab.Name = "versionsTab";
+            this.versionsTab.Size = new System.Drawing.Size(644, 465);
+            this.versionsTab.TabIndex = 4;
+            this.versionsTab.Text = "versions";
             // 
             // settingsTab
             // 
@@ -1206,6 +1322,7 @@ namespace VentileClient
             this.settingsTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.settingsTab.Controls.Add(this.settingsTabLabel);
             this.settingsTab.Controls.Add(this.settingsPagesTabControl);
+            this.FadeEffectBetweenPages.SetDecoration(this.settingsTab, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsTab.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.settingsTab.ForeColor = System.Drawing.Color.White;
             this.settingsTab.Location = new System.Drawing.Point(4, 4);
@@ -1218,6 +1335,7 @@ namespace VentileClient
             // 
             this.settingsTabLabel.AutoSize = true;
             this.settingsTabLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.settingsTabLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsTabLabel.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.settingsTabLabel.ForeColor = System.Drawing.Color.White;
             this.settingsTabLabel.Location = new System.Drawing.Point(244, 20);
@@ -1233,6 +1351,7 @@ namespace VentileClient
             this.settingsPagesTabControl.Controls.Add(this.Launcher);
             this.settingsPagesTabControl.Controls.Add(this.Appearance);
             this.settingsPagesTabControl.Controls.Add(this.Extras);
+            this.FadeEffectBetweenPages.SetDecoration(this.settingsPagesTabControl, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsPagesTabControl.ItemSize = new System.Drawing.Size(180, 40);
             this.settingsPagesTabControl.Location = new System.Drawing.Point(0, 85);
             this.settingsPagesTabControl.Margin = new System.Windows.Forms.Padding(0);
@@ -1264,6 +1383,8 @@ namespace VentileClient
             // Launcher
             // 
             this.Launcher.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Launcher.Controls.Add(this.injectDelayLabel);
+            this.Launcher.Controls.Add(this.injectDelay);
             this.Launcher.Controls.Add(this.rpcButtonTextLabel);
             this.Launcher.Controls.Add(this.rpcLine);
             this.Launcher.Controls.Add(this.buttonForRpc);
@@ -1283,8 +1404,8 @@ namespace VentileClient
             this.Launcher.Controls.Add(this.openWindow);
             this.Launcher.Controls.Add(this.autoInject);
             this.Launcher.Controls.Add(this.customLoc);
-            this.Launcher.Controls.Add(this.resetResourceLoc);
             this.Launcher.Controls.Add(this.AppearanceButton);
+            this.FadeEffectBetweenPages.SetDecoration(this.Launcher, Guna.UI2.AnimatorNS.DecorationType.None);
             this.Launcher.Location = new System.Drawing.Point(5, 4);
             this.Launcher.Margin = new System.Windows.Forms.Padding(0);
             this.Launcher.Name = "Launcher";
@@ -1292,9 +1413,53 @@ namespace VentileClient
             this.Launcher.TabIndex = 0;
             this.Launcher.Text = "Launcher";
             // 
+            // injectDelayLabel
+            // 
+            this.injectDelayLabel.AutoSize = true;
+            this.injectDelayLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.injectDelayLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.injectDelayLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.injectDelayLabel.ForeColor = System.Drawing.Color.White;
+            this.injectDelayLabel.Location = new System.Drawing.Point(452, 115);
+            this.injectDelayLabel.Name = "injectDelayLabel";
+            this.injectDelayLabel.Size = new System.Drawing.Size(47, 20);
+            this.injectDelayLabel.TabIndex = 101;
+            this.injectDelayLabel.Text = "Delay";
+            this.injectDelayLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // injectDelay
+            // 
+            this.injectDelay.BackColor = System.Drawing.Color.Transparent;
+            this.injectDelay.BorderColor = System.Drawing.Color.Empty;
+            this.injectDelay.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.injectDelay, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.injectDelay.DisabledState.Parent = this.injectDelay;
+            this.injectDelay.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.injectDelay.FocusedState.Parent = this.injectDelay;
+            this.injectDelay.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.injectDelay.Location = new System.Drawing.Point(505, 112);
+            this.injectDelay.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.injectDelay.Name = "injectDelay";
+            this.injectDelay.ShadowDecoration.Parent = this.injectDelay;
+            this.injectDelay.Size = new System.Drawing.Size(94, 29);
+            this.injectDelay.TabIndex = 100;
+            this.injectDelay.UpDownButtonFillColor = System.Drawing.Color.RoyalBlue;
+            this.injectDelay.UseTransparentBackground = true;
+            this.injectDelay.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.injectDelay.ValueChanged += new System.EventHandler(this.injectDelay_ValueChanged);
+            // 
             // rpcButtonTextLabel
             // 
             this.rpcButtonTextLabel.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonTextLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonTextLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonTextLabel.ForeColor = System.Drawing.Color.White;
             this.rpcButtonTextLabel.Location = new System.Drawing.Point(241, 158);
@@ -1306,6 +1471,7 @@ namespace VentileClient
             // rpcLine
             // 
             this.rpcLine.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FadeEffectBetweenPages.SetDecoration(this.rpcLine, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcLine.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcLine.HidePromptOnLeave = true;
             this.rpcLine.Location = new System.Drawing.Point(245, 109);
@@ -1324,6 +1490,7 @@ namespace VentileClient
             this.buttonForRpc.CheckedState.Parent = this.buttonForRpc;
             this.buttonForRpc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonForRpc.CustomImages.Parent = this.buttonForRpc;
+            this.FadeEffectBetweenPages.SetDecoration(this.buttonForRpc, Guna.UI2.AnimatorNS.DecorationType.None);
             this.buttonForRpc.DisabledState.Parent = this.buttonForRpc;
             this.buttonForRpc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonForRpc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1342,6 +1509,7 @@ namespace VentileClient
             // rpcButtonLinkLabel
             // 
             this.rpcButtonLinkLabel.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLinkLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonLinkLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonLinkLabel.ForeColor = System.Drawing.Color.White;
             this.rpcButtonLinkLabel.Location = new System.Drawing.Point(241, 182);
@@ -1353,6 +1521,7 @@ namespace VentileClient
             // rpcButtonText
             // 
             this.rpcButtonText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonText, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonText.HidePromptOnLeave = true;
             this.rpcButtonText.Location = new System.Drawing.Point(285, 158);
@@ -1365,6 +1534,7 @@ namespace VentileClient
             // rpcButtonLink
             // 
             this.rpcButtonLink.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLink, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonLink.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonLink.HidePromptOnLeave = true;
             this.rpcButtonLink.Location = new System.Drawing.Point(285, 182);
@@ -1378,6 +1548,7 @@ namespace VentileClient
             // 
             this.windowStateLabel.AutoSize = true;
             this.windowStateLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.windowStateLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.windowStateLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.windowStateLabel.ForeColor = System.Drawing.Color.White;
             this.windowStateLabel.Location = new System.Drawing.Point(26, 30);
@@ -1396,6 +1567,7 @@ namespace VentileClient
             this.hideWindow.CheckedState.Parent = this.hideWindow;
             this.hideWindow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.hideWindow.CustomImages.Parent = this.hideWindow;
+            this.FadeEffectBetweenPages.SetDecoration(this.hideWindow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.hideWindow.DisabledState.Parent = this.hideWindow;
             this.hideWindow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.hideWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1420,6 +1592,7 @@ namespace VentileClient
             this.minWindow.CheckedState.Parent = this.minWindow;
             this.minWindow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.minWindow.CustomImages.Parent = this.minWindow;
+            this.FadeEffectBetweenPages.SetDecoration(this.minWindow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.minWindow.DisabledState.Parent = this.minWindow;
             this.minWindow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.minWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1439,6 +1612,7 @@ namespace VentileClient
             // 
             this.richPresenceLabel.AutoSize = true;
             this.richPresenceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.richPresenceLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.richPresenceLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richPresenceLabel.ForeColor = System.Drawing.Color.White;
             this.richPresenceLabel.Location = new System.Drawing.Point(250, 30);
@@ -1457,6 +1631,7 @@ namespace VentileClient
             this.closeWindow.CheckedState.Parent = this.closeWindow;
             this.closeWindow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.closeWindow.CustomImages.Parent = this.closeWindow;
+            this.FadeEffectBetweenPages.SetDecoration(this.closeWindow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.closeWindow.DisabledState.Parent = this.closeWindow;
             this.closeWindow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.closeWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1476,6 +1651,7 @@ namespace VentileClient
             // 
             this.devDLLLabel.AutoSize = true;
             this.devDLLLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.devDLLLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.devDLLLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.devDLLLabel.ForeColor = System.Drawing.Color.White;
             this.devDLLLabel.Location = new System.Drawing.Point(457, 30);
@@ -1494,6 +1670,7 @@ namespace VentileClient
             this.RpcToggle.CheckedState.Parent = this.RpcToggle;
             this.RpcToggle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.RpcToggle.CustomImages.Parent = this.RpcToggle;
+            this.FadeEffectBetweenPages.SetDecoration(this.RpcToggle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.RpcToggle.DisabledState.Parent = this.RpcToggle;
             this.RpcToggle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.RpcToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1513,19 +1690,21 @@ namespace VentileClient
             // 
             this.resourceLabel.AutoSize = true;
             this.resourceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.resourceLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.resourceLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resourceLabel.ForeColor = System.Drawing.Color.White;
-            this.resourceLabel.Location = new System.Drawing.Point(457, 146);
+            this.resourceLabel.Location = new System.Drawing.Point(463, 183);
             this.resourceLabel.Name = "resourceLabel";
-            this.resourceLabel.Size = new System.Drawing.Size(140, 50);
+            this.resourceLabel.Size = new System.Drawing.Size(131, 25);
             this.resourceLabel.TabIndex = 84;
-            this.resourceLabel.Text = "Resource Pack\r\nLocation\r\n";
+            this.resourceLabel.Text = "Blank Setting";
             this.resourceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // autoLabel
             // 
             this.autoLabel.AutoSize = true;
             this.autoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.autoLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.autoLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoLabel.ForeColor = System.Drawing.Color.White;
             this.autoLabel.Location = new System.Drawing.Point(36, 244);
@@ -1544,6 +1723,7 @@ namespace VentileClient
             this.customDLLButton.CheckedState.Parent = this.customDLLButton;
             this.customDLLButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.customDLLButton.CustomImages.Parent = this.customDLLButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.customDLLButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.customDLLButton.DisabledState.Parent = this.customDLLButton;
             this.customDLLButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.customDLLButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1568,6 +1748,7 @@ namespace VentileClient
             this.openWindow.CheckedState.Parent = this.openWindow;
             this.openWindow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.openWindow.CustomImages.Parent = this.openWindow;
+            this.FadeEffectBetweenPages.SetDecoration(this.openWindow, Guna.UI2.AnimatorNS.DecorationType.None);
             this.openWindow.DisabledState.Parent = this.openWindow;
             this.openWindow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.openWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1592,6 +1773,7 @@ namespace VentileClient
             this.autoInject.CheckedState.Parent = this.autoInject;
             this.autoInject.Cursor = System.Windows.Forms.Cursors.Hand;
             this.autoInject.CustomImages.Parent = this.autoInject;
+            this.FadeEffectBetweenPages.SetDecoration(this.autoInject, Guna.UI2.AnimatorNS.DecorationType.None);
             this.autoInject.DisabledState.Parent = this.autoInject;
             this.autoInject.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.autoInject.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1616,44 +1798,21 @@ namespace VentileClient
             this.customLoc.CheckedState.Parent = this.customLoc;
             this.customLoc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.customLoc.CustomImages.Parent = this.customLoc;
+            this.FadeEffectBetweenPages.SetDecoration(this.customLoc, Guna.UI2.AnimatorNS.DecorationType.None);
             this.customLoc.DisabledState.Parent = this.customLoc;
             this.customLoc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.customLoc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.customLoc.ForeColor = System.Drawing.Color.White;
             this.customLoc.HoverState.Parent = this.customLoc;
-            this.customLoc.Location = new System.Drawing.Point(456, 209);
+            this.customLoc.Location = new System.Drawing.Point(456, 229);
             this.customLoc.Name = "customLoc";
             this.customLoc.ShadowDecoration.Parent = this.customLoc;
             this.customLoc.Size = new System.Drawing.Size(141, 29);
             this.customLoc.TabIndex = 94;
             this.customLoc.TabStop = false;
-            this.customLoc.Text = "Choose Location";
+            this.customLoc.Text = "Blank Button";
             this.customLoc.UseTransparentBackground = true;
-            this.customLoc.Click += new System.EventHandler(this.customLoc_Click);
-            // 
-            // resetResourceLoc
-            // 
-            this.resetResourceLoc.Animated = true;
-            this.resetResourceLoc.AutoRoundedCorners = true;
-            this.resetResourceLoc.BackColor = System.Drawing.Color.Transparent;
-            this.resetResourceLoc.BorderRadius = 13;
-            this.resetResourceLoc.CheckedState.Parent = this.resetResourceLoc;
-            this.resetResourceLoc.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.resetResourceLoc.CustomImages.Parent = this.resetResourceLoc;
-            this.resetResourceLoc.DisabledState.Parent = this.resetResourceLoc;
-            this.resetResourceLoc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.resetResourceLoc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.resetResourceLoc.ForeColor = System.Drawing.Color.White;
-            this.resetResourceLoc.HoverState.Parent = this.resetResourceLoc;
-            this.resetResourceLoc.Location = new System.Drawing.Point(456, 244);
-            this.resetResourceLoc.Name = "resetResourceLoc";
-            this.resetResourceLoc.ShadowDecoration.Parent = this.resetResourceLoc;
-            this.resetResourceLoc.Size = new System.Drawing.Size(141, 29);
-            this.resetResourceLoc.TabIndex = 95;
-            this.resetResourceLoc.TabStop = false;
-            this.resetResourceLoc.Text = "Reset";
-            this.resetResourceLoc.UseTransparentBackground = true;
-            this.resetResourceLoc.Click += new System.EventHandler(this.resetResourceLoc_Click);
+            this.customLoc.Click += new System.EventHandler(this.blankButton_Click);
             // 
             // AppearanceButton
             // 
@@ -1664,6 +1823,7 @@ namespace VentileClient
             this.AppearanceButton.CheckedState.Parent = this.AppearanceButton;
             this.AppearanceButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AppearanceButton.CustomImages.Parent = this.AppearanceButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.AppearanceButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.AppearanceButton.DisabledState.Parent = this.AppearanceButton;
             this.AppearanceButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.AppearanceButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1720,6 +1880,7 @@ namespace VentileClient
             this.Appearance.Controls.Add(this.labelForSlider1);
             this.Appearance.Controls.Add(this.backgroundColorLabel);
             this.Appearance.Controls.Add(this.themeTitle);
+            this.FadeEffectBetweenPages.SetDecoration(this.Appearance, Guna.UI2.AnimatorNS.DecorationType.None);
             this.Appearance.Location = new System.Drawing.Point(5, 4);
             this.Appearance.Margin = new System.Windows.Forms.Padding(0);
             this.Appearance.Name = "Appearance";
@@ -1731,6 +1892,7 @@ namespace VentileClient
             // 
             this.foreColorLabel.AutoSize = true;
             this.foreColorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.foreColorLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.foreColorLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.foreColorLabel.ForeColor = System.Drawing.Color.White;
             this.foreColorLabel.Location = new System.Drawing.Point(266, 241);
@@ -1744,6 +1906,7 @@ namespace VentileClient
             // 
             this.buttonColorLabel.AutoSize = true;
             this.buttonColorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.buttonColorLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.buttonColorLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonColorLabel.ForeColor = System.Drawing.Color.White;
             this.buttonColorLabel.Location = new System.Drawing.Point(253, 176);
@@ -1759,6 +1922,7 @@ namespace VentileClient
             this.preset8.BorderColor = System.Drawing.Color.White;
             this.preset8.BorderThickness = 2;
             this.preset8.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset8, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset8.Location = new System.Drawing.Point(532, 264);
             this.preset8.Name = "preset8";
             this.preset8.ShadowDecoration.Parent = this.preset8;
@@ -1768,6 +1932,7 @@ namespace VentileClient
             // 
             // presets
             // 
+            this.FadeEffectBetweenPages.SetDecoration(this.presets, Guna.UI2.AnimatorNS.DecorationType.None);
             this.presets.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem1,
             this.loadToolStripMenuItem1,
@@ -1827,6 +1992,7 @@ namespace VentileClient
             this.preset7.BorderColor = System.Drawing.Color.White;
             this.preset7.BorderThickness = 2;
             this.preset7.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset7, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset7.Location = new System.Drawing.Point(487, 264);
             this.preset7.Name = "preset7";
             this.preset7.ShadowDecoration.Parent = this.preset7;
@@ -1840,6 +2006,7 @@ namespace VentileClient
             this.preset6.BorderColor = System.Drawing.Color.White;
             this.preset6.BorderThickness = 2;
             this.preset6.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset6, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset6.Location = new System.Drawing.Point(532, 221);
             this.preset6.Name = "preset6";
             this.preset6.ShadowDecoration.Parent = this.preset6;
@@ -1853,6 +2020,7 @@ namespace VentileClient
             this.preset5.BorderColor = System.Drawing.Color.White;
             this.preset5.BorderThickness = 2;
             this.preset5.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset5, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset5.Location = new System.Drawing.Point(487, 221);
             this.preset5.Name = "preset5";
             this.preset5.ShadowDecoration.Parent = this.preset5;
@@ -1866,6 +2034,7 @@ namespace VentileClient
             this.preset4.BorderColor = System.Drawing.Color.White;
             this.preset4.BorderThickness = 2;
             this.preset4.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset4, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset4.Location = new System.Drawing.Point(532, 179);
             this.preset4.Name = "preset4";
             this.preset4.ShadowDecoration.Parent = this.preset4;
@@ -1879,6 +2048,7 @@ namespace VentileClient
             this.preset3.BorderColor = System.Drawing.Color.White;
             this.preset3.BorderThickness = 2;
             this.preset3.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset3, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset3.Location = new System.Drawing.Point(487, 179);
             this.preset3.Name = "preset3";
             this.preset3.ShadowDecoration.Parent = this.preset3;
@@ -1892,6 +2062,7 @@ namespace VentileClient
             this.preset2.BorderColor = System.Drawing.Color.White;
             this.preset2.BorderThickness = 2;
             this.preset2.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset2, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset2.Location = new System.Drawing.Point(532, 142);
             this.preset2.Name = "preset2";
             this.preset2.ShadowDecoration.Parent = this.preset2;
@@ -1901,6 +2072,8 @@ namespace VentileClient
             // 
             // textBrightnessSlider
             // 
+            this.textBrightnessSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.textBrightnessSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.textBrightnessSlider.HoverState.Parent = this.textBrightnessSlider;
             this.textBrightnessSlider.Location = new System.Drawing.Point(267, 269);
             this.textBrightnessSlider.Maximum = 255;
@@ -1908,11 +2081,13 @@ namespace VentileClient
             this.textBrightnessSlider.Size = new System.Drawing.Size(101, 23);
             this.textBrightnessSlider.TabIndex = 124;
             this.textBrightnessSlider.TabStop = false;
-            this.textBrightnessSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.textBrightnessSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.textBrightnessSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.textBrightnessSlider_Scroll);
             // 
             // buttonBrightnessSlider
             // 
+            this.buttonBrightnessSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.buttonBrightnessSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.buttonBrightnessSlider.HoverState.Parent = this.buttonBrightnessSlider;
             this.buttonBrightnessSlider.Location = new System.Drawing.Point(267, 205);
             this.buttonBrightnessSlider.Maximum = 255;
@@ -1920,11 +2095,13 @@ namespace VentileClient
             this.buttonBrightnessSlider.Size = new System.Drawing.Size(101, 23);
             this.buttonBrightnessSlider.TabIndex = 123;
             this.buttonBrightnessSlider.TabStop = false;
-            this.buttonBrightnessSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.buttonBrightnessSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.buttonBrightnessSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.buttonBrightnessSlider_Scroll);
             // 
             // outlineBrightnessSlider
             // 
+            this.outlineBrightnessSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.outlineBrightnessSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.outlineBrightnessSlider.HoverState.Parent = this.outlineBrightnessSlider;
             this.outlineBrightnessSlider.Location = new System.Drawing.Point(267, 135);
             this.outlineBrightnessSlider.Maximum = 255;
@@ -1932,11 +2109,13 @@ namespace VentileClient
             this.outlineBrightnessSlider.Size = new System.Drawing.Size(101, 23);
             this.outlineBrightnessSlider.TabIndex = 122;
             this.outlineBrightnessSlider.TabStop = false;
-            this.outlineBrightnessSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.outlineBrightnessSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.outlineBrightnessSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.outlineBrightnessSlider_Scroll);
             // 
             // accentBlueSlider
             // 
+            this.accentBlueSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentBlueSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentBlueSlider.HoverState.Parent = this.accentBlueSlider;
             this.accentBlueSlider.Location = new System.Drawing.Point(70, 252);
             this.accentBlueSlider.Maximum = 255;
@@ -1944,11 +2123,13 @@ namespace VentileClient
             this.accentBlueSlider.Size = new System.Drawing.Size(101, 23);
             this.accentBlueSlider.TabIndex = 121;
             this.accentBlueSlider.TabStop = false;
-            this.accentBlueSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.accentBlueSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.accentBlueSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.accentBlueSlider_Scroll);
             // 
             // accentGreenSlider
             // 
+            this.accentGreenSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentGreenSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentGreenSlider.HoverState.Parent = this.accentGreenSlider;
             this.accentGreenSlider.Location = new System.Drawing.Point(70, 230);
             this.accentGreenSlider.Maximum = 255;
@@ -1956,11 +2137,13 @@ namespace VentileClient
             this.accentGreenSlider.Size = new System.Drawing.Size(101, 23);
             this.accentGreenSlider.TabIndex = 120;
             this.accentGreenSlider.TabStop = false;
-            this.accentGreenSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.accentGreenSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.accentGreenSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.accentGreenSlider_Scroll);
             // 
             // accentRedSlider
             // 
+            this.accentRedSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentRedSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentRedSlider.HoverState.Parent = this.accentRedSlider;
             this.accentRedSlider.Location = new System.Drawing.Point(70, 207);
             this.accentRedSlider.Maximum = 255;
@@ -1968,12 +2151,14 @@ namespace VentileClient
             this.accentRedSlider.Size = new System.Drawing.Size(101, 23);
             this.accentRedSlider.TabIndex = 119;
             this.accentRedSlider.TabStop = false;
-            this.accentRedSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.accentRedSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.accentRedSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.accentRedSlider_Scroll);
             // 
             // backgroundBrightnessSlider
             // 
             this.backgroundBrightnessSlider.BackColor = System.Drawing.Color.Transparent;
+            this.backgroundBrightnessSlider.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.FadeEffectBetweenPages.SetDecoration(this.backgroundBrightnessSlider, Guna.UI2.AnimatorNS.DecorationType.None);
             this.backgroundBrightnessSlider.HoverState.Parent = this.backgroundBrightnessSlider;
             this.backgroundBrightnessSlider.Location = new System.Drawing.Point(68, 135);
             this.backgroundBrightnessSlider.Maximum = 255;
@@ -1981,7 +2166,7 @@ namespace VentileClient
             this.backgroundBrightnessSlider.Size = new System.Drawing.Size(101, 23);
             this.backgroundBrightnessSlider.TabIndex = 111;
             this.backgroundBrightnessSlider.TabStop = false;
-            this.backgroundBrightnessSlider.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(113)))), ((int)(((byte)(255)))));
+            this.backgroundBrightnessSlider.ThumbColor = System.Drawing.Color.RoyalBlue;
             this.backgroundBrightnessSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.backgroundBrightnessSlider_Scroll);
             // 
             // preset1
@@ -1990,6 +2175,7 @@ namespace VentileClient
             this.preset1.BorderColor = System.Drawing.Color.White;
             this.preset1.BorderThickness = 2;
             this.preset1.ContextMenuStrip = this.presets;
+            this.FadeEffectBetweenPages.SetDecoration(this.preset1, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset1.Location = new System.Drawing.Point(487, 142);
             this.preset1.Name = "preset1";
             this.preset1.ShadowDecoration.Parent = this.preset1;
@@ -2001,9 +2187,10 @@ namespace VentileClient
             // 
             this.presetsLabel.AutoSize = true;
             this.presetsLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.presetsLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.presetsLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.presetsLabel.ForeColor = System.Drawing.Color.White;
-            this.presetsLabel.Location = new System.Drawing.Point(482, 101);
+            this.presetsLabel.Location = new System.Drawing.Point(483, 101);
             this.presetsLabel.Name = "presetsLabel";
             this.presetsLabel.Size = new System.Drawing.Size(75, 25);
             this.presetsLabel.TabIndex = 109;
@@ -2019,6 +2206,7 @@ namespace VentileClient
             this.resetThemes.CheckedState.Parent = this.resetThemes;
             this.resetThemes.Cursor = System.Windows.Forms.Cursors.Hand;
             this.resetThemes.CustomImages.Parent = this.resetThemes;
+            this.FadeEffectBetweenPages.SetDecoration(this.resetThemes, Guna.UI2.AnimatorNS.DecorationType.None);
             this.resetThemes.DisabledState.Parent = this.resetThemes;
             this.resetThemes.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.resetThemes.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2038,9 +2226,10 @@ namespace VentileClient
             // 
             this.foreBT.AutoSize = true;
             this.foreBT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.foreBT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.foreBT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.foreBT.ForeColor = System.Drawing.Color.White;
-            this.foreBT.Location = new System.Drawing.Point(368, 272);
+            this.foreBT.Location = new System.Drawing.Point(371, 271);
             this.foreBT.Name = "foreBT";
             this.foreBT.Size = new System.Drawing.Size(29, 17);
             this.foreBT.TabIndex = 108;
@@ -2049,9 +2238,10 @@ namespace VentileClient
             // labelForSlider5
             // 
             this.labelForSlider5.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.labelForSlider5, Guna.UI2.AnimatorNS.DecorationType.None);
             this.labelForSlider5.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForSlider5.ForeColor = System.Drawing.Color.White;
-            this.labelForSlider5.Location = new System.Drawing.Point(241, 269);
+            this.labelForSlider5.Location = new System.Drawing.Point(246, 270);
             this.labelForSlider5.Name = "labelForSlider5";
             this.labelForSlider5.Size = new System.Drawing.Size(18, 20);
             this.labelForSlider5.TabIndex = 107;
@@ -2061,9 +2251,10 @@ namespace VentileClient
             // 
             this.accentBT.AutoSize = true;
             this.accentBT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentBT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentBT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.accentBT.ForeColor = System.Drawing.Color.White;
-            this.accentBT.Location = new System.Drawing.Point(174, 252);
+            this.accentBT.Location = new System.Drawing.Point(174, 254);
             this.accentBT.Name = "accentBT";
             this.accentBT.Size = new System.Drawing.Size(29, 17);
             this.accentBT.TabIndex = 94;
@@ -2073,9 +2264,10 @@ namespace VentileClient
             // 
             this.accentGT.AutoSize = true;
             this.accentGT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentGT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentGT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.accentGT.ForeColor = System.Drawing.Color.White;
-            this.accentGT.Location = new System.Drawing.Point(174, 229);
+            this.accentGT.Location = new System.Drawing.Point(174, 231);
             this.accentGT.Name = "accentGT";
             this.accentGT.Size = new System.Drawing.Size(29, 17);
             this.accentGT.TabIndex = 93;
@@ -2085,9 +2277,10 @@ namespace VentileClient
             // 
             this.accentRT.AutoSize = true;
             this.accentRT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentRT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentRT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.accentRT.ForeColor = System.Drawing.Color.White;
-            this.accentRT.Location = new System.Drawing.Point(174, 207);
+            this.accentRT.Location = new System.Drawing.Point(174, 209);
             this.accentRT.Name = "accentRT";
             this.accentRT.Size = new System.Drawing.Size(29, 17);
             this.accentRT.TabIndex = 92;
@@ -2097,9 +2290,10 @@ namespace VentileClient
             // 
             this.labelForSlider2.AutoSize = true;
             this.labelForSlider2.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.labelForSlider2, Guna.UI2.AnimatorNS.DecorationType.None);
             this.labelForSlider2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForSlider2.ForeColor = System.Drawing.Color.White;
-            this.labelForSlider2.Location = new System.Drawing.Point(47, 209);
+            this.labelForSlider2.Location = new System.Drawing.Point(48, 209);
             this.labelForSlider2.Name = "labelForSlider2";
             this.labelForSlider2.Size = new System.Drawing.Size(19, 60);
             this.labelForSlider2.TabIndex = 91;
@@ -2109,6 +2303,7 @@ namespace VentileClient
             // 
             this.accentColorLabel.AutoSize = true;
             this.accentColorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.accentColorLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.accentColorLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.accentColorLabel.ForeColor = System.Drawing.Color.White;
             this.accentColorLabel.Location = new System.Drawing.Point(62, 170);
@@ -2127,6 +2322,7 @@ namespace VentileClient
             this.ExtrasButton.CheckedState.Parent = this.ExtrasButton;
             this.ExtrasButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ExtrasButton.CustomImages.Parent = this.ExtrasButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.ExtrasButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.ExtrasButton.DisabledState.Parent = this.ExtrasButton;
             this.ExtrasButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ExtrasButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2151,6 +2347,7 @@ namespace VentileClient
             this.LauncherButton.CheckedState.Parent = this.LauncherButton;
             this.LauncherButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LauncherButton.CustomImages.Parent = this.LauncherButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.LauncherButton, Guna.UI2.AnimatorNS.DecorationType.None);
             this.LauncherButton.DisabledState.Parent = this.LauncherButton;
             this.LauncherButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.LauncherButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2174,6 +2371,7 @@ namespace VentileClient
             this.theme.CheckedState.Parent = this.theme;
             this.theme.Cursor = System.Windows.Forms.Cursors.Hand;
             this.theme.CustomImages.Parent = this.theme;
+            this.FadeEffectBetweenPages.SetDecoration(this.theme, Guna.UI2.AnimatorNS.DecorationType.None);
             this.theme.DisabledState.Parent = this.theme;
             this.theme.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.theme.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2193,9 +2391,10 @@ namespace VentileClient
             // 
             this.outlineOT.AutoSize = true;
             this.outlineOT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.outlineOT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.outlineOT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outlineOT.ForeColor = System.Drawing.Color.White;
-            this.outlineOT.Location = new System.Drawing.Point(371, 138);
+            this.outlineOT.Location = new System.Drawing.Point(370, 137);
             this.outlineOT.Name = "outlineOT";
             this.outlineOT.Size = new System.Drawing.Size(29, 17);
             this.outlineOT.TabIndex = 102;
@@ -2205,9 +2404,10 @@ namespace VentileClient
             // 
             this.labelForSlider3.AutoSize = true;
             this.labelForSlider3.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.labelForSlider3, Guna.UI2.AnimatorNS.DecorationType.None);
             this.labelForSlider3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForSlider3.ForeColor = System.Drawing.Color.White;
-            this.labelForSlider3.Location = new System.Drawing.Point(244, 135);
+            this.labelForSlider3.Location = new System.Drawing.Point(246, 136);
             this.labelForSlider3.Name = "labelForSlider3";
             this.labelForSlider3.Size = new System.Drawing.Size(18, 20);
             this.labelForSlider3.TabIndex = 101;
@@ -2217,6 +2417,7 @@ namespace VentileClient
             // 
             this.outlineColorLabel.AutoSize = true;
             this.outlineColorLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.outlineColorLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.outlineColorLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outlineColorLabel.ForeColor = System.Drawing.Color.White;
             this.outlineColorLabel.Location = new System.Drawing.Point(252, 101);
@@ -2230,9 +2431,10 @@ namespace VentileClient
             // 
             this.buttonBuT.AutoSize = true;
             this.buttonBuT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.buttonBuT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.buttonBuT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBuT.ForeColor = System.Drawing.Color.White;
-            this.buttonBuT.Location = new System.Drawing.Point(368, 207);
+            this.buttonBuT.Location = new System.Drawing.Point(370, 207);
             this.buttonBuT.Name = "buttonBuT";
             this.buttonBuT.Size = new System.Drawing.Size(29, 17);
             this.buttonBuT.TabIndex = 99;
@@ -2241,9 +2443,10 @@ namespace VentileClient
             // labelForSlider4
             // 
             this.labelForSlider4.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.labelForSlider4, Guna.UI2.AnimatorNS.DecorationType.None);
             this.labelForSlider4.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForSlider4.ForeColor = System.Drawing.Color.White;
-            this.labelForSlider4.Location = new System.Drawing.Point(241, 204);
+            this.labelForSlider4.Location = new System.Drawing.Point(246, 206);
             this.labelForSlider4.Name = "labelForSlider4";
             this.labelForSlider4.Size = new System.Drawing.Size(18, 20);
             this.labelForSlider4.TabIndex = 98;
@@ -2253,9 +2456,10 @@ namespace VentileClient
             // 
             this.backgroundBT.AutoSize = true;
             this.backgroundBT.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.backgroundBT, Guna.UI2.AnimatorNS.DecorationType.None);
             this.backgroundBT.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backgroundBT.ForeColor = System.Drawing.Color.White;
-            this.backgroundBT.Location = new System.Drawing.Point(171, 138);
+            this.backgroundBT.Location = new System.Drawing.Point(171, 137);
             this.backgroundBT.Name = "backgroundBT";
             this.backgroundBT.Size = new System.Drawing.Size(29, 17);
             this.backgroundBT.TabIndex = 97;
@@ -2265,9 +2469,10 @@ namespace VentileClient
             // 
             this.labelForSlider1.AutoSize = true;
             this.labelForSlider1.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.labelForSlider1, Guna.UI2.AnimatorNS.DecorationType.None);
             this.labelForSlider1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForSlider1.ForeColor = System.Drawing.Color.White;
-            this.labelForSlider1.Location = new System.Drawing.Point(44, 135);
+            this.labelForSlider1.Location = new System.Drawing.Point(47, 136);
             this.labelForSlider1.Name = "labelForSlider1";
             this.labelForSlider1.Size = new System.Drawing.Size(18, 20);
             this.labelForSlider1.TabIndex = 96;
@@ -2277,6 +2482,7 @@ namespace VentileClient
             // 
             this.backgroundColorLabel.AutoSize = true;
             this.backgroundColorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.backgroundColorLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.backgroundColorLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backgroundColorLabel.ForeColor = System.Drawing.Color.White;
             this.backgroundColorLabel.Location = new System.Drawing.Point(43, 101);
@@ -2290,6 +2496,7 @@ namespace VentileClient
             // 
             this.themeTitle.AutoSize = true;
             this.themeTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.themeTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.themeTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.themeTitle.ForeColor = System.Drawing.Color.White;
             this.themeTitle.Location = new System.Drawing.Point(282, 21);
@@ -2302,6 +2509,8 @@ namespace VentileClient
             // Extras
             // 
             this.Extras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Extras.Controls.Add(this.performanceModeToggle);
+            this.Extras.Controls.Add(this.performanceModeTitle);
             this.Extras.Controls.Add(this.toastsSelector);
             this.Extras.Controls.Add(this.customImage);
             this.Extras.Controls.Add(this.backImageTitle);
@@ -2310,6 +2519,7 @@ namespace VentileClient
             this.Extras.Controls.Add(this.toastsToggle);
             this.Extras.Controls.Add(this.AppearanceButton2);
             this.Extras.Controls.Add(this.toastsTitle);
+            this.FadeEffectBetweenPages.SetDecoration(this.Extras, Guna.UI2.AnimatorNS.DecorationType.None);
             this.Extras.Location = new System.Drawing.Point(5, 4);
             this.Extras.Margin = new System.Windows.Forms.Padding(0);
             this.Extras.Name = "Extras";
@@ -2317,11 +2527,50 @@ namespace VentileClient
             this.Extras.TabIndex = 2;
             this.Extras.Text = "Extras";
             // 
+            // performanceModeToggle
+            // 
+            this.performanceModeToggle.Animated = true;
+            this.performanceModeToggle.AutoRoundedCorners = true;
+            this.performanceModeToggle.BackColor = System.Drawing.Color.Transparent;
+            this.performanceModeToggle.BorderRadius = 13;
+            this.performanceModeToggle.CheckedState.Parent = this.performanceModeToggle;
+            this.performanceModeToggle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.performanceModeToggle.CustomImages.Parent = this.performanceModeToggle;
+            this.FadeEffectBetweenPages.SetDecoration(this.performanceModeToggle, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.performanceModeToggle.DisabledState.Parent = this.performanceModeToggle;
+            this.performanceModeToggle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.performanceModeToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.performanceModeToggle.ForeColor = System.Drawing.Color.White;
+            this.performanceModeToggle.HoverState.Parent = this.performanceModeToggle;
+            this.performanceModeToggle.Location = new System.Drawing.Point(247, 213);
+            this.performanceModeToggle.Name = "performanceModeToggle";
+            this.performanceModeToggle.ShadowDecoration.Parent = this.performanceModeToggle;
+            this.performanceModeToggle.Size = new System.Drawing.Size(141, 29);
+            this.performanceModeToggle.TabIndex = 87;
+            this.performanceModeToggle.TabStop = false;
+            this.performanceModeToggle.Text = "On";
+            this.performanceModeToggle.Click += new System.EventHandler(this.performanceModeToggle_Click);
+            // 
+            // performanceModeTitle
+            // 
+            this.performanceModeTitle.AutoSize = true;
+            this.performanceModeTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.performanceModeTitle, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.performanceModeTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.performanceModeTitle.ForeColor = System.Drawing.Color.White;
+            this.performanceModeTitle.Location = new System.Drawing.Point(228, 175);
+            this.performanceModeTitle.Name = "performanceModeTitle";
+            this.performanceModeTitle.Size = new System.Drawing.Size(183, 25);
+            this.performanceModeTitle.TabIndex = 86;
+            this.performanceModeTitle.Text = "Performance Mode";
+            this.performanceModeTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // toastsSelector
             // 
             this.toastsSelector.AutoRoundedCorners = true;
             this.toastsSelector.BackColor = System.Drawing.Color.Transparent;
             this.toastsSelector.BorderRadius = 15;
+            this.FadeEffectBetweenPages.SetDecoration(this.toastsSelector, Guna.UI2.AnimatorNS.DecorationType.None);
             this.toastsSelector.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.toastsSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toastsSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
@@ -2355,6 +2604,7 @@ namespace VentileClient
             this.customImage.CheckedState.Parent = this.customImage;
             this.customImage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.customImage.CustomImages.Parent = this.customImage;
+            this.FadeEffectBetweenPages.SetDecoration(this.customImage, Guna.UI2.AnimatorNS.DecorationType.None);
             this.customImage.DisabledState.Parent = this.customImage;
             this.customImage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.customImage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2373,6 +2623,7 @@ namespace VentileClient
             // 
             this.backImageTitle.AutoSize = true;
             this.backImageTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.backImageTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.backImageTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backImageTitle.ForeColor = System.Drawing.Color.White;
             this.backImageTitle.Location = new System.Drawing.Point(26, 36);
@@ -2391,6 +2642,7 @@ namespace VentileClient
             this.roundedToggle.CheckedState.Parent = this.roundedToggle;
             this.roundedToggle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.roundedToggle.CustomImages.Parent = this.roundedToggle;
+            this.FadeEffectBetweenPages.SetDecoration(this.roundedToggle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.roundedToggle.DisabledState.Parent = this.roundedToggle;
             this.roundedToggle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.roundedToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2409,6 +2661,7 @@ namespace VentileClient
             // 
             this.roundedTitle.AutoSize = true;
             this.roundedTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.roundedTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.roundedTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.roundedTitle.ForeColor = System.Drawing.Color.White;
             this.roundedTitle.Location = new System.Drawing.Point(424, 36);
@@ -2427,6 +2680,7 @@ namespace VentileClient
             this.toastsToggle.CheckedState.Parent = this.toastsToggle;
             this.toastsToggle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.toastsToggle.CustomImages.Parent = this.toastsToggle;
+            this.FadeEffectBetweenPages.SetDecoration(this.toastsToggle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.toastsToggle.DisabledState.Parent = this.toastsToggle;
             this.toastsToggle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.toastsToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2450,6 +2704,7 @@ namespace VentileClient
             this.AppearanceButton2.CheckedState.Parent = this.AppearanceButton2;
             this.AppearanceButton2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AppearanceButton2.CustomImages.Parent = this.AppearanceButton2;
+            this.FadeEffectBetweenPages.SetDecoration(this.AppearanceButton2, Guna.UI2.AnimatorNS.DecorationType.None);
             this.AppearanceButton2.DisabledState.Parent = this.AppearanceButton2;
             this.AppearanceButton2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.AppearanceButton2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -2468,6 +2723,7 @@ namespace VentileClient
             // 
             this.toastsTitle.AutoSize = true;
             this.toastsTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.toastsTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.toastsTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toastsTitle.ForeColor = System.Drawing.Color.White;
             this.toastsTitle.Location = new System.Drawing.Point(282, 36);
@@ -2482,6 +2738,7 @@ namespace VentileClient
             this.aboutTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.aboutTab.BackgroundImage = global::VentileClient.Properties.Resources.background;
             this.aboutTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aboutTab.Controls.Add(this.changeLogLink);
             this.aboutTab.Controls.Add(this.cosmeticsVLabel);
             this.aboutTab.Controls.Add(this.clientVLabel);
             this.aboutTab.Controls.Add(this.launcherVLabel);
@@ -2495,6 +2752,7 @@ namespace VentileClient
             this.aboutTab.Controls.Add(this.launcherLabel);
             this.aboutTab.Controls.Add(this.aboutDesc);
             this.aboutTab.Controls.Add(this.aboutBackgroundColor);
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutTab, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutTab.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.aboutTab.ForeColor = System.Drawing.Color.White;
             this.aboutTab.Location = new System.Drawing.Point(4, 4);
@@ -2503,9 +2761,27 @@ namespace VentileClient
             this.aboutTab.TabIndex = 3;
             this.aboutTab.Text = "about";
             // 
+            // changeLogLink
+            // 
+            this.changeLogLink.ActiveLinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.AutoSize = true;
+            this.FadeEffectBetweenPages.SetDecoration(this.changeLogLink, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.changeLogLink.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeLogLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.changeLogLink.LinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.Location = new System.Drawing.Point(268, 425);
+            this.changeLogLink.Name = "changeLogLink";
+            this.changeLogLink.Size = new System.Drawing.Size(83, 20);
+            this.changeLogLink.TabIndex = 33;
+            this.changeLogLink.TabStop = true;
+            this.changeLogLink.Text = "Changelog";
+            this.changeLogLink.VisitedLinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.changeLogLink_LinkClicked);
+            // 
             // cosmeticsVLabel
             // 
             this.cosmeticsVLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsVLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cosmeticsVLabel.ForeColor = System.Drawing.Color.Silver;
             this.cosmeticsVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -2519,6 +2795,7 @@ namespace VentileClient
             // clientVLabel
             // 
             this.clientVLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.clientVLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.clientVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clientVLabel.ForeColor = System.Drawing.Color.Silver;
             this.clientVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -2532,6 +2809,7 @@ namespace VentileClient
             // launcherVLabel
             // 
             this.launcherVLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.launcherVLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launcherVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.launcherVLabel.ForeColor = System.Drawing.Color.Silver;
             this.launcherVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -2546,6 +2824,7 @@ namespace VentileClient
             // 
             this.website.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.website.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FadeEffectBetweenPages.SetDecoration(this.website, Guna.UI2.AnimatorNS.DecorationType.None);
             this.website.Image = global::VentileClient.Properties.Resources.website_white;
             this.website.Location = new System.Drawing.Point(9, 405);
             this.website.Name = "website";
@@ -2560,6 +2839,7 @@ namespace VentileClient
             this.discord.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.discord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.discord.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FadeEffectBetweenPages.SetDecoration(this.discord, Guna.UI2.AnimatorNS.DecorationType.None);
             this.discord.Image = global::VentileClient.Properties.Resources.transparent_logo_white;
             this.discord.InitialImage = null;
             this.discord.Location = new System.Drawing.Point(587, 409);
@@ -2574,6 +2854,7 @@ namespace VentileClient
             // 
             this.launcherBy.AutoSize = true;
             this.launcherBy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.launcherBy, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launcherBy.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.launcherBy.ForeColor = System.Drawing.Color.White;
             this.launcherBy.Location = new System.Drawing.Point(182, 259);
@@ -2585,6 +2866,7 @@ namespace VentileClient
             // 
             // aboutSeparator
             // 
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutSeparator, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutSeparator.Location = new System.Drawing.Point(-6, 292);
             this.aboutSeparator.Name = "aboutSeparator";
             this.aboutSeparator.Size = new System.Drawing.Size(660, 3);
@@ -2595,6 +2877,7 @@ namespace VentileClient
             // 
             this.clientLabel.AutoSize = true;
             this.clientLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.clientLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.clientLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.clientLabel.ForeColor = System.Drawing.Color.White;
             this.clientLabel.Location = new System.Drawing.Point(446, 154);
@@ -2608,6 +2891,7 @@ namespace VentileClient
             // 
             this.cosmeticsLabel.AutoSize = true;
             this.cosmeticsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.cosmeticsLabel.ForeColor = System.Drawing.Color.White;
             this.cosmeticsLabel.Location = new System.Drawing.Point(10, 154);
@@ -2621,6 +2905,7 @@ namespace VentileClient
             // 
             this.aboutTabLabel.AutoSize = true;
             this.aboutTabLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutTabLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutTabLabel.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aboutTabLabel.ForeColor = System.Drawing.Color.White;
             this.aboutTabLabel.Location = new System.Drawing.Point(264, 20);
@@ -2634,6 +2919,7 @@ namespace VentileClient
             // 
             this.launcherLabel.AutoSize = true;
             this.launcherLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.launcherLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launcherLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.launcherLabel.ForeColor = System.Drawing.Color.White;
             this.launcherLabel.Location = new System.Drawing.Point(228, 115);
@@ -2647,6 +2933,7 @@ namespace VentileClient
             // 
             this.aboutDesc.AutoSize = true;
             this.aboutDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutDesc, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutDesc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aboutDesc.ForeColor = System.Drawing.Color.White;
             this.aboutDesc.Location = new System.Drawing.Point(-10, 305);
@@ -2659,6 +2946,7 @@ namespace VentileClient
             // aboutBackgroundColor
             // 
             this.aboutBackgroundColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.FadeEffectBetweenPages.SetDecoration(this.aboutBackgroundColor, Guna.UI2.AnimatorNS.DecorationType.None);
             this.aboutBackgroundColor.Location = new System.Drawing.Point(-6, 85);
             this.aboutBackgroundColor.Name = "aboutBackgroundColor";
             this.aboutBackgroundColor.Size = new System.Drawing.Size(660, 246);
@@ -2677,6 +2965,7 @@ namespace VentileClient
             // 
             // TrayIconContextMenu
             // 
+            this.FadeEffectBetweenPages.SetDecoration(this.TrayIconContextMenu, Guna.UI2.AnimatorNS.DecorationType.None);
             this.TrayIconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.injectToolStripMenuItem,
@@ -2713,6 +3002,36 @@ namespace VentileClient
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.TrayQuit_Click);
             // 
+            // FadeEffectBetweenPages
+            // 
+            this.FadeEffectBetweenPages.AnimationType = Guna.UI2.AnimatorNS.AnimationType.Transparent;
+            this.FadeEffectBetweenPages.Cursor = null;
+            animation1.AnimateOnlyDifferences = true;
+            animation1.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.BlindCoeff")));
+            animation1.LeafCoeff = 0F;
+            animation1.MaxTime = 1F;
+            animation1.MinTime = 0F;
+            animation1.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.MosaicCoeff")));
+            animation1.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation1.MosaicShift")));
+            animation1.MosaicSize = 0;
+            animation1.Padding = new System.Windows.Forms.Padding(0);
+            animation1.RotateCoeff = 0F;
+            animation1.RotateLimit = 0F;
+            animation1.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.ScaleCoeff")));
+            animation1.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.SlideCoeff")));
+            animation1.TimeCoeff = 0F;
+            animation1.TransparencyCoeff = 1F;
+            this.FadeEffectBetweenPages.DefaultAnimation = animation1;
+            this.FadeEffectBetweenPages.Interval = 1;
+            this.FadeEffectBetweenPages.MaxAnimationTime = 500;
+            this.FadeEffectBetweenPages.TimeStep = 0.04F;
+            // 
+            // internetCheckTimer
+            // 
+            this.internetCheckTimer.Enabled = true;
+            this.internetCheckTimer.Interval = 1;
+            this.internetCheckTimer.Tick += new System.EventHandler(this.internetCheck_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2721,6 +3040,7 @@ namespace VentileClient
             this.Controls.Add(this.dragBar);
             this.Controls.Add(this.sidebar);
             this.Controls.Add(this.contentView);
+            this.FadeEffectBetweenPages.SetDecoration(this, Guna.UI2.AnimatorNS.DecorationType.None);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(813, 490);
@@ -2729,10 +3049,12 @@ namespace VentileClient
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VentileLauncher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.dragBar.ResumeLayout(false);
             this.sidebar.ResumeLayout(false);
             this.sidebar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButtonIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsButtonIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cosmeticsButtonIcon)).EndInit();
@@ -2748,6 +3070,7 @@ namespace VentileClient
             this.settingsPagesTabControl.ResumeLayout(false);
             this.Launcher.ResumeLayout(false);
             this.Launcher.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.injectDelay)).EndInit();
             this.Appearance.ResumeLayout(false);
             this.Appearance.PerformLayout();
             this.presets.ResumeLayout(false);
@@ -2776,7 +3099,6 @@ namespace VentileClient
         private Guna.UI2.WinForms.Guna2Button minimizeButton;
         private FontAwesome.Sharp.IconPictureBox homeButtonIcon;
         private Guna.UI2.WinForms.Guna2Button homeButton;
-        private System.Windows.Forms.Timer fadeIn;
         private System.Windows.Forms.Timer fadeOut;
         private System.Windows.Forms.Timer tick;
         private Guna.UI2.WinForms.Guna2Button cosmeticsButton;
@@ -2789,7 +3111,6 @@ namespace VentileClient
         private System.Windows.Forms.TabPage aboutTab;
         private System.Windows.Forms.TabPage settingsTab;
         private System.Windows.Forms.TabPage cosmeticsTab;
-        private Guna.UI2.WinForms.Guna2TabControl contentView;
         private System.Windows.Forms.TabPage homeTab;
         public Guna.UI2.WinForms.Guna2Button inject;
         public Guna.UI2.WinForms.Guna2Button selectDll;
@@ -2892,7 +3213,6 @@ namespace VentileClient
         private Guna.UI2.WinForms.Guna2Button openWindow;
         private Guna.UI2.WinForms.Guna2Button autoInject;
         private Guna.UI2.WinForms.Guna2Button customLoc;
-        private Guna.UI2.WinForms.Guna2Button resetResourceLoc;
         private Guna.UI2.WinForms.Guna2Button AppearanceButton;
         private Guna.UI2.WinForms.Guna2ContextMenuStrip presets;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;
@@ -2913,6 +3233,18 @@ namespace VentileClient
         private System.Windows.Forms.ToolStripMenuItem injectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private Guna.UI2.WinForms.Guna2Button versionButton;
+        private FontAwesome.Sharp.IconPictureBox versionButtonIcon;
+        private System.Windows.Forms.TabPage versionsTab;
+        public Guna.UI2.WinForms.Guna2TabControl contentView;
+        private Guna.UI2.WinForms.Guna2Transition FadeEffectBetweenPages;
+        private Guna.UI2.WinForms.Guna2Button performanceModeToggle;
+        private System.Windows.Forms.Label performanceModeTitle;
+        public System.Windows.Forms.Timer fadeIn;
+        private System.Windows.Forms.Timer internetCheckTimer;
+        private System.Windows.Forms.LinkLabel changeLogLink;
+        private Guna.UI2.WinForms.Guna2NumericUpDown injectDelay;
+        private System.Windows.Forms.Label injectDelayLabel;
     }
 }
 

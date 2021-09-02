@@ -18,13 +18,13 @@ namespace VentileClient.JSON_Template_Classes
         string rpcButtonLink;
         bool customDLL;
         string defaultDLL;
-        bool customResourcePackLoc;
-        string resourcePackLoc;
+        int injectDelay;
         bool backgroundImage;
         string backgroundImageLoc;
         bool toasts;
         string toastsLoc;
         bool roundedButtons;
+        bool performanceMode;
 
         public string WindowState
         {
@@ -138,31 +138,18 @@ namespace VentileClient.JSON_Template_Classes
             }
         }
 
-        public bool CustomResourcePackLoc
+        public int InjectDelay
         {
             get
             {
-                return customResourcePackLoc;
+                return injectDelay;
             }
             set
             {
-                customResourcePackLoc = value;
+                injectDelay = value;
             }
         }
-        public string ResourcePackLoc
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(resourcePackLoc))
-                    resourcePackLoc = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\resource_packs";
 
-                return resourcePackLoc;
-            }
-            set
-            {
-                resourcePackLoc = value;
-            }
-        }
         public bool BackgroundImage
         {
             get
@@ -219,6 +206,18 @@ namespace VentileClient.JSON_Template_Classes
             set
             {
                 roundedButtons = value;
+            }
+        }
+
+        public bool PerformanceMode
+        {
+            get
+            {
+                return performanceMode;
+            }
+            set
+            {
+                performanceMode = value;
             }
         }
 

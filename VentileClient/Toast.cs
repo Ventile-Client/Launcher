@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using VentileClient.JSON_Template_Classes;
-using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace VentileClient
 {
@@ -39,175 +30,141 @@ namespace VentileClient
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
 
-        public enum enmAction
+        public enum EnmAction
         {
             wait,
             start,
             close
         }
 
-        private Toast.enmAction action;
+        private EnmAction _action;
 
-        private int x, y;
-
+        private int _x, _y;
         private void timer1_Tick(object sender, EventArgs e)
         {
-            switch (this.action)
+            switch (this._action)
             {
-                case enmAction.wait:
-                    timer1.Interval = 3250;
-                    action = enmAction.close;
+                case EnmAction.wait:
+                    this.timer1.Interval = 3250;
+                    _action = EnmAction.close;
                     break;
 
-                case enmAction.start:
-                    if (configCS.ToastsLoc.ToLower() == "topright")
-                        topRight(true);
+                case EnmAction.start:
+                    if (_configCS.ToastsLoc.ToLower() == "topright")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity += 0.1; //Fade in
+                        if (this._x < this.Location.X)
+                        {
+                            this.Left--; //Moves form from right to left
+                        }
+                        else
+                        {
+                            if (this.Opacity == 1.0)
+                            {
+                                _action = EnmAction.wait; //Wait
+                            }
+                        }
+                    }
 
-                    if (configCS.ToastsLoc.ToLower() == "bottomright")
-                        bottomRight(true);
+                    if (_configCS.ToastsLoc.ToLower() == "bottomright")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity += 0.1;
+                        if (this._x < this.Location.X)
+                        {
+                            this.Left--;
+                        }
+                        else
+                        {
+                            if (this.Opacity == 1.0)
+                            {
+                                _action = EnmAction.wait;
+                            }
+                        }
+                    }
 
-                    if (configCS.ToastsLoc.ToLower() == "topleft")
-                        topLeft(true);
+                    if (_configCS.ToastsLoc.ToLower() == "topleft")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity += 0.1;
+                        if (this._x > this.Location.X)
+                        {
+                            this.Left++;
+                        }
+                        else
+                        {
+                            if (this.Opacity == 1.0)
+                            {
+                                _action = EnmAction.wait;
+                            }
+                        }
+                    }
 
-                    if (configCS.ToastsLoc.ToLower() == "bottomleft")
-                        bottomLeft(true);
+                    if (_configCS.ToastsLoc.ToLower() == "bottomleft")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity += 0.1;
+                        if (this._x > this.Location.X)
+                        {
+                            this.Left++;
+                        }
+                        else
+                        {
+                            if (this.Opacity == 1.0)
+                            {
+                                _action = EnmAction.wait;
+                            }
+                        }
+                    }
                     break;
 
-                case enmAction.close:
-                    if (configCS.ToastsLoc.ToLower() == "topright")
-                        topRight(false);
+                case EnmAction.close:
+                    if (_configCS.ToastsLoc.ToLower() == "topright")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity -= 0.1;
+                        this.Left -= 3;
+                        if (this.Opacity == 0.0)
+                        {
+                            this.Close();
+                        }
+                    }
 
-                    if (configCS.ToastsLoc.ToLower() == "bottomright")
-                        bottomRight(false);
+                    if (_configCS.ToastsLoc.ToLower() == "bottomright")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity -= 0.1;
+                        this.Left -= 3;
+                        if (this.Opacity == 0.0)
+                        {
+                            this.Close();
+                        }
+                    }
 
-                    if (configCS.ToastsLoc.ToLower() == "topleft")
-                        topLeft(false);
+                    if (_configCS.ToastsLoc.ToLower() == "topleft")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity -= 0.1;
 
-                    if (configCS.ToastsLoc.ToLower() == "bottomleft")
-                        bottomLeft(false);
+                        this.Left += 3;
+                        if (this.Opacity == 0.0)
+                        {
+                            this.Close();
+                        }
+                    }
+
+                    if (_configCS.ToastsLoc.ToLower() == "bottomleft")
+                    {
+                        this.timer1.Interval = 1;
+                        this.Opacity -= 0.1; //Fade out
+                        this.Left += 3; //Move to the right
+                        if (this.Opacity == 0.0)
+                        {
+                            this.Close(); //Close
+                        }
+                    }
                     break;
-            }
-        }
-
-        void topRight(bool Start)
-        {
-            if (Start)
-            {
-                timer1.Interval = 1;
-                this.Opacity += 0.1; //Fade in
-                if (this.x < this.Location.X)
-                {
-                    this.Left--; //Moves form from right to left
-                }
-                else
-                {
-                    if (this.Opacity == 1.0)
-                    {
-                        action = enmAction.wait; //Wait
-                    }
-                }
-            }
-            else
-            {
-                timer1.Interval = 1;
-                this.Opacity -= 0.1;
-                this.Left -= 3;
-                if (base.Opacity == 0.0)
-                {
-                    base.Close();
-                }
-            }
-        }
-
-        void bottomRight(bool Start)
-        {
-            if (Start)
-            {
-                timer1.Interval = 1;
-                this.Opacity += 0.1;
-                if (this.x < this.Location.X)
-                {
-                    this.Left--;
-                }
-                else
-                {
-                    if (this.Opacity == 1.0)
-                    {
-                        action = enmAction.wait;
-                    }
-                }
-            }
-            else
-            {
-                timer1.Interval = 1;
-                this.Opacity -= 0.1;
-
-                this.Left -= 3;
-                if (base.Opacity == 0.0)
-                {
-                    base.Close();
-                }
-            }
-        }
-
-        void topLeft(bool Start)
-        {
-            if (Start)
-            {
-                timer1.Interval = 1;
-                this.Opacity += 0.1;
-                if (this.x > this.Location.X)
-                {
-                    this.Left++;
-                }
-                else
-                {
-                    if (this.Opacity == 1.0)
-                    {
-                        action = enmAction.wait;
-                    }
-                }
-            }
-            else
-            {
-                timer1.Interval = 1;
-                this.Opacity -= 0.1;
-
-                this.Left += 3;
-                if (base.Opacity == 0.0)
-                {
-                    base.Close();
-                }
-            }
-        }
-
-        void bottomLeft(bool Start)
-        {
-            if (Start)
-            {
-                timer1.Interval = 1;
-                this.Opacity += 0.1;
-                if (this.x > this.Location.X)
-                {
-                    this.Left++;
-                }
-                else
-                {
-                    if (this.Opacity == 1.0)
-                    {
-                        action = enmAction.wait;
-                    }
-                }
-            }
-            else
-            {
-                timer1.Interval = 1;
-                this.Opacity -= 0.1; //Fade out
-                this.Left += 3; //Move to the right
-                if (base.Opacity == 0.0)
-                {
-                    base.Close(); //Close
-                }
             }
         }
 
@@ -215,147 +172,137 @@ namespace VentileClient
 
         private void Toast_Load(object sender, EventArgs e)
         {
-
-            this.BackColor = ColorTranslator.FromHtml(themeCS.Accent);
-            title.BackColor = ColorTranslator.FromHtml(themeCS.Accent);
-            message.BackColor = ColorTranslator.FromHtml(themeCS.Accent);
-            title.ForeColor = ColorTranslator.FromHtml(themeCS.Foreground);
-            message.ForeColor = ColorTranslator.FromHtml(themeCS.Foreground);
+            this.BackColor = ColorTranslator.FromHtml(_themeCS.Accent);
+            this.title.BackColor = ColorTranslator.FromHtml(_themeCS.Accent);
+            this.message.BackColor = ColorTranslator.FromHtml(_themeCS.Accent);
+            this.title.ForeColor = ColorTranslator.FromHtml(_themeCS.Foreground);
+            this.message.ForeColor = ColorTranslator.FromHtml(_themeCS.Foreground);
             this.Refresh();
         }
 
-        ConfigTemplate configCS;
-        ThemeTemplate themeCS;
+        ConfigTemplate _configCS;
+        ThemeTemplate _themeCS;
 
-        public void showToast(string title, string msg, ConfigTemplate conf, ThemeTemplate theme)
+        public void ShowToast(string title, string msg, ConfigTemplate conf, ThemeTemplate theme)
         {
-            configCS = conf;
-            themeCS = theme;
-            if (!configCS.Toasts)
+            _configCS = conf;
+            _themeCS = theme;
+
+            if (!_configCS.Toasts)
                 return;
 
             string fname;
 
-            switch (configCS.ToastsLoc.ToLower())
+            Size size = TextRenderer.MeasureText(msg, this.message.Font);
+            if (this.Width < size.Width + 45)
+            {
+                this.Width = size.Width + 45;
+            }
+
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
+            this.Opacity = 0.0;
+            this.StartPosition = FormStartPosition.Manual;
+
+            this.message.Text = msg;
+            this.title.Text = title;
+
+            switch (_configCS.ToastsLoc.ToLower())
             {
                 case "topright":
-                    this.Opacity = 0.0;
-                    this.StartPosition = FormStartPosition.Manual;
-
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        Toast toast = (Toast)Application.OpenForms[fname];
+                        var toast = (Toast)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
                             this.Name = fname;
-                            this.x = Screen.PrimaryScreen.WorkingArea.Width - this.Width + 15;
-                            this.y = 7 + (this.Height + 3) * i;
-                            this.Location = new Point(this.x, this.y);
+                            this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width + 15;
+                            this._y = 7 + ((this.Height + 3) * i);
+                            this.Location = new Point(this._x, this._y);
                             break;
                         }
                     }
 
-                    this.x = Screen.PrimaryScreen.WorkingArea.Width - base.Width - 5;
-
-                    this.message.Text = msg;
-                    this.title.Text = title;
+                    this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width - 5;
 
                     this.Show();
-                    this.action = enmAction.start;
+                    this._action = EnmAction.start;
                     this.timer1.Interval = 1;
                     timer1.Start();
                     break;
 
                 case "bottomright":
-                    this.Opacity = 0.0;
-                    this.StartPosition = FormStartPosition.Manual;
-
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        Toast toast = (Toast)Application.OpenForms[fname];
+                        var toast = (Toast)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
                             this.Name = fname;
-                            this.x = Screen.PrimaryScreen.WorkingArea.Width - this.Width + 15;
-                            this.y = Screen.PrimaryScreen.WorkingArea.Height - (7 + (this.Height + 3) * (i + 1));
-                            this.Location = new Point(this.x, this.y);
+                            this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width + 15;
+                            this._y = Screen.PrimaryScreen.WorkingArea.Height - (7 + (this.Height + 3) * (i + 1));
+                            this.Location = new Point(this._x, this._y);
                             break;
                         }
                     }
 
-                    this.x = Screen.PrimaryScreen.WorkingArea.Width - base.Width - 5;
-
-                    this.message.Text = msg;
-                    this.title.Text = title;
+                    this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width - 5;
 
                     this.Show();
-                    this.action = enmAction.start;
+                    this._action = EnmAction.start;
                     this.timer1.Interval = 1;
                     timer1.Start();
                     break;
 
                 case "topleft":
-                    this.Opacity = 0.0;
-                    this.StartPosition = FormStartPosition.Manual;
-
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        Toast toast = (Toast)Application.OpenForms[fname];
+                        var toast = (Toast)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
                             this.Name = fname;
-                            this.x = -15;
-                            this.y = 7 + (this.Height + 3) * i;
-                            this.Location = new Point(this.x, this.y);
+                            this._x = -15;
+                            this._y = 7 + ((this.Height + 3) * i);
+                            this.Location = new Point(this._x, this._y);
                             break;
                         }
                     }
 
-                    this.x = 5;
-
-                    this.message.Text = msg;
-                    this.title.Text = title;
+                    this._x = 5;
 
                     this.Show();
-                    this.action = enmAction.start;
+                    this._action = EnmAction.start;
                     this.timer1.Interval = 1;
-                    timer1.Start();
+                    this.timer1.Start();
                     break;
 
                 case "bottomleft":
-                    this.Opacity = 0.0;
-                    this.StartPosition = FormStartPosition.Manual;
-
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        Toast toast = (Toast)Application.OpenForms[fname];
+                        var toast = (Toast)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
                             this.Name = fname;
-                            this.x = -15;
-                            this.y = Screen.PrimaryScreen.WorkingArea.Height - (7 + (this.Height + 3) * (i + 1));
-                            this.Location = new Point(this.x, this.y);
+                            this._x = -15;
+                            this._y = Screen.PrimaryScreen.WorkingArea.Height - (7 + (this.Height + 3) * (i + 1));
+                            this.Location = new Point(this._x, this._y);
                             break;
                         }
                     }
 
-                    this.x = 5;
-
-                    this.message.Text = msg;
-                    this.title.Text = title;
+                    this._x = 5;
 
                     this.Show();
-                    this.action = enmAction.start;
+                    this._action = EnmAction.start;
                     this.timer1.Interval = 1;
-                    timer1.Start();
+                    this.timer1.Start();
                     break;
             }
         }

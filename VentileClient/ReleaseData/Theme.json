@@ -1,0 +1,9 @@
+{
+  "Theme": "dark",
+  "Background": "#141414",
+  "SecondBackground": "#282828",
+  "Foreground": "#FFFFFF",
+  "Accent": "#4169FF",
+  "Outline": "#050505",
+  "Faded": "#C0C0C0"
+}

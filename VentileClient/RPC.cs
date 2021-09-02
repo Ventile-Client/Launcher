@@ -1,16 +1,9 @@
 ﻿using DiscordRPC;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+using Newtonsoft.Json;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 using VentileClient.JSON_Template_Classes;
-using Newtonsoft.Json;
 
 namespace VentileClient
 {
@@ -18,15 +11,15 @@ namespace VentileClient
     {
         public void Toast(string title, string msg)
         {
-            Toast toast = new Toast();
-            toast.showToast(title, msg, configCS, themeCS);
+            var toast = new Toast();
+            toast.ShowToast(title, msg, _configCS, _themeCS);
         }
 
         #region Downloading Code
 
-        public void download(string link, string path, string name)
+        public void Download(string link, string path, string name)
         {
-            using (WebClient Client = new WebClient())
+            using (var Client = new WebClient())
             {
                 if (path.EndsWith(@"\"))
                 {
@@ -43,15 +36,15 @@ namespace VentileClient
 
         #region Stream Read/Write
 
-        ConfigTemplate configCS = new ConfigTemplate();
-        ThemeTemplate themeCS = new ThemeTemplate();
+        ConfigTemplate _configCS = new ConfigTemplate();
+        ThemeTemplate _themeCS = new ThemeTemplate();
 
         private void readConfig(string path)
         {
             try
             {
                 string temp = File.ReadAllText(path);
-                configCS = JsonConvert.DeserializeObject<ConfigTemplate>(temp);
+                _configCS = JsonConvert.DeserializeObject<ConfigTemplate>(temp);
             }
             catch
             {
@@ -64,7 +57,7 @@ namespace VentileClient
             try
             {
                 string temp = File.ReadAllText(path);
-                themeCS = JsonConvert.DeserializeObject<ThemeTemplate>(temp);
+                _themeCS = JsonConvert.DeserializeObject<ThemeTemplate>(temp);
             }
             catch
             {
@@ -75,7 +68,7 @@ namespace VentileClient
 
         public DiscordRpcClient client = new DiscordRpcClient("832806990953840710");
 
-        public static bool initialized = false;
+        public static bool INITIALIZED = false;
 
         public void Initialize()
         {
@@ -95,7 +88,7 @@ namespace VentileClient
                 }
             }
 
-            if (configCS.RichPresence)
+            if (_configCS.RichPresence)
             {
                 client = new DiscordRpcClient("832806990953840710");
 
@@ -106,21 +99,21 @@ namespace VentileClient
                 //Call this as many times as you want and anywhere in your code.
                 try
                 {
-                    if (configCS.RpcButton)
+                    if (_configCS.RpcButton)
                     {
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
-                                new DiscordRPC.Button() { Label = configCS.RpcButtonText, Url = configCS.RpcButtonLink },
+                                new DiscordRPC.Button() { Label = _configCS.RpcButtonText, Url = _configCS.RpcButtonLink },
                                 new DiscordRPC.Button() { Label = "Ventile's Server", Url = "https://discord.gg/mCyHtD9twt" }
                             }
                         });
@@ -130,12 +123,12 @@ namespace VentileClient
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -169,49 +162,49 @@ namespace VentileClient
         public void Home()
         {
 
-            if (configCS.RichPresence)
+            if (_configCS.RichPresence)
             {
-            bool error = false;
-            if (File.Exists(@"C:\temp\VentileClient\Presets\Config.json"))
-            {
-                readConfig(@"C:\temp\VentileClient\Presets\Config.json");
-            }
-            else
-            {
-                error = true;
-            }
+                bool error = false;
+                if (File.Exists(@"C:\temp\VentileClient\Presets\Config.json"))
+                {
+                    readConfig(@"C:\temp\VentileClient\Presets\Config.json");
+                }
+                else
+                {
+                    error = true;
+                }
 
-            if (File.Exists(@"C:\temp\VentileClient\Presets\Theme.json"))
-            {
-                readTheme(@"C:\temp\VentileClient\Presets\Theme.json");
-            }
-            else
-            {
-                error = true;
-            }
+                if (File.Exists(@"C:\temp\VentileClient\Presets\Theme.json"))
+                {
+                    readTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+                }
+                else
+                {
+                    error = true;
+                }
 
-            if (error)
-            {
-                this.Toast("RPC", "There was an error!");
-                return;
-            }
+                if (error)
+                {
+                    this.Toast("RPC", "There was an error!");
+                    return;
+                }
                 try
                 {
-                    if (configCS.RpcButton)
+                    if (_configCS.RpcButton)
                     {
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                         {
-                        new DiscordRPC.Button() { Label = configCS.RpcButtonText, Url = configCS.RpcButtonLink },
+                        new DiscordRPC.Button() { Label = _configCS.RpcButtonText, Url = _configCS.RpcButtonLink },
                         new DiscordRPC.Button() { Label = "Ventile's Server", Url = "https://discord.gg/mCyHtD9twt" }
                         }
                         });
@@ -221,12 +214,12 @@ namespace VentileClient
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                         {
@@ -246,7 +239,7 @@ namespace VentileClient
         //Settings
         public void Settings()
         {
-            if (configCS.RichPresence)
+            if (_configCS.RichPresence)
             {
                 bool error = false;
                 if (File.Exists(@"C:\temp\VentileClient\Presets\Config.json"))
@@ -274,21 +267,21 @@ namespace VentileClient
                 }
                 try
                 {
-                    if (configCS.RpcButton)
+                    if (_configCS.RpcButton)
                     {
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Changing Settings...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
-                                new DiscordRPC.Button() { Label = configCS.RpcButtonText, Url = configCS.RpcButtonLink },
+                                new DiscordRPC.Button() { Label = _configCS.RpcButtonText, Url = _configCS.RpcButtonLink },
                                 new DiscordRPC.Button() { Label = "Ventile's Server", Url = "https://discord.gg/mCyHtD9twt" }
                             }
                         });
@@ -298,12 +291,12 @@ namespace VentileClient
                         client.SetPresence(new RichPresence()
                         {
                             Details = "Changing Settings...",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -322,7 +315,7 @@ namespace VentileClient
         //In Game
         public void InGame()
         {
-            if (configCS.RichPresence)
+            if (_configCS.RichPresence)
             {
                 bool error = false;
                 if (File.Exists(@"C:\temp\VentileClient\Presets\Config.json"))
@@ -350,21 +343,21 @@ namespace VentileClient
                 }
                 try
                 {
-                    if (configCS.RpcButton)
+                    if (_configCS.RpcButton)
                     {
                         client.SetPresence(new RichPresence()
                         {
                             Details = "In the Game!",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
-                                new DiscordRPC.Button() { Label = configCS.RpcButtonText, Url = configCS.RpcButtonLink },
+                                new DiscordRPC.Button() { Label = _configCS.RpcButtonText, Url = _configCS.RpcButtonLink },
                                 new DiscordRPC.Button() { Label = "Ventile's Server", Url = "https://discord.gg/mCyHtD9twt" }
                             }
                         });
@@ -374,12 +367,12 @@ namespace VentileClient
                         client.SetPresence(new RichPresence()
                         {
                             Details = "In the Game!",
-                            State = configCS.RpcText,
+                            State = _configCS.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = Properties.Ventile.Default.Version,
+                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {

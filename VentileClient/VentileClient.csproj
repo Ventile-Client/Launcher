@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,6 +70,7 @@
     <Reference Include="Guna.UI2, Version=2.0.2.0, Culture=neutral, PublicKeyToken=e4b9cdd7b4cde4b4, processorArchitecture=MSIL">
       <HintPath>..\packages\Guna.UI2.WinForms.2.0.2\lib\net40\Guna.UI2.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -81,6 +84,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\lib\net4\System.Management.Automation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -91,13 +97,23 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Windows">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.19041.0\Windows.winmd</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangelogPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangelogPrompt.Designer.cs">
+      <DependentUpon>ChangelogPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="JSON_Template_Classes\ConfigTemplate.cs" />
     <Compile Include="JSON_Template_Classes\CosmeticsObject.cs" />
     <Compile Include="JSON_Template_Classes\CosmeticsTemplate.cs" />
     <Compile Include="JSON_Template_Classes\PresetColorsTemplate.cs" />
     <Compile Include="JSON_Template_Classes\ThemeTemplate.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +141,9 @@
     <Compile Include="UpdatePrompt.Designer.cs">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ChangelogPrompt.resx">
+      <DependentUpon>ChangelogPrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,22 +158,23 @@
     <EmbeddedResource Include="UpdatePrompt.resx">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Ventile.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Ventile.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Ventile.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Ventile.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppLogo.ico" />
+    <Content Include="Personal\Add.txt" />
+    <Content Include="Personal\Extras.txt" />
+    <Content Include="Personal\Fix.txt" />
+    <Content Include="Personal\OnRelease.txt" />
+    <Content Include="ReleaseData\Changelog.txt" />
+    <Content Include="Personal\WorkOn.txt" />
+    <None Include="packages.config" />
+    <None Include="ReleaseData\Config.json" />
+    <None Include="ReleaseData\Cosmetics.json" />
+    <None Include="ReleaseData\PresetColors.json" />
+    <None Include="ReleaseData\Theme.json" />
     <None Include="Resources\website_white.png" />
     <None Include="Resources\website_black.png" />
     <None Include="Resources\transparent_logo_white.png" />
@@ -162,5 +182,57 @@
     <None Include="Resources\background2.png" />
     <None Include="Resources\background.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Secrets\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if $(ConfigurationName)==Release (
+  rmdir /s /q $(TargetDir)
+)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>@echo off
+if $(ConfigurationName) == Release (
+  cd $(TargetDir)
+  mkdir LauncherZip
+  echo Created Temporary Launcher Zip Folder
+  cd LauncherZip
+  move $(TargetDir)*.* $(TargetDir)LauncherZip
+  echo Movied Files to Launcher Zip Folder
+  del *.xml
+  echo Deleted .xml files
+  del *.pdb
+  echo Deleted .pdb files
+  del *.winmd
+  echo Deleted .winmd files
+  powershell Compress-Archive -Path "$(TargetDir)LauncherZip\*.*" -DestinationPath "$(TargetDir)\VentileClient.zip"
+  echo Zipped Launcher
+
+  cd $(TargetDir)
+  mkdir PresetsZip
+  echo Created Temporary Presets Zip Folder
+  cd PresetsZip
+  for /R $(ProjectDir)ReleaseData %25%25f in (*.json) do copy "%25%25f" $(TargetDir)PresetsZip\
+  echo Copied .json files
+  powershell Compress-Archive -Path "$(TargetDir)PresetsZip\*.*" -DestinationPath "$(TargetDir)\Presets.zip"
+  echo Zipped Presets
+  cd $(TargetDir)
+  copy $(ProjectDir)ReleaseData\Changelog.txt $(TargetDir)
+  echo Copyed Changelog from ReleaseData
+  rmdir /s /q $(TargetDir)PresetsZip
+  rmdir /s /q $(TargetDir)LauncherZip
+  echo Cleaned Up!
+
+  echo --------------------------------------------------------------------------------------------------------------
+  echo ^|
+  echo ^|^ Built: $(TargetDir)
+  echo ^|
+  echo --------------------------------------------------------------------------------------------------------------
+) else (
+echo -------------------------------------------------------------
+echo ^|^ IF BUILDING TO PUBLISH, SWITCH TO RELEASE MODE
+echo -------------------------------------------------------------
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

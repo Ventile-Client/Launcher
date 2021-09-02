@@ -29,19 +29,23 @@ namespace VentileClient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.version = new System.Windows.Forms.Label();
             this.no = new Guna.UI2.WinForms.Guna2Button();
             this.update = new Guna.UI2.WinForms.Guna2Button();
             this.text2 = new System.Windows.Forms.Label();
             this.text1 = new System.Windows.Forms.Label();
             this.Title = new System.Windows.Forms.Label();
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.changeLogLink = new System.Windows.Forms.LinkLabel();
+            this.fadeIn = new System.Windows.Forms.Timer(this.components);
+            this.fadeOut = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // version
             // 
             this.version.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.version.AutoSize = true;
-            this.version.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.version.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.version.ForeColor = System.Drawing.Color.Silver;
             this.version.Location = new System.Drawing.Point(82, 60);
@@ -96,7 +100,6 @@ namespace VentileClient
             // 
             this.text2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.text2.AutoSize = true;
-            this.text2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.text2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.text2.ForeColor = System.Drawing.Color.Silver;
             this.text2.Location = new System.Drawing.Point(25, 81);
@@ -109,7 +112,6 @@ namespace VentileClient
             // 
             this.text1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.text1.AutoSize = true;
-            this.text1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.text1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.text1.ForeColor = System.Drawing.Color.Silver;
             this.text1.Location = new System.Drawing.Point(25, 60);
@@ -130,12 +132,43 @@ namespace VentileClient
             this.Title.TabIndex = 6;
             this.Title.Text = "Update avaliable!";
             // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.TargetControl = this;
+            // 
+            // changeLogLink
+            // 
+            this.changeLogLink.ActiveLinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.AutoSize = true;
+            this.changeLogLink.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.changeLogLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.changeLogLink.LinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.Location = new System.Drawing.Point(25, 153);
+            this.changeLogLink.Name = "changeLogLink";
+            this.changeLogLink.Size = new System.Drawing.Size(64, 15);
+            this.changeLogLink.TabIndex = 12;
+            this.changeLogLink.Text = "Changelog";
+            this.changeLogLink.VisitedLinkColor = System.Drawing.Color.RoyalBlue;
+            this.changeLogLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.changeLogLink_LinkClicked);
+            // 
+            // fadeIn
+            // 
+            this.fadeIn.Enabled = true;
+            this.fadeIn.Interval = 1;
+            this.fadeIn.Tick += new System.EventHandler(this.fadeIn_Tick);
+            // 
+            // fadeOut
+            // 
+            this.fadeOut.Interval = 1;
+            this.fadeOut.Tick += new System.EventHandler(this.fadeOut_Tick);
+            // 
             // UpdatePrompt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(248, 264);
+            this.Controls.Add(this.changeLogLink);
             this.Controls.Add(this.version);
             this.Controls.Add(this.no);
             this.Controls.Add(this.update);
@@ -163,5 +196,9 @@ namespace VentileClient
         private System.Windows.Forms.Label text2;
         private System.Windows.Forms.Label text1;
         private System.Windows.Forms.Label Title;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private System.Windows.Forms.LinkLabel changeLogLink;
+        public System.Windows.Forms.Timer fadeIn;
+        public System.Windows.Forms.Timer fadeOut;
     }
 }

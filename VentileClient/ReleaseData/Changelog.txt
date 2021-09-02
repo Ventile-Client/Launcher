@@ -1,0 +1,12 @@
+﻿Ventile Launcher 
+ - Added:
+    Performance Mode (Setting)
+    Animations
+    Version Switcher
+    Changelog
+
+ - Removed:
+    Custom Resource Pack Location
+
+ - Fixes:
+    Slightly Increased Performance

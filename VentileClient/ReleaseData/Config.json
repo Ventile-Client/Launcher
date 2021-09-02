@@ -1,0 +1,16 @@
+{
+  "WindowState": "hide",
+  "AutoInject": true,
+  "RichPresence": true,
+  "RpcText": "No Rich Presence",
+  "RpcButton": true,
+  "RpcButtonText": "No Button Text",
+  "RpcButtonLink": "https://none",
+  "CustomDLL": true,
+  "DefaultDLL": "",
+  "BackgroundImage": false,
+  "BackgroundImageLoc": null,
+  "Toasts": true,
+  "ToastsLoc": "topRight",
+  "RoundedButtons": true
+}
