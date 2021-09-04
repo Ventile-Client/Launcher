@@ -9,132 +9,132 @@ namespace VentileClient.JSON_Template_Classes
     public class ConfigTemplate
     {
         //Private variables
-        string windowState;
-        bool autoInject;
-        bool richPresence;
-        string rpcText;
-        bool rpcButton;
-        string rpcButtonText;
-        string rpcButtonLink;
-        bool customDLL;
-        string defaultDLL;
-        int injectDelay;
-        bool backgroundImage;
-        string backgroundImageLoc;
-        bool toasts;
-        string toastsLoc;
-        bool roundedButtons;
-        bool performanceMode;
+        string _windowState;
+        bool _autoInject;
+        bool _richPresence;
+        string _rpcText;
+        bool _rpcButton;
+        string _rpcButtonText;
+        string _rpcButtonLink;
+        bool _customDLL;
+        string _defaultDLL;
+        int _injectDelay;
+        bool _toasts;
+        string _toastsLoc;
+        bool _roundedButtons;
+        bool _performanceMode;
+        bool _backgroundImage;
+        string _backgroundImageLoc;
 
         public string WindowState
         {
             get
             {
-                if (string.IsNullOrEmpty(windowState))
-                    windowState = "Hide";
+                if (string.IsNullOrEmpty(_windowState))
+                    _windowState = "Hide";
 
-                return windowState.ToLower();
+                return _windowState.ToLower();
             }
             set
             {
-                windowState = value;
+                _windowState = value;
             }
         }
         public bool AutoInject
         {
             get
             {
-                return autoInject;
+                return _autoInject;
             }
             set
             {
-                autoInject = value;
+                _autoInject = value;
             }
         }
         public bool RichPresence
         {
             get
             {
-                return richPresence;
+                return _richPresence;
             }
             set
             {
-                richPresence = value;
+                _richPresence = value;
             }
         }
         public string RpcText
         {
             get
             {
-                if (string.IsNullOrEmpty(rpcText))
-                    rpcText = "No Rpc Text";
+                if (string.IsNullOrEmpty(_rpcText))
+                    _rpcText = "No Rpc Text";
 
-                return rpcText;
+                return _rpcText;
             }
             set
             {
-                rpcText = value;
+                _rpcText = value;
             }
         }
         public bool RpcButton
         {
             get
             {
-                return rpcButton;
+                return _rpcButton;
             }
             set
             {
-                rpcButton = value;
+                _rpcButton = value;
             }
         }
         public string RpcButtonText
         {
             get
             {
-                if (string.IsNullOrEmpty(rpcButtonText))
-                    rpcButtonText = "Hide";
+                if (string.IsNullOrEmpty(_rpcButtonText))
+                    _rpcButtonText = "Hide";
 
-                return rpcButtonText;
+                return _rpcButtonText;
             }
             set
             {
-                rpcButtonText = value;
+                _rpcButtonText = value;
             }
         }
         public string RpcButtonLink
         {
             get
             {
-                if (string.IsNullOrEmpty(rpcButtonLink))
-                    rpcButtonLink = "Hide";
+                if (string.IsNullOrEmpty(_rpcButtonLink))
+                    _rpcButtonLink = "Hide";
 
-                return rpcButtonLink;
+                return _rpcButtonLink;
             }
             set
             {
-                rpcButtonLink = value;
+                _rpcButtonLink = value;
             }
         }
         public bool CustomDLL
         {
             get
             {
-                return customDLL;
+                return _customDLL;
             }
             set
             {
-                customDLL = value;
+                _customDLL = value;
             }
         }
         public string DefaultDLL
         {
             get
             {
-                return defaultDLL;
+                return _defaultDLL;
             }
             set
             {
-                defaultDLL = value;
+                _defaultDLL = value;
             }
         }
 
@@ -142,70 +142,48 @@ namespace VentileClient.JSON_Template_Classes
         {
             get
             {
-                return injectDelay;
+                return _injectDelay;
             }
             set
             {
-                injectDelay = value;
+                _injectDelay = value;
             }
         }
 
-        public bool BackgroundImage
-        {
-            get
-            {
-                return backgroundImage;
-            }
-            set
-            {
-                backgroundImage = value;
-            }
-        }
-        public string BackgroundImageLoc
-        {
-            get
-            {
-                return backgroundImageLoc;
-            }
-            set
-            {
-                backgroundImageLoc = value;
-            }
-        }
         public bool Toasts
         {
             get
             {
-                return toasts;
+                return _toasts;
             }
             set
             {
-                toasts = value;
+                _toasts = value;
             }
         }
         public string ToastsLoc
         {
             get
             {
-                if (string.IsNullOrEmpty(toastsLoc))
-                    toastsLoc = "topRight";
+                if (string.IsNullOrEmpty(_toastsLoc))
+                    _toastsLoc = "topRight";
 
-                return toastsLoc;
+                return _toastsLoc;
             }
             set
             {
-                toastsLoc = value;
+                _toastsLoc = value;
             }
         }
         public bool RoundedButtons
         {
             get
             {
-                return roundedButtons;
+                return _roundedButtons;
             }
             set
             {
-                roundedButtons = value;
+                _roundedButtons = value;
             }
         }
 
@@ -213,11 +191,34 @@ namespace VentileClient.JSON_Template_Classes
         {
             get
             {
-                return performanceMode;
+                return _performanceMode;
             }
             set
             {
-                performanceMode = value;
+                _performanceMode = value;
+            }
+        }
+
+        public bool BackgroundImage
+        {
+            get
+            {
+                return _backgroundImage;
+            }
+            set
+            {
+                _backgroundImage = value;
+            }
+        }
+        public string BackgroundImageLoc
+        {
+            get
+            {
+                return _backgroundImageLoc;
+            }
+            set
+            {
+                _backgroundImageLoc = value;
             }
         }
 

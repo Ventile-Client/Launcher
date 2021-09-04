@@ -67,7 +67,7 @@ namespace VentileClient
             {
                 if (!System.IO.File.Exists(@"C:\temp\VentileClient\Ventile-Updater.exe"))
                 {
-                    Download(string.Format(@"https://github.com/" + MainWindow.LINK_SETTINGS.repoOwner + "/" + MainWindow.LINK_SETTINGS.downloadRepo + @"/blob/main/${0}?raw=true", "VentileUpdater.exe"), @"C:\temp\VentileClient\", "Ventile-Updater.exe");
+                    Download(string.Format(@"https://github.com/" + MainWindow.INSTANCE.link_settings.repoOwner + "/" + MainWindow.INSTANCE.link_settings.downloadRepo + @"/blob/main/${0}?raw=true", "VentileUpdater.exe"), @"C:\temp\VentileClient\", "Ventile-Updater.exe");
                 }
                 Process.Start(@"C:\temp\VentileClient\Ventile-Updater.exe");
             }

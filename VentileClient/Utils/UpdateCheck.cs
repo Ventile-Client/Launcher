@@ -4,30 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using VentileClient.JSON_Template_Classes;
+using VentileClient.Utils;
 
 namespace VentileClient
 {
     public class UpdateCheck
     {
-        #region Downloading Code
-
-        public void Download(string link, string path, string name)
-        {
-            using (var Client = new WebClient())
-            {
-                if (path.EndsWith(@"\"))
-                {
-                    Client.DownloadFile(link, path + name);
-                }
-                else
-                {
-                    Client.DownloadFile(link, path + @"\" + name);
-                }
-            }
-        }
-
-        #endregion Downloading Code
-
         public async void CheckForUpdate(ThemeTemplate themeCS, VentileSettings ventileSettings, bool internet, GitHubClient github)
         {
             if (File.Exists(@"C:\temp\VentileClient\Version.txt"))
@@ -42,7 +24,7 @@ namespace VentileClient
 
             if (!internet) return;
 
-            IReadOnlyList<Release> releases = await github.Repository.Release.GetAll(MainWindow.LINK_SETTINGS.repoOwner, MainWindow.LINK_SETTINGS.downloadRepo); // Gets all releases from the VersionChanger repo
+            IReadOnlyList<Release> releases = await github.Repository.Release.GetAll(MainWindow.INSTANCE.link_settings.repoOwner, MainWindow.INSTANCE.link_settings.downloadRepo); // Gets all releases from the VersionChanger repo
 
             if (!(releases.Count > 0))
             {
@@ -51,7 +33,7 @@ namespace VentileClient
                 return;
             }
 
-            Download(string.Format(@"https://github.com/" + MainWindow.LINK_SETTINGS.repoOwner + "/" + MainWindow.LINK_SETTINGS.downloadRepo + "/releases/download/{0}/{1}", releases[0].TagName, "Changelog.txt"), @"C:\temp\VentileClient", "Changelog.txt");
+            await DownloadManager.Download(string.Format(@"https://github.com/" + MainWindow.INSTANCE.link_settings.repoOwner + "/" + MainWindow.INSTANCE.link_settings.downloadRepo + "/releases/download/{0}/{1}", releases[0].TagName, "Changelog.txt"), @"C:\temp\VentileClient", "Changelog.txt");
 
             string[] changelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
 

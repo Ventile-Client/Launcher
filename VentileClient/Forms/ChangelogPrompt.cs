@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using VentileClient.JSON_Template_Classes;
@@ -22,6 +23,8 @@ namespace VentileClient
             {
                 ChangeLog.Text += changelogParam[i] + "\n";
             }
+
+            ChangeLog.Text += "\n";
 
             //Sizing
             Size size = TextRenderer.MeasureText(ChangeLog.Text, ChangeLog.Font);

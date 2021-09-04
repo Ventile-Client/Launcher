@@ -103,10 +103,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChangelogPrompt.cs">
+    <Compile Include="Forms\ChangelogPrompt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChangelogPrompt.Designer.cs">
+    <Compile Include="Forms\ChangelogPrompt.Designer.cs">
       <DependentUpon>ChangelogPrompt.cs</DependentUpon>
     </Compile>
     <Compile Include="JSON_Template_Classes\ConfigTemplate.cs" />
@@ -114,7 +114,16 @@
     <Compile Include="JSON_Template_Classes\CosmeticsTemplate.cs" />
     <Compile Include="JSON_Template_Classes\PresetColorsTemplate.cs" />
     <Compile Include="JSON_Template_Classes\ThemeTemplate.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="LauncherUtils\ColorManager.cs" />
+    <Compile Include="LauncherUtils\CosmeticManager.cs" />
+    <Compile Include="LauncherUtils\DataManager.cs" />
+    <Compile Include="LauncherUtils\VersionManager.cs" />
+    <Compile Include="Utils\ConfigManager.cs" />
+    <Compile Include="Utils\DownloadManager.cs" />
+    <Compile Include="Utils\ControlManager.cs" />
+    <Compile Include="Utils\InjectionManager.cs" />
+    <Compile Include="Utils\InternetManager.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,21 +137,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RPC.cs" />
-    <Compile Include="Toast.cs">
+    <Compile Include="Utils\MCDataManager.cs" />
+    <Compile Include="Utils\RichPresence.cs" />
+    <Compile Include="Forms\Toast.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Toast.Designer.cs">
+    <Compile Include="Forms\Toast.Designer.cs">
       <DependentUpon>Toast.cs</DependentUpon>
     </Compile>
-    <Compile Include="UpdateCheck.cs" />
-    <Compile Include="UpdatePrompt.cs">
+    <Compile Include="Utils\UpdateCheck.cs" />
+    <Compile Include="Forms\UpdatePrompt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UpdatePrompt.Designer.cs">
+    <Compile Include="Forms\UpdatePrompt.Designer.cs">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ChangelogPrompt.resx">
+    <EmbeddedResource Include="Forms\ChangelogPrompt.resx">
       <DependentUpon>ChangelogPrompt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
@@ -153,10 +163,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Toast.resx">
+    <EmbeddedResource Include="Forms\Toast.resx">
       <DependentUpon>Toast.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UpdatePrompt.resx">
+    <EmbeddedResource Include="Forms\UpdatePrompt.resx">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

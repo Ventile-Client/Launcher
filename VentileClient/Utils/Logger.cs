@@ -22,7 +22,7 @@ namespace VentileClient
         ConsoleAndFile
     }
 
-    internal class Logger : LogBase
+    public class Logger : LogBase
     {
         private string _dir; //Make public if want to be able to edit by using foo.Directory = "C:\foo\bar"
         private string _fileName; //Make public if want to be able to edit by using foo.FileName = "FileName.txt"
@@ -228,7 +228,7 @@ namespace VentileClient
         }
     }
 
-    internal abstract class LogBase
+    public abstract class LogBase
     {
         // Log Message
         public abstract void Log(string message, LogLevel loggingLevel = LogLevel.Default, LogLocation logLoc = LogLocation.Default);

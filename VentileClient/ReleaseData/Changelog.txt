@@ -1,10 +1,14 @@
 ﻿Ventile Launcher 
  - Added:
-    Performance Mode (Setting)
     Animations
-    Version Switcher
     Changelog
+    Performance Mode
     Inject Delay
+    Default DLL's
+    PNG Background Support
+
+- In Progress:
+    Version Switcher
 
  - Removed:
     Custom Resource Pack Location

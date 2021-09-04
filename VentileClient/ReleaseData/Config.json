@@ -9,9 +9,9 @@
   "CustomDLL": true,
   "DefaultDLL": "",
   "InjectDelay": 0,
-  "BackgroundImage": false,
-  "BackgroundImageLoc": null,
   "Toasts": true,
   "ToastsLoc": "topRight",
-  "RoundedButtons": true
+  "RoundedButtons": true,
+  "BackgroundImage": false,
+  "BackgroundImageLoc": null
 }

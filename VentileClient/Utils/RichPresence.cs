@@ -109,7 +109,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -128,7 +128,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -200,7 +200,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                         {
@@ -219,7 +219,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                         {
@@ -277,7 +277,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -296,7 +296,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -353,7 +353,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {
@@ -372,7 +372,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.VENTILE_SETTINGS.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
                             },
                             Buttons = new DiscordRPC.Button[]
                             {

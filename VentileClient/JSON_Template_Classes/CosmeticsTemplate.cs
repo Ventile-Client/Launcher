@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VentileClient.JSON_Template_Classes
 {
-    class CosmeticsTemplate
+    public class CosmeticsTemplate
     {
         //Capes
         public bool cBlack { get; set; }

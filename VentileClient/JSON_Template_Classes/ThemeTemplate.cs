@@ -7,111 +7,112 @@ using System.Threading.Tasks;
 namespace VentileClient.JSON_Template_Classes
 {
     public class ThemeTemplate
-    {// Private variables
-        string theme;
-        string background;
-        string secondBackground;
-        string foreground;
-        string accent;
-        string outline;
-        string faded;
+    {
+        // Private variables
+        string _theme;
+        string _background;
+        string _secondBackground;
+        string _foreground;
+        string _accent;
+        string _outline;
+        string _faded;
 
         public string Theme
         {
             get
             {
-                if (string.IsNullOrEmpty(theme))
-                    theme = "Dark";
+                if (string.IsNullOrEmpty(_theme))
+                    _theme = "Dark";
 
-                return theme.ToLower();
+                return _theme.ToLower();
             }
             set
             {
-                theme = value;
+                _theme = value;
             }
         }
         public string Background
         {
             get
             {
-                if (string.IsNullOrEmpty(background))
-                    background = "#141414";
+                if (string.IsNullOrEmpty(_background))
+                    _background = "#141414";
 
-                return (background);
+                return (_background);
             }
             set
             {
-                background = (value);
+                _background = (value);
             }
         }
         public string SecondBackground
         {
             get
             {
-                if (string.IsNullOrEmpty(secondBackground))
-                    background = "#282828";
+                if (string.IsNullOrEmpty(_secondBackground))
+                    _background = "#282828";
 
-                return (secondBackground);
+                return (_secondBackground);
             }
             set
             {
-                secondBackground = (value);
+                _secondBackground = (value);
             }
         }
         public string Foreground
         {
             get
             {
-                if (string.IsNullOrEmpty(foreground))
-                    background = "#FFFFFF";
+                if (string.IsNullOrEmpty(_foreground))
+                    _background = "#FFFFFF";
 
-                return (foreground);
+                return (_foreground);
             }
             set
             {
-                foreground = (value);
+                _foreground = (value);
             }
         }
         public string Accent
         {
             get
             {
-                if (string.IsNullOrEmpty(accent))
-                    background = "#FF2C29";
+                if (string.IsNullOrEmpty(_accent))
+                    _background = "#FF2C29";
 
-                return (accent);
+                return (_accent);
             }
             set
             {
-                accent = (value);
+                _accent = (value);
             }
         }
         public string Outline
         {
             get
             {
-                if (string.IsNullOrEmpty(outline))
-                    outline = "#050505";
+                if (string.IsNullOrEmpty(_outline))
+                    _outline = "#050505";
 
-                return (outline);
+                return (_outline);
             }
             set
             {
-                outline = (value);
+                _outline = (value);
             }
         }
         public string Faded
         {
             get
             {
-                if (string.IsNullOrEmpty(faded))
-                    faded = "#C0C0C0";
+                if (string.IsNullOrEmpty(_faded))
+                    _faded = "#C0C0C0";
 
-                return (faded);
+                return (_faded);
             }
             set
             {
-                faded = (value);
+                _faded = (value);
             }
         }
     }

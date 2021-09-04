@@ -3,10 +3,6 @@ namespace VentileClient
 {
     partial class MainWindow
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -27,7 +23,7 @@ namespace VentileClient
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             Guna.UI2.AnimatorNS.Animation animation1 = new Guna.UI2.AnimatorNS.Animation();
@@ -106,6 +102,7 @@ namespace VentileClient
             this.resourceLabel = new System.Windows.Forms.Label();
             this.autoLabel = new System.Windows.Forms.Label();
             this.customDLLButton = new Guna.UI2.WinForms.Guna2Button();
+            this.DefaultDLLSelector = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.openWindow = new Guna.UI2.WinForms.Guna2Button();
             this.autoInject = new Guna.UI2.WinForms.Guna2Button();
             this.customLoc = new Guna.UI2.WinForms.Guna2Button();
@@ -188,10 +185,6 @@ namespace VentileClient
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FadeEffectBetweenPages = new Guna.UI2.WinForms.Guna2Transition();
             this.internetCheckTimer = new System.Windows.Forms.Timer(this.components);
-            this.DefaultDLLSelector = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
@@ -217,7 +210,6 @@ namespace VentileClient
             ((System.ComponentModel.ISupportInitialize)(this.aboutSeparator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutBackgroundColor)).BeginInit();
             this.TrayIconContextMenu.SuspendLayout();
-            this.DefaultDLLSelector.SuspendLayout();
             this.SuspendLayout();
             // 
             // dragBar
@@ -1434,8 +1426,10 @@ namespace VentileClient
             // 
             // injectDelay
             // 
+            this.injectDelay.AutoRoundedCorners = true;
             this.injectDelay.BackColor = System.Drawing.Color.Transparent;
             this.injectDelay.BorderColor = System.Drawing.Color.Empty;
+            this.injectDelay.BorderRadius = 13;
             this.injectDelay.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.FadeEffectBetweenPages.SetDecoration(this.injectDelay, Guna.UI2.AnimatorNS.DecorationType.None);
             this.injectDelay.DisabledState.Parent = this.injectDelay;
@@ -1727,6 +1721,7 @@ namespace VentileClient
             this.customDLLButton.BackColor = System.Drawing.Color.Transparent;
             this.customDLLButton.BorderRadius = 13;
             this.customDLLButton.CheckedState.Parent = this.customDLLButton;
+            this.customDLLButton.ContextMenuStrip = this.DefaultDLLSelector;
             this.customDLLButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.customDLLButton.CustomImages.Parent = this.customDLLButton;
             this.FadeEffectBetweenPages.SetDecoration(this.customDLLButton, Guna.UI2.AnimatorNS.DecorationType.None);
@@ -1744,6 +1739,21 @@ namespace VentileClient
             this.customDLLButton.Text = "Custom DLL";
             this.customDLLButton.UseTransparentBackground = true;
             this.customDLLButton.Click += new System.EventHandler(this.customDLLButton_Click);
+            // 
+            // DefaultDLLSelector
+            // 
+            this.FadeEffectBetweenPages.SetDecoration(this.DefaultDLLSelector, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.DefaultDLLSelector.Name = "guna2ContextMenuStrip1";
+            this.DefaultDLLSelector.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
+            this.DefaultDLLSelector.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
+            this.DefaultDLLSelector.RenderStyle.ColorTable = null;
+            this.DefaultDLLSelector.RenderStyle.RoundedEdges = true;
+            this.DefaultDLLSelector.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
+            this.DefaultDLLSelector.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.DefaultDLLSelector.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.DefaultDLLSelector.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.DefaultDLLSelector.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.DefaultDLLSelector.Size = new System.Drawing.Size(61, 4);
             // 
             // openWindow
             // 
@@ -2791,12 +2801,12 @@ namespace VentileClient
             this.cosmeticsVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cosmeticsVLabel.ForeColor = System.Drawing.Color.Silver;
             this.cosmeticsVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cosmeticsVLabel.Location = new System.Drawing.Point(27, 186);
+            this.cosmeticsVLabel.Location = new System.Drawing.Point(16, 197);
             this.cosmeticsVLabel.Name = "cosmeticsVLabel";
-            this.cosmeticsVLabel.Size = new System.Drawing.Size(170, 32);
+            this.cosmeticsVLabel.Size = new System.Drawing.Size(204, 40);
             this.cosmeticsVLabel.TabIndex = 32;
             this.cosmeticsVLabel.Text = "Version";
-            this.cosmeticsVLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.cosmeticsVLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // clientVLabel
             // 
@@ -2805,12 +2815,12 @@ namespace VentileClient
             this.clientVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clientVLabel.ForeColor = System.Drawing.Color.Silver;
             this.clientVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.clientVLabel.Location = new System.Drawing.Point(444, 194);
+            this.clientVLabel.Location = new System.Drawing.Point(456, 197);
             this.clientVLabel.Name = "clientVLabel";
-            this.clientVLabel.Size = new System.Drawing.Size(170, 32);
+            this.clientVLabel.Size = new System.Drawing.Size(151, 40);
             this.clientVLabel.TabIndex = 31;
             this.clientVLabel.Text = "Version";
-            this.clientVLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.clientVLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // launcherVLabel
             // 
@@ -2819,12 +2829,12 @@ namespace VentileClient
             this.launcherVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.launcherVLabel.ForeColor = System.Drawing.Color.Silver;
             this.launcherVLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.launcherVLabel.Location = new System.Drawing.Point(241, 154);
+            this.launcherVLabel.Location = new System.Drawing.Point(234, 153);
             this.launcherVLabel.Name = "launcherVLabel";
-            this.launcherVLabel.Size = new System.Drawing.Size(170, 32);
+            this.launcherVLabel.Size = new System.Drawing.Size(195, 40);
             this.launcherVLabel.TabIndex = 30;
             this.launcherVLabel.Text = "Version";
-            this.launcherVLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.launcherVLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // website
             // 
@@ -2886,7 +2896,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.clientLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.clientLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.clientLabel.ForeColor = System.Drawing.Color.White;
-            this.clientLabel.Location = new System.Drawing.Point(446, 154);
+            this.clientLabel.Location = new System.Drawing.Point(450, 162);
             this.clientLabel.Name = "clientLabel";
             this.clientLabel.Size = new System.Drawing.Size(164, 32);
             this.clientLabel.TabIndex = 25;
@@ -2900,7 +2910,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.cosmeticsLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.cosmeticsLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.cosmeticsLabel.ForeColor = System.Drawing.Color.White;
-            this.cosmeticsLabel.Location = new System.Drawing.Point(10, 154);
+            this.cosmeticsLabel.Location = new System.Drawing.Point(10, 165);
             this.cosmeticsLabel.Name = "cosmeticsLabel";
             this.cosmeticsLabel.Size = new System.Drawing.Size(210, 32);
             this.cosmeticsLabel.TabIndex = 24;
@@ -2928,7 +2938,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.launcherLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.launcherLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.launcherLabel.ForeColor = System.Drawing.Color.White;
-            this.launcherLabel.Location = new System.Drawing.Point(228, 115);
+            this.launcherLabel.Location = new System.Drawing.Point(228, 121);
             this.launcherLabel.Name = "launcherLabel";
             this.launcherLabel.Size = new System.Drawing.Size(201, 32);
             this.launcherLabel.TabIndex = 21;
@@ -2986,25 +2996,26 @@ namespace VentileClient
             this.TrayIconContextMenu.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.TrayIconContextMenu.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.TrayIconContextMenu.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.TrayIconContextMenu.Size = new System.Drawing.Size(181, 92);
+            this.TrayIconContextMenu.Size = new System.Drawing.Size(104, 70);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.TrayOpen_Click);
             // 
             // injectToolStripMenuItem
             // 
             this.injectToolStripMenuItem.Name = "injectToolStripMenuItem";
-            this.injectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.injectToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.injectToolStripMenuItem.Text = "Inject";
             this.injectToolStripMenuItem.Click += new System.EventHandler(this.inject_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.TrayQuit_Click);
             // 
@@ -3035,45 +3046,8 @@ namespace VentileClient
             // internetCheckTimer
             // 
             this.internetCheckTimer.Enabled = true;
-            this.internetCheckTimer.Interval = 1;
+            this.internetCheckTimer.Interval = 5;
             this.internetCheckTimer.Tick += new System.EventHandler(this.internetCheck_Tick);
-            // 
-            // DefaultDLLSelector
-            // 
-            this.FadeEffectBetweenPages.SetDecoration(this.DefaultDLLSelector, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.DefaultDLLSelector.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3});
-            this.DefaultDLLSelector.Name = "guna2ContextMenuStrip1";
-            this.DefaultDLLSelector.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
-            this.DefaultDLLSelector.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
-            this.DefaultDLLSelector.RenderStyle.ColorTable = null;
-            this.DefaultDLLSelector.RenderStyle.RoundedEdges = true;
-            this.DefaultDLLSelector.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
-            this.DefaultDLLSelector.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.DefaultDLLSelector.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
-            this.DefaultDLLSelector.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
-            this.DefaultDLLSelector.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.DefaultDLLSelector.Size = new System.Drawing.Size(104, 70);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
-            this.toolStripMenuItem1.Text = "Open";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(103, 22);
-            this.toolStripMenuItem2.Text = "Inject";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 22);
-            this.toolStripMenuItem3.Text = "Quit";
             // 
             // MainWindow
             // 
@@ -3126,173 +3100,170 @@ namespace VentileClient
             ((System.ComponentModel.ISupportInitialize)(this.aboutSeparator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aboutBackgroundColor)).EndInit();
             this.TrayIconContextMenu.ResumeLayout(false);
-            this.DefaultDLLSelector.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2Panel dragBar;
-        private Guna.UI2.WinForms.Guna2DragControl dragWindowControl;
-        private Guna.UI2.WinForms.Guna2Panel sidebar;
-        private Guna.UI2.WinForms.Guna2PictureBox logo;
-        private Guna.UI2.WinForms.Guna2Button closeButton;
-        private System.Windows.Forms.Label launcherTitle;
+        public Guna.UI2.WinForms.Guna2Panel dragBar;
+        public Guna.UI2.WinForms.Guna2DragControl dragWindowControl;
+        public Guna.UI2.WinForms.Guna2Panel sidebar;
+        public Guna.UI2.WinForms.Guna2PictureBox logo;
+        public Guna.UI2.WinForms.Guna2Button closeButton;
+        public System.Windows.Forms.Label launcherTitle;
         public System.Windows.Forms.Button line;
-        private Guna.UI2.WinForms.Guna2Button minimizeButton;
-        private FontAwesome.Sharp.IconPictureBox homeButtonIcon;
-        private Guna.UI2.WinForms.Guna2Button homeButton;
-        private System.Windows.Forms.Timer fadeOut;
-        private System.Windows.Forms.Timer tick;
-        private Guna.UI2.WinForms.Guna2Button cosmeticsButton;
-        private FontAwesome.Sharp.IconPictureBox cosmeticsButtonIcon;
-        private Guna.UI2.WinForms.Guna2Button settingsButton;
-        private FontAwesome.Sharp.IconPictureBox settingsButtonIcon;
-        private Guna.UI2.WinForms.Guna2Button aboutButton;
-        private FontAwesome.Sharp.IconPictureBox aboutButtonIcon;
+        public Guna.UI2.WinForms.Guna2Button minimizeButton;
+        public Guna.UI2.WinForms.Guna2Button homeButton;
+        public FontAwesome.Sharp.IconPictureBox homeButtonIcon;
+        public System.Windows.Forms.Timer fadeOut;
+        public System.Windows.Forms.Timer tick;
+        public Guna.UI2.WinForms.Guna2Button cosmeticsButton;
+        public FontAwesome.Sharp.IconPictureBox cosmeticsButtonIcon;
+        public Guna.UI2.WinForms.Guna2Button settingsButton;
+        public FontAwesome.Sharp.IconPictureBox settingsButtonIcon;
+        public Guna.UI2.WinForms.Guna2Button aboutButton;
+        public FontAwesome.Sharp.IconPictureBox aboutButtonIcon;
         public System.Windows.Forms.Label version;
-        private System.Windows.Forms.TabPage aboutTab;
-        private System.Windows.Forms.TabPage settingsTab;
-        private System.Windows.Forms.TabPage cosmeticsTab;
-        private System.Windows.Forms.TabPage homeTab;
+        public System.Windows.Forms.TabPage aboutTab;
+        public System.Windows.Forms.TabPage settingsTab;
+        public System.Windows.Forms.TabPage cosmeticsTab;
+        public System.Windows.Forms.TabPage homeTab;
         public Guna.UI2.WinForms.Guna2Button inject;
         public Guna.UI2.WinForms.Guna2Button selectDll;
         public Guna.UI2.WinForms.Guna2Button launchMc;
-        private System.Windows.Forms.Label cosmeticsVLabel;
-        private System.Windows.Forms.Label clientVLabel;
-        private System.Windows.Forms.Label launcherVLabel;
-        private System.Windows.Forms.PictureBox website;
-        private System.Windows.Forms.PictureBox discord;
-        private System.Windows.Forms.Label launcherBy;
-        private System.Windows.Forms.PictureBox aboutSeparator;
-        private System.Windows.Forms.Label clientLabel;
-        private System.Windows.Forms.Label cosmeticsLabel;
-        private System.Windows.Forms.Label aboutTabLabel;
-        private System.Windows.Forms.Label launcherLabel;
-        private System.Windows.Forms.Label aboutDesc;
-        private System.Windows.Forms.PictureBox aboutBackgroundColor;
-        private Guna.UI2.WinForms.Guna2Button oKagune;
-        private Guna.UI2.WinForms.Guna2Button oWavy;
-        private Guna.UI2.WinForms.Guna2Button aSlide;
-        private Guna.UI2.WinForms.Guna2Button aGlowing;
-        private Guna.UI2.WinForms.Guna2Button mRick;
-        private Guna.UI2.WinForms.Guna2Button mYellow;
-        private Guna.UI2.WinForms.Guna2Button mBlue;
-        private Guna.UI2.WinForms.Guna2Button mPink;
-        private Guna.UI2.WinForms.Guna2Button mWhite;
-        private Guna.UI2.WinForms.Guna2Button mBlack;
-        private Guna.UI2.WinForms.Guna2Button resetAllCosmetics;
-        private Guna.UI2.WinForms.Guna2Button cRick;
-        private Guna.UI2.WinForms.Guna2Button cYellow;
-        private Guna.UI2.WinForms.Guna2Button cBlue;
-        private Guna.UI2.WinForms.Guna2Button cPink;
-        private Guna.UI2.WinForms.Guna2Button cWhite;
-        private Guna.UI2.WinForms.Guna2Button cBlack;
-        private System.Windows.Forms.Label othersTitle;
-        private System.Windows.Forms.Label masksTitle;
-        private System.Windows.Forms.Label animatedCapesTitle;
-        private System.Windows.Forms.Label capesTitle;
-        private System.Windows.Forms.Label cosmeticsTabLabel;
-        private System.Windows.Forms.PictureBox cosmeticsBackground;
-        private Guna.UI2.WinForms.Guna2TabControl settingsPagesTabControl;
-        private System.Windows.Forms.Label settingsTabLabel;
-        private System.Windows.Forms.TabPage Launcher;
-        private System.Windows.Forms.TabPage Appearance;
-        private System.Windows.Forms.TabPage Extras;
-        private Guna.UI2.WinForms.Guna2Panel preset8;
-        private Guna.UI2.WinForms.Guna2Panel preset7;
-        private Guna.UI2.WinForms.Guna2Panel preset6;
-        private Guna.UI2.WinForms.Guna2Panel preset5;
-        private Guna.UI2.WinForms.Guna2Panel preset4;
-        private Guna.UI2.WinForms.Guna2Panel preset3;
-        private Guna.UI2.WinForms.Guna2Panel preset2;
-        private Guna.UI2.WinForms.Guna2TrackBar textBrightnessSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar buttonBrightnessSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar outlineBrightnessSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar accentBlueSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar accentGreenSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar accentRedSlider;
-        private Guna.UI2.WinForms.Guna2TrackBar backgroundBrightnessSlider;
-        private Guna.UI2.WinForms.Guna2Panel preset1;
-        private System.Windows.Forms.Label presetsLabel;
-        private Guna.UI2.WinForms.Guna2Button resetThemes;
-        private System.Windows.Forms.Label foreBT;
-        private System.Windows.Forms.Label labelForSlider5;
-        private System.Windows.Forms.Label accentBT;
-        private System.Windows.Forms.Label accentGT;
-        private System.Windows.Forms.Label accentRT;
-        private System.Windows.Forms.Label labelForSlider2;
-        private System.Windows.Forms.Label accentColorLabel;
-        private Guna.UI2.WinForms.Guna2Button ExtrasButton;
-        private Guna.UI2.WinForms.Guna2Button LauncherButton;
+        public System.Windows.Forms.Label cosmeticsVLabel;
+        public System.Windows.Forms.Label clientVLabel;
+        public System.Windows.Forms.Label launcherVLabel;
+        public System.Windows.Forms.PictureBox website;
+        public System.Windows.Forms.PictureBox discord;
+        public System.Windows.Forms.Label launcherBy;
+        public System.Windows.Forms.PictureBox aboutSeparator;
+        public System.Windows.Forms.Label clientLabel;
+        public System.Windows.Forms.Label cosmeticsLabel;
+        public System.Windows.Forms.Label aboutTabLabel;
+        public System.Windows.Forms.Label launcherLabel;
+        public System.Windows.Forms.Label aboutDesc;
+        public System.Windows.Forms.PictureBox aboutBackgroundColor;
+        public Guna.UI2.WinForms.Guna2Button oKagune;
+        public Guna.UI2.WinForms.Guna2Button oWavy;
+        public Guna.UI2.WinForms.Guna2Button aSlide;
+        public Guna.UI2.WinForms.Guna2Button aGlowing;
+        public Guna.UI2.WinForms.Guna2Button mRick;
+        public Guna.UI2.WinForms.Guna2Button mYellow;
+        public Guna.UI2.WinForms.Guna2Button mBlue;
+        public Guna.UI2.WinForms.Guna2Button mPink;
+        public Guna.UI2.WinForms.Guna2Button mWhite;
+        public Guna.UI2.WinForms.Guna2Button mBlack;
+        public Guna.UI2.WinForms.Guna2Button resetAllCosmetics;
+        public Guna.UI2.WinForms.Guna2Button cRick;
+        public Guna.UI2.WinForms.Guna2Button cYellow;
+        public Guna.UI2.WinForms.Guna2Button cBlue;
+        public Guna.UI2.WinForms.Guna2Button cPink;
+        public Guna.UI2.WinForms.Guna2Button cWhite;
+        public Guna.UI2.WinForms.Guna2Button cBlack;
+        public System.Windows.Forms.Label othersTitle;
+        public System.Windows.Forms.Label masksTitle;
+        public System.Windows.Forms.Label animatedCapesTitle;
+        public System.Windows.Forms.Label capesTitle;
+        public System.Windows.Forms.Label cosmeticsTabLabel;
+        public System.Windows.Forms.PictureBox cosmeticsBackground;
+        public Guna.UI2.WinForms.Guna2TabControl settingsPagesTabControl;
+        public System.Windows.Forms.Label settingsTabLabel;
+        public System.Windows.Forms.TabPage Launcher;
+        public System.Windows.Forms.TabPage Appearance;
+        public System.Windows.Forms.TabPage Extras;
+        public Guna.UI2.WinForms.Guna2Panel preset8;
+        public Guna.UI2.WinForms.Guna2Panel preset7;
+        public Guna.UI2.WinForms.Guna2Panel preset6;
+        public Guna.UI2.WinForms.Guna2Panel preset5;
+        public Guna.UI2.WinForms.Guna2Panel preset4;
+        public Guna.UI2.WinForms.Guna2Panel preset3;
+        public Guna.UI2.WinForms.Guna2Panel preset2;
+        public Guna.UI2.WinForms.Guna2TrackBar textBrightnessSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar buttonBrightnessSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar outlineBrightnessSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar accentBlueSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar accentGreenSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar accentRedSlider;
+        public Guna.UI2.WinForms.Guna2TrackBar backgroundBrightnessSlider;
+        public Guna.UI2.WinForms.Guna2Panel preset1;
+        public System.Windows.Forms.Label presetsLabel;
+        public Guna.UI2.WinForms.Guna2Button resetThemes;
+        public System.Windows.Forms.Label foreBT;
+        public System.Windows.Forms.Label labelForSlider5;
+        public System.Windows.Forms.Label accentBT;
+        public System.Windows.Forms.Label accentGT;
+        public System.Windows.Forms.Label accentRT;
+        public System.Windows.Forms.Label labelForSlider2;
+        public System.Windows.Forms.Label accentColorLabel;
+        public Guna.UI2.WinForms.Guna2Button ExtrasButton;
+        public Guna.UI2.WinForms.Guna2Button LauncherButton;
         public Guna.UI2.WinForms.Guna2Button theme;
-        private System.Windows.Forms.Label outlineOT;
-        private System.Windows.Forms.Label labelForSlider3;
-        private System.Windows.Forms.Label outlineColorLabel;
-        private System.Windows.Forms.Label buttonBuT;
-        private System.Windows.Forms.Label labelForSlider4;
-        private System.Windows.Forms.Label backgroundBT;
-        private System.Windows.Forms.Label labelForSlider1;
-        private System.Windows.Forms.Label backgroundColorLabel;
-        private System.Windows.Forms.Label themeTitle;
-        private System.Windows.Forms.Label foreColorLabel;
-        private System.Windows.Forms.Label buttonColorLabel;
-        private System.Windows.Forms.Label rpcButtonTextLabel;
-        private System.Windows.Forms.MaskedTextBox rpcLine;
-        private Guna.UI2.WinForms.Guna2Button buttonForRpc;
-        private System.Windows.Forms.Label rpcButtonLinkLabel;
-        private System.Windows.Forms.MaskedTextBox rpcButtonText;
-        private System.Windows.Forms.MaskedTextBox rpcButtonLink;
-        private System.Windows.Forms.Label windowStateLabel;
-        private Guna.UI2.WinForms.Guna2Button hideWindow;
-        private Guna.UI2.WinForms.Guna2Button minWindow;
-        private System.Windows.Forms.Label richPresenceLabel;
-        private Guna.UI2.WinForms.Guna2Button closeWindow;
-        private System.Windows.Forms.Label devDLLLabel;
-        private Guna.UI2.WinForms.Guna2Button RpcToggle;
-        private System.Windows.Forms.Label resourceLabel;
-        private System.Windows.Forms.Label autoLabel;
-        private Guna.UI2.WinForms.Guna2Button customDLLButton;
-        private Guna.UI2.WinForms.Guna2Button openWindow;
-        private Guna.UI2.WinForms.Guna2Button autoInject;
-        private Guna.UI2.WinForms.Guna2Button customLoc;
-        private Guna.UI2.WinForms.Guna2Button AppearanceButton;
-        private Guna.UI2.WinForms.Guna2ContextMenuStrip presets;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private Guna.UI2.WinForms.Guna2Button customImage;
-        private System.Windows.Forms.Label backImageTitle;
-        private Guna.UI2.WinForms.Guna2Button roundedToggle;
-        private System.Windows.Forms.Label roundedTitle;
-        private Guna.UI2.WinForms.Guna2Button toastsToggle;
-        private Guna.UI2.WinForms.Guna2Button AppearanceButton2;
-        private System.Windows.Forms.Label toastsTitle;
-        private Guna.UI2.WinForms.Guna2ComboBox toastsSelector;
-        private System.Windows.Forms.NotifyIcon TrayIcon;
-        private Guna.UI2.WinForms.Guna2ContextMenuStrip TrayIconContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem injectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private Guna.UI2.WinForms.Guna2Button versionButton;
-        private FontAwesome.Sharp.IconPictureBox versionButtonIcon;
-        private System.Windows.Forms.TabPage versionsTab;
+        public System.Windows.Forms.Label outlineOT;
+        public System.Windows.Forms.Label labelForSlider3;
+        public System.Windows.Forms.Label outlineColorLabel;
+        public System.Windows.Forms.Label buttonBuT;
+        public System.Windows.Forms.Label labelForSlider4;
+        public System.Windows.Forms.Label backgroundBT;
+        public System.Windows.Forms.Label labelForSlider1;
+        public System.Windows.Forms.Label backgroundColorLabel;
+        public System.Windows.Forms.Label themeTitle;
+        public System.Windows.Forms.Label foreColorLabel;
+        public System.Windows.Forms.Label buttonColorLabel;
+        public System.Windows.Forms.Label rpcButtonTextLabel;
+        public System.Windows.Forms.MaskedTextBox rpcLine;
+        public Guna.UI2.WinForms.Guna2Button buttonForRpc;
+        public System.Windows.Forms.Label rpcButtonLinkLabel;
+        public System.Windows.Forms.MaskedTextBox rpcButtonText;
+        public System.Windows.Forms.MaskedTextBox rpcButtonLink;
+        public System.Windows.Forms.Label windowStateLabel;
+        public Guna.UI2.WinForms.Guna2Button hideWindow;
+        public Guna.UI2.WinForms.Guna2Button minWindow;
+        public System.Windows.Forms.Label richPresenceLabel;
+        public Guna.UI2.WinForms.Guna2Button closeWindow;
+        public System.Windows.Forms.Label devDLLLabel;
+        public Guna.UI2.WinForms.Guna2Button RpcToggle;
+        public System.Windows.Forms.Label resourceLabel;
+        public System.Windows.Forms.Label autoLabel;
+        public Guna.UI2.WinForms.Guna2Button customDLLButton;
+        public Guna.UI2.WinForms.Guna2Button openWindow;
+        public Guna.UI2.WinForms.Guna2Button autoInject;
+        public Guna.UI2.WinForms.Guna2Button customLoc;
+        public Guna.UI2.WinForms.Guna2Button AppearanceButton;
+        public Guna.UI2.WinForms.Guna2ContextMenuStrip presets;
+        public System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;
+        public System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem1;
+        public System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        public Guna.UI2.WinForms.Guna2Button customImage;
+        public System.Windows.Forms.Label backImageTitle;
+        public Guna.UI2.WinForms.Guna2Button roundedToggle;
+        public System.Windows.Forms.Label roundedTitle;
+        public Guna.UI2.WinForms.Guna2Button toastsToggle;
+        public Guna.UI2.WinForms.Guna2Button AppearanceButton2;
+        public System.Windows.Forms.Label toastsTitle;
+        public Guna.UI2.WinForms.Guna2ComboBox toastsSelector;
+        public System.Windows.Forms.NotifyIcon TrayIcon;
+        public Guna.UI2.WinForms.Guna2ContextMenuStrip TrayIconContextMenu;
+        public System.Windows.Forms.ToolStripMenuItem injectToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        public Guna.UI2.WinForms.Guna2Button versionButton;
+        public FontAwesome.Sharp.IconPictureBox versionButtonIcon;
+        public System.Windows.Forms.TabPage versionsTab;
         public Guna.UI2.WinForms.Guna2TabControl contentView;
-        private Guna.UI2.WinForms.Guna2Transition FadeEffectBetweenPages;
-        private Guna.UI2.WinForms.Guna2Button performanceModeToggle;
-        private System.Windows.Forms.Label performanceModeTitle;
+        public Guna.UI2.WinForms.Guna2Transition FadeEffectBetweenPages;
+        public Guna.UI2.WinForms.Guna2Button performanceModeToggle;
+        public System.Windows.Forms.Label performanceModeTitle;
         public System.Windows.Forms.Timer fadeIn;
-        private System.Windows.Forms.Timer internetCheckTimer;
-        private System.Windows.Forms.LinkLabel changeLogLink;
-        private Guna.UI2.WinForms.Guna2NumericUpDown injectDelay;
-        private System.Windows.Forms.Label injectDelayLabel;
-        private Guna.UI2.WinForms.Guna2ContextMenuStrip DefaultDLLSelector;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        public System.Windows.Forms.Timer internetCheckTimer;
+        public System.Windows.Forms.LinkLabel changeLogLink;
+        public Guna.UI2.WinForms.Guna2NumericUpDown injectDelay;
+        public System.Windows.Forms.Label injectDelayLabel;
+        public Guna.UI2.WinForms.Guna2ContextMenuStrip DefaultDLLSelector;
+        private System.ComponentModel.IContainer components;
     }
 }
 

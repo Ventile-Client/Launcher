@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VentileClient.JSON_Template_Classes
 {
-    class PresetColorsTemplate
+    public class PresetColorsTemplate
     {
         public string p1 { get; set; }
         public string p2 { get; set; }

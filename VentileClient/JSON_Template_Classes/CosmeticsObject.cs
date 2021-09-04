@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace VentileClient.JSON_Template_Classes
 {
-    class CosmeticsObject
+    public class CosmeticsObject
     {
-        public string pack_id { get; set; }
-        public string subpack { get; set; }
-        public int[] version { get; set; }
+        public string Pack_id { get; set; }
+        public string Subpack { get; set; }
+        public int[] Version { get; set; }
     }
 }
