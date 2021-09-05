@@ -15,3 +15,5 @@
 
  - Fixes:
     Slightly Increased Performance
+    Rich Presence
+    Cosmetics Overlap

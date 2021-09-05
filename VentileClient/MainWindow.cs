@@ -24,9 +24,6 @@ namespace VentileClient
     public partial class MainWindow : Form
     {
 
-        // Importing Public Functions from RPC.cs
-        private readonly RPC _drpc = new RPC();
-
         // Rounded Form
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -49,6 +46,7 @@ namespace VentileClient
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
             isBeta = true,
+            rpcClientID = "832806990953840710",
             changelog = Properties.Resources.Changelog.Split('\n')
         };
 
@@ -248,7 +246,7 @@ namespace VentileClient
             {
                 ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
                 ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-                _drpc.Deinitialize();
+                RPC.Disable();
                 Task.Delay(100);
                 fadeOut.Start();
             }
@@ -257,12 +255,12 @@ namespace VentileClient
             if (Process.GetProcessesByName("Minecraft.Windows").Length > 0 && !_inGameTest)
             {
                 _inGameTest = true;
-                _drpc.InGame();
+                RPC.ChangeState("In the Game!");
             }
             else if (!(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _inGameTest)
             {
                 _inGameTest = false;
-                _drpc.Home();
+                RPC.ChangeState("Idling the Launcher...");
             }
         }
 
@@ -300,6 +298,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = homeTab;
+            RPC.Idling();
 
             if (!configCS.PerformanceMode)
             {
@@ -338,6 +337,7 @@ namespace VentileClient
 
             if (!internet) contentView.SelectedTab = versionsTab;
             else contentView.SelectedTab = cosmeticsTab;
+            RPC.ChangeState("Choosing Cosmetics...");
 
             this.Refresh();
 
@@ -385,6 +385,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = versionsTab;
+            RPC.ChangeState("Choosing a version...");
 
             if (!configCS.PerformanceMode)
             {
@@ -423,6 +424,7 @@ namespace VentileClient
 
             contentView.SelectedTab = settingsTab;
             settingsPagesTabControl.SelectedTab = Launcher;
+            RPC.ChangeState("Configuring Settings...");
 
             if (!configCS.PerformanceMode)
             {
@@ -461,7 +463,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = aboutTab;
-            this.Refresh();
+            RPC.Idling();
 
             if (!configCS.PerformanceMode)
             {
@@ -490,18 +492,19 @@ namespace VentileClient
         bool _isClosing;
         private void close(string logText)
         {
-            if (_isClosing) return;
-            _isClosing = true;
-
-            ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-            ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
-            ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
-            ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
 
 
             if (allowClose == 0)
             {
-                _drpc.Deinitialize();
+                if (_isClosing) return;
+                    _isClosing = true;
+
+                ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
+                ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+
+                RPC.Disable();
 
                 defaultLogger.Log(logText);
                 //Close all loggers
@@ -630,6 +633,7 @@ namespace VentileClient
         private async void cBlack_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cBlack.Checked = true;
@@ -653,6 +657,7 @@ namespace VentileClient
         private async void cWhite_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cWhite.Checked = true;
@@ -676,6 +681,7 @@ namespace VentileClient
         private async void cPink_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cPink.Checked = true;
@@ -699,6 +705,7 @@ namespace VentileClient
         private async void cBlue_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cBlue.Checked = true;
@@ -722,6 +729,7 @@ namespace VentileClient
         private async void cYellow_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cYellow.Checked = true;
@@ -745,6 +753,7 @@ namespace VentileClient
         private async void cRick_Click(object sender, EventArgs e)
         {
             resetCapes();
+            resetAnimated();
             if (internet)
             {
                 cRick.Checked = true;
@@ -1009,11 +1018,12 @@ namespace VentileClient
 
         #endregion
 
-        #region Extras
+        #region Animated
 
         private async void aGlowing_Click(object sender, EventArgs e)
         {
-            resetExtras();
+            resetAnimated();
+            resetCapes();
             if (internet)
             {
                 aGlowing.Checked = true;
@@ -1034,7 +1044,8 @@ namespace VentileClient
 
         private async void aSlide_Click(object sender, EventArgs e)
         {
-            resetExtras();
+            resetAnimated();
+            resetCapes();
             if (internet)
             {
                 aSlide.Checked = true;
@@ -1054,7 +1065,7 @@ namespace VentileClient
             }
         }
 
-        private void resetExtras()
+        private void resetAnimated()
         {
             aGlowing.Checked = false;
             aSlide.Checked = false;
@@ -1159,7 +1170,7 @@ namespace VentileClient
         {
             resetCapes();
             resetMasks();
-            resetExtras();
+            resetAnimated();
             resetOthers();
             ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
         }
@@ -1267,7 +1278,7 @@ namespace VentileClient
                 configCS.RichPresence = false;
 
                 Cooldown(15);
-                _drpc.Deinitialize();
+                RPC.Disable();
 
             }
             else if (!configCS.RichPresence)
@@ -1290,7 +1301,7 @@ namespace VentileClient
                 }
 
                 Cooldown(15);
-                _drpc.Initialize();
+                RPC.Idling();
                 rpcLine.Text = configCS.RpcText;
             }
         }
@@ -1891,6 +1902,7 @@ namespace VentileClient
                     ColorManager.Version();
                     ColorManager.Settings();
                     ColorManager.About();
+                    ColorManager.ChangeBackground();
 
                     DataManager.Home();
                     DataManager.Settings();
@@ -2259,9 +2271,11 @@ namespace VentileClient
         public string launcherVersion;
         public string clientVersion;
         public string cosmeticsVersion;
-        public string[] changelog;
-
         public bool isBeta;
+
+        public string rpcClientID;
+
+        public string[] changelog;
     }
 
     public class LinkSettings

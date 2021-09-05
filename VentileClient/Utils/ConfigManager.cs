@@ -56,7 +56,7 @@ namespace VentileClient.Utils
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
-                    MAIN.configLogger.Log("Successfully wrote to configurations");
+                    MAIN.configLogger.Log("Successfully wrote to " + Path.GetFileName(path));
                 }
                 catch (Exception ex)
                 {

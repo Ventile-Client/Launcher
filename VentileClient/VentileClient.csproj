@@ -138,7 +138,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\MCDataManager.cs" />
-    <Compile Include="Utils\RichPresence.cs" />
+    <Compile Include="Utils\RPC.cs" />
     <Compile Include="Forms\Toast.cs">
       <SubType>Form</SubType>
     </Compile>
