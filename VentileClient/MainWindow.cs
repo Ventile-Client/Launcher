@@ -65,7 +65,7 @@ namespace VentileClient
 
         public GitHubClient github;
 
-        //Loggers
+        // Loggers
 
         public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
@@ -112,6 +112,14 @@ namespace VentileClient
 
         public MainWindow()
         {
+            // Doesnt allow launcher to be opened twice
+            if (Process.GetProcesses().Count(p => p.ProcessName == Process.GetCurrentProcess().ProcessName) > 1)
+            {
+                MessageBox.Show("Launcher is already open!");
+                this.Close();
+                return;
+            }
+
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
 
             InitializeComponent();
@@ -128,7 +136,8 @@ namespace VentileClient
             ConfigManager.ReadTheme(@"C:\temp\VentileClient\Presets\Theme.json");
 
             // Set the version's text
-            version.Text = ventile_settings.launcherVersion;
+            string beta = ventile_settings.isBeta ? "Beta" : "";
+            version.Text = $"{beta} {ventile_settings.launcherVersion}";
 
             // Check for internet
             internet = InternetManager.InternetCheck();
@@ -143,6 +152,7 @@ namespace VentileClient
                 new UpdateCheck()
                     .CheckForUpdate(themeCS, ventile_settings, internet, github);
 
+                // Checks for all avaliable dlls in github
                 DataManager.DLLS();
             }
         }
@@ -177,6 +187,9 @@ namespace VentileClient
             DataManager.Cosmetics();
             DataManager.Settings();
             DataManager.About();
+
+            // Initialize Rich Presence
+            RPC.Idling();
         }
 
         #region Timers

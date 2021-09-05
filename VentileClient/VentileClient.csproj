@@ -227,8 +227,6 @@ if $(ConfigurationName) == Release (
   powershell Compress-Archive -Path "$(TargetDir)PresetsZip\*.*" -DestinationPath "$(TargetDir)\Presets.zip"
   echo Zipped Presets
   cd $(TargetDir)
-  copy $(ProjectDir)ReleaseData\Changelog.txt $(TargetDir)
-  echo Copyed Changelog from ReleaseData
   rmdir /s /q $(TargetDir)PresetsZip
   rmdir /s /q $(TargetDir)LauncherZip
   echo Cleaned Up!

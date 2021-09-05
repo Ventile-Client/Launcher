@@ -98,6 +98,8 @@ namespace VentileClient.LauncherUtils
             var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
             ctrl.Maximum = int.MaxValue;
             ctrl.Value = 0;
+
+            Task.Delay(1000);
             ExtractAppx(@"C:\temp\VentileClient\Versions\Minecraft-" + version + ".Appx", @"C:\temp\VentileClient\Versions", "Minecraft-" + version, version);
         }
 

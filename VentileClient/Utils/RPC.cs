@@ -8,16 +8,9 @@ namespace VentileClient
 {
     public static class RPC
     {
-        public static void Toast(string title, string msg)
-        {
-            var toast = new Toast();
-            toast.ShowToast(title, msg, config, theme);
-        }
-
         static DiscordRpcClient client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcClientID);
 
         static ConfigTemplate config = MainWindow.INSTANCE.configCS;
-        static ThemeTemplate theme = MainWindow.INSTANCE.themeCS;
 
         public static void Idling()
         {
@@ -71,9 +64,9 @@ namespace VentileClient
                         });
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Toast("Rich Presence", "There was an error with RPC");
+                    MainWindow.INSTANCE.defaultLogger.Log(ex);
                 }
             }
         }
@@ -142,11 +135,9 @@ namespace VentileClient
                             }
                         });
                     }
-                    Toast("Rich Prescence", "In the Launcher!");
                 }
                 catch (Exception ex)
                 {
-                    Toast("Rich Presence", "There was an error with RPC");
                     MainWindow.INSTANCE.defaultLogger.Log(ex);
                 }
             }
