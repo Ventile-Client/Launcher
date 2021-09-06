@@ -120,6 +120,8 @@ namespace VentileClient
                 return;
             }
 
+
+
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
 
             InitializeComponent();
@@ -301,7 +303,7 @@ namespace VentileClient
             if (!configCS.PerformanceMode)
             {
                 p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
-                p.Size = versionsPanel.Size;
+                p.Size = versionsTab.Size;
                 p.Location = new Point(165, 21);
                 this.Controls.Add(p);
                 p.BringToFront();
@@ -339,7 +341,7 @@ namespace VentileClient
             if (!configCS.PerformanceMode)
             {
                 p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
-                p.Size = versionsPanel.Size;
+                p.Size = versionsTab.Size;
                 p.Location = new Point(165, 21);
                 this.Controls.Add(p);
                 p.BringToFront();
@@ -388,7 +390,7 @@ namespace VentileClient
             if (!configCS.PerformanceMode)
             {
                 p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
-                p.Size = versionsPanel.Size;
+                p.Size = versionsTab.Size;
                 p.Location = new Point(165, 21);
                 this.Controls.Add(p);
                 p.BringToFront();
@@ -426,7 +428,7 @@ namespace VentileClient
             if (!configCS.PerformanceMode)
             {
                 p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
-                p.Size = versionsPanel.Size;
+                p.Size = versionsTab.Size;
                 p.Location = new Point(165, 21);
                 this.Controls.Add(p);
                 p.BringToFront();
@@ -466,7 +468,7 @@ namespace VentileClient
             if (!configCS.PerformanceMode)
             {
                 p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
-                p.Size = versionsPanel.Size;
+                p.Size = versionsTab.Size;
                 p.Location = new Point(165, 21);
                 this.Controls.Add(p);
                 p.BringToFront();
@@ -2264,20 +2266,6 @@ namespace VentileClient
     }
 
     #region Small Classes
-    internal class VersionSorter : IComparer<Version>
-    {
-        public int Compare(Version x, Version y)
-        {
-
-            if (x == null || y == null)
-            {
-                return 0;
-            }
-
-            return x.CompareTo(y);
-
-        }
-    }
 
     public class VentileSettings
     {

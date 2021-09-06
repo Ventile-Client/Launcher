@@ -2,7 +2,6 @@
 using Octokit;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -250,18 +249,18 @@ namespace VentileClient.LauncherUtils
             Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
 
             //Settings
-            int progressWidth = 410;
+            int progressBarWidth = 410;
             int buttonWidth = 150;
             int spacing = 30;
             int topOffset = 15;
-            int rightOffset = 42;
+            int rightPanelOffset = 42;
             int rightButtonOffset = 70;
 
             MAIN.versionsTab.Controls.Clear();
             MAIN.versionsPanel.Controls.Clear();
 
             MAIN.versionsPanel.Size = MAIN.contentView.Size;
-            MAIN.versionsPanel.Width = MAIN.contentView.Width + rightOffset;
+            MAIN.versionsPanel.Width = MAIN.contentView.Width + rightPanelOffset;
 
             //contentView.Width = 644 + rightOffset;
             MAIN.versionsPanel.AutoScroll = true;
@@ -299,11 +298,10 @@ namespace VentileClient.LauncherUtils
             // Title Of Panel
             var label = new System.Windows.Forms.Label()
             {
-
                 AutoSize = true,
                 Text = "Version Selector",
                 Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                Location = new Point(5, 14),
+                Location = new Point(5, topOffset),
                 ForeColor = foreColor
             };
             label.BringToFront();
@@ -323,12 +321,10 @@ namespace VentileClient.LauncherUtils
             }
 
             versions.Sort(new VersionSorter()); //Sorts the versions becus mc versions system is trash
+            versions.Reverse();
 
-            int index = 0; // Positive Index 
-            for (int i = versions.Count - 1; i > -1; i--) // Backwards for loop to make versions go from Newest down to Oldest
+            for (int i = 0; i < versions.Count; i++) // Loop through all versions
             {
-                index++;
-
                 // Label for version
                 var versionName = new System.Windows.Forms.Label()
                 {
@@ -339,7 +335,8 @@ namespace VentileClient.LauncherUtils
                     AutoSize = true,
                     ForeColor = foreColor
                 };
-                versionName.Location = new Point(9, (versionName.Height + spacing) * index + topOffset);
+
+                versionName.Location = new Point(9, (versionName.Height + spacing) * (i + 1) + topOffset);
 
 
                 // Progress Bar for downloading/extracting progress
@@ -349,7 +346,7 @@ namespace VentileClient.LauncherUtils
                     UseTransparentBackground = true,
                     Tag = "bar|" + versionName.Tag,
                     Height = versionName.Height - 5,
-                    Width = progressWidth,
+                    Width = progressBarWidth,
                     ForeColor = foreColor,
                     FillColor = backColor2,
                     ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.Gradient,
@@ -367,280 +364,84 @@ namespace VentileClient.LauncherUtils
                     accentColor.B + MAIN.progressBarGradientOffset < 255 ? accentColor.B + MAIN.progressBarGradientOffset : accentColor.B
                     ),
 
-                    Location = new Point(versionName.Location.X + 15, versionName.Location.Y + 30),
+                    Location = new Point(versionName.Location.X + 15, versionName.Location.Y + spacing),
                     Visible = false,
                     TabStop = false
                 };
                 Guna2ProgressBar.CheckForIllegalCrossThreadCalls = false;
 
                 // Button to download appx from VersionChanger repo
-                var download = new Guna2Button();
-                download.Click += new EventHandler(DownloadVersion_Clicked);
-                download.Name = "versionDownload" + i.ToString();
-                download.Text = "Download";
-                download.Tag = "download|" + versionName.Tag;
-                download.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                download.Width = buttonWidth;
-                download.Height = versionName.Height + 10;
-                download.ForeColor = foreColor;
-                download.FillColor = backColor2;
-                download.CheckedState.FillColor = accentColor;
-                download.Checked = false;
-                download.UseTransparentBackground = true;
-                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - (rightButtonOffset), versionName.Location.Y);
-                download.Animated = true;
-                download.TabStop = false;
-                Guna2Button.CheckForIllegalCrossThreadCalls = false;
-
-                // Select the version
-                var select = new Guna2Button();
-                select.Click += new EventHandler(SelectVersion_Clicked);
-                select.Name = "versionsSelect" + i.ToString();
-                select.Text = "Select";
-                select.Tag = "select|" + versionName.Tag;
-                select.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                select.Width = buttonWidth;
-                select.Height = versionName.Height + 10;
-                select.ForeColor = foreColor;
-                select.FillColor = backColor2;
-                select.CheckedState.FillColor = accentColor;
-                select.Checked = false;
-                select.UseTransparentBackground = true;
-                select.Location = new Point(MAIN.versionsPanel.Width - select.Width - (rightButtonOffset), versionName.Location.Y);
-                select.Animated = true;
-                select.TabStop = false;
-                select.Visible = false;
-
-                // Delete the version
-                var uninstall = new Guna2Button();
-                uninstall.Click += new EventHandler(UninstallVersion_Clicked);
-                uninstall.Name = "versionUninstall" + i.ToString();
-                uninstall.Text = "Uninstall";
-                uninstall.Tag = "uninstall|" + versionName.Tag;
-                uninstall.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                uninstall.Width = buttonWidth;
-                uninstall.Height = versionName.Height + 10;
-                uninstall.ForeColor = foreColor;
-                uninstall.FillColor = backColor2;
-                uninstall.CheckedState.FillColor = accentColor;
-                uninstall.Checked = false;
-                uninstall.UseTransparentBackground = true;
-                uninstall.Location = new Point(MAIN.versionsPanel.Width - uninstall.Width * 2 - (10 + rightButtonOffset), versionName.Location.Y);
-                uninstall.Animated = true;
-                uninstall.TabStop = false;
-                uninstall.Visible = false;
-
-                // Add Buttons to stuff ykyk
-                MAIN.versionsPanel.Controls.Add(versionName);
-                MAIN.versionsPanel.Controls.Add(download);
-                MAIN.versionsPanel.Controls.Add(bar);
-                MAIN.versionsPanel.Controls.Add(select);
-                MAIN.versionsPanel.Controls.Add(uninstall);
-            }
-            //Make there be a little extra space at the bottom of panel
-
-            MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
-
-            MAIN.versionsPanel.Size = new Size(MAIN.versionsPanel.Width, MAIN.versionsPanel.Height + topOffset * 2);
-            // Refreshes The Currently Installed Versions
-            RefreshVersionList(versions);
-        }
-
-        public static async void VersionsBackup()
-        {
-            //Colors
-            // Make the color variable smaller
-            Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
-            Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
-            Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
-            Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
-            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
-            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
-
-            //Settings
-            int progressWidth = 410;
-            int buttonWidth = 150;
-            int spacing = 30;
-            int topOffset = 15;
-            int rightOffset = 42;
-            int rightButtonOffset = 70;
-
-            MAIN.versionsPanel.Controls.Clear();
-
-            MAIN.versionsPanel.Size = MAIN.contentView.Size;
-            MAIN.versionsPanel.Width = MAIN.contentView.Width + rightOffset;
-
-            //contentView.Width = 644 + rightOffset;
-            MAIN.versionsPanel.AutoScroll = true;
-
-            if (!MAIN.internet) //Displays a tab that says you don't have internet
-            {
-                var lbl = new System.Windows.Forms.Label()
+                var download = new Guna2Button()
                 {
-                    AutoSize = true,
-                    Text = "No Internet...",
-                    Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                    Location = new Point(5, topOffset),
-                    ForeColor = foreColor
-                };
-                lbl.BringToFront();
-                MAIN.versionsPanel.Controls.Add(lbl);
-
-                var noInternet = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to acess the internet\n - You don't have an internet connection\n - If a reason isn't listed here, ask for help or contact thedevs!",
-                    Font = new Font("Segoe UI", 14.25f),
-                    Location = new Point(9, spacing + topOffset * 2),
-                    ForeColor = foreColor
-                };
-                noInternet.BringToFront();
-                MAIN.versionsPanel.Controls.Add(noInternet);
-
-                MAIN.contentView.SelectedTab = MAIN.versionsTab;
-
-                return;
-
-            }
-
-            // Title Of Panel
-            var label = new System.Windows.Forms.Label()
-            {
-
-                AutoSize = true,
-                Text = "Version Selector",
-                Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                Location = new Point(5, 14),
-                ForeColor = foreColor
-            };
-            label.BringToFront();
-
-            MAIN.versionsPanel.Controls.Add(label);
-
-
-            // New List of class Version
-            var versions = new List<Version>();
-
-            IReadOnlyList<Release> releases = await MAIN.github.Repository.Release.GetAll(LINK_SETTINGS.repoOwner, LINK_SETTINGS.versionsRepo); // Gets all releases from the VersionChanger repo
-
-            foreach (Release release in releases) // Used to sort and add versions to the versions list
-            {
-                var v = new Version(release.TagName);
-                versions.Add(v);
-            }
-
-            versions.Sort(new VersionSorter()); //Sorts the versions becus mc versions system is trash
-
-            int index = 0; // Positive Index 
-            for (int i = versions.Count - 1; i > -1; i--) // Backwards for loop to make versions go from Newest down to Oldest
-            {
-                index++;
-
-                // Label for version
-                var versionName = new System.Windows.Forms.Label()
-                {
-                    Name = "versionLabel" + i.ToString(),
-                    Text = versions[i].ToString(),
-                    Tag = versions[i].ToString(),
-                    Font = new Font("Segoe UI", 14.25f),
-                    AutoSize = true,
-                    ForeColor = foreColor
-                };
-                versionName.Location = new Point(9, (versionName.Height + spacing) * index + topOffset);
-
-
-                // Progress Bar for downloading/extracting progress
-                var bar = new Guna2ProgressBar
-                {
-                    Name = "versionBar" + i.ToString(),
-                    UseTransparentBackground = true,
-                    Tag = "bar|" + versionName.Tag,
-                    Height = versionName.Height - 5,
-                    Width = progressWidth,
+                    Name = "versionDownload" + i.ToString(),
+                    Text = "Download",
+                    Tag = "download|" + versionName.Tag,
+                    Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
+                    Width = buttonWidth,
+                    Height = versionName.Height + 10,
                     ForeColor = foreColor,
                     FillColor = backColor2,
-                    ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.Gradient,
-                    ProgressColor = accentColor,
-
-                    ProgressColor2 = Color.FromArgb
-                    (
-                    accentColor.R - MAIN.progressBarGradientOffset > 0 ? accentColor.R - MAIN.progressBarGradientOffset :
-                    accentColor.R + MAIN.progressBarGradientOffset < 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
-
-                    accentColor.R - MAIN.progressBarGradientOffset > 0 ? accentColor.R - MAIN.progressBarGradientOffset :
-                    accentColor.R + MAIN.progressBarGradientOffset < 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
-
-                    accentColor.B - MAIN.progressBarGradientOffset > 0 ? accentColor.B - MAIN.progressBarGradientOffset :
-                    accentColor.B + MAIN.progressBarGradientOffset < 255 ? accentColor.B + MAIN.progressBarGradientOffset : accentColor.B
-                    ),
-
-                    Location = new Point(versionName.Location.X + 15, versionName.Location.Y + 30),
-                    Visible = false,
+                    CheckedState = { FillColor = accentColor },
+                    Checked = false,
+                    UseTransparentBackground = true,
+                    Animated = true,
                     TabStop = false
                 };
-                Guna2ProgressBar.CheckForIllegalCrossThreadCalls = false;
 
-                // Button to download appx from VersionChanger repo
-                var download = new Guna2Button();
+                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - rightButtonOffset, versionName.Location.Y);
                 download.Click += new EventHandler(DownloadVersion_Clicked);
-                download.Name = "versionDownload" + i.ToString();
-                download.Text = "Download";
-                download.Tag = "download|" + versionName.Tag;
-                download.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                download.Width = buttonWidth;
-                download.Height = versionName.Height + 10;
-                download.ForeColor = foreColor;
-                download.FillColor = backColor2;
-                download.CheckedState.FillColor = accentColor;
-                download.Checked = false;
-                download.UseTransparentBackground = true;
-                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - (rightButtonOffset), versionName.Location.Y);
-                download.Animated = true;
-                download.TabStop = false;
+
                 Guna2Button.CheckForIllegalCrossThreadCalls = false;
 
                 // Select the version
-                var select = new Guna2Button();
+                var select = new Guna2Button()
+                {
+                    Name = "versionsSelect" + i.ToString(),
+                    Text = "Select",
+                    Tag = "select|" + versionName.Tag,
+                    Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
+                    Width = buttonWidth,
+                    Height = versionName.Height + 10,
+                    ForeColor = foreColor,
+                    FillColor = backColor2,
+                    CheckedState = { FillColor = accentColor },
+                    Checked = false,
+                    UseTransparentBackground = true,
+                    Animated = true,
+                    TabStop = false,
+                    Visible = false
+                };
+
                 select.Click += new EventHandler(SelectVersion_Clicked);
-                select.Name = "versionsSelect" + i.ToString();
-                select.Text = "Select";
-                select.Tag = "select|" + versionName.Tag;
-                select.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                select.Width = buttonWidth;
-                select.Height = versionName.Height + 10;
-                select.ForeColor = foreColor;
-                select.FillColor = backColor2;
-                select.CheckedState.FillColor = accentColor;
-                select.Checked = false;
-                select.UseTransparentBackground = true;
-                select.Location = new Point(MAIN.versionsPanel.Width - select.Width - (rightButtonOffset), versionName.Location.Y);
-                select.Animated = true;
-                select.TabStop = false;
-                select.Visible = false;
+                select.Location = new Point(MAIN.versionsPanel.Width - select.Width - rightButtonOffset, versionName.Location.Y);
 
                 // Delete the version
-                var uninstall = new Guna2Button();
+                var uninstall = new Guna2Button()
+                {
+                    Name = "versionUninstall" + i.ToString(),
+                    Text = "Uninstall",
+                    Tag = "uninstall|" + versionName.Tag,
+                    Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
+                    Width = buttonWidth,
+                    Height = versionName.Height + 10,
+                    ForeColor = foreColor,
+                    FillColor = backColor2,
+                    CheckedState = { FillColor = accentColor },
+                    Checked = false,
+                    UseTransparentBackground = true,
+                    Animated = true,
+                    TabStop = false,
+                    Visible = false,
+                };
+
                 uninstall.Click += new EventHandler(UninstallVersion_Clicked);
-                uninstall.Name = "versionUninstall" + i.ToString();
-                uninstall.Text = "Uninstall";
-                uninstall.Tag = "uninstall|" + versionName.Tag;
-                uninstall.Font = new Font("Segoe UI", 14.25f, FontStyle.Bold);
-                uninstall.Width = buttonWidth;
-                uninstall.Height = versionName.Height + 10;
-                uninstall.ForeColor = foreColor;
-                uninstall.FillColor = backColor2;
-                uninstall.CheckedState.FillColor = accentColor;
-                uninstall.Checked = false;
-                uninstall.UseTransparentBackground = true;
                 uninstall.Location = new Point(MAIN.versionsPanel.Width - uninstall.Width * 2 - (10 + rightButtonOffset), versionName.Location.Y);
-                uninstall.Animated = true;
-                uninstall.TabStop = false;
-                uninstall.Visible = false;
+
 
                 // Add Buttons to stuff ykyk
                 MAIN.versionsPanel.Controls.Add(versionName);
-                MAIN.versionsPanel.Controls.Add(download);
                 MAIN.versionsPanel.Controls.Add(bar);
+                MAIN.versionsPanel.Controls.Add(download);
                 MAIN.versionsPanel.Controls.Add(select);
                 MAIN.versionsPanel.Controls.Add(uninstall);
             }
@@ -648,7 +449,10 @@ namespace VentileClient.LauncherUtils
 
             MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
 
-            MAIN.versionsPanel.Size = new Size(MAIN.versionsPanel.Width, MAIN.versionsPanel.Height + topOffset * 2);
+            MAIN.PerformLayout();
+
+            //MAIN.versionsPanel.Height += topOffset * 2;
+
             // Refreshes The Currently Installed Versions
             RefreshVersionList(versions);
         }
@@ -894,7 +698,8 @@ namespace VentileClient.LauncherUtils
             MAIN.allowClose++;
 
             var sndr = sender as Guna2Button;
-            string version = ((Guna2Button)sender).Tag.ToString().Substring(sndr.Text.Length + 1);
+
+            string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
             sndr.Enabled = false;
 
             await MCDataManager.Backup();
@@ -911,7 +716,7 @@ namespace VentileClient.LauncherUtils
             }
             MAIN.allowClose++;
             MAIN.allowSelectVersion++;
-            string version = ((Guna2Button)sender).Tag.ToString().Substring(((Guna2Button)sender).Text.Length + 1);
+            string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
             string gameDir = @"C:\temp\VentileClient\Versions\Minecraft-" + version;
             if (!Directory.Exists(gameDir))
             {
@@ -941,6 +746,7 @@ namespace VentileClient.LauncherUtils
                     ctrl2.Enabled = false;
                     ctrl2.Visible = true;
                 }));
+
                 if (Directory.Exists(@"C:\temp\VentileClient\Versions\" + "Minecraft-" + version))
                     Directory.Delete(@"C:\temp\VentileClient\Versions\" + "Minecraft-" + version, true);
 
@@ -994,5 +800,20 @@ namespace VentileClient.LauncherUtils
         }
 
         #endregion
+    }
+
+    internal class VersionSorter : IComparer<Version>
+    {
+        public int Compare(Version x, Version y)
+        {
+
+            if (x == null || y == null)
+            {
+                return 0;
+            }
+
+            return x.CompareTo(y);
+
+        }
     }
 }

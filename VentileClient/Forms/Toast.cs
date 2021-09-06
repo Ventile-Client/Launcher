@@ -9,8 +9,6 @@ namespace VentileClient
 {
     public partial class Toast : Form
     {
-
-
         //Rounded Window
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -27,7 +25,7 @@ namespace VentileClient
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.None;
-            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
 
         public enum EnmAction

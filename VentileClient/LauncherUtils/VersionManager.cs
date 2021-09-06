@@ -1,15 +1,11 @@
 ﻿using Guna.UI2.WinForms;
 using Ionic.Zip;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
@@ -99,7 +95,6 @@ namespace VentileClient.LauncherUtils
             ctrl.Maximum = int.MaxValue;
             ctrl.Value = 0;
 
-            Task.Delay(1000);
             ExtractAppx(@"C:\temp\VentileClient\Versions\Minecraft-" + version + ".Appx", @"C:\temp\VentileClient\Versions", "Minecraft-" + version, version);
         }
 
@@ -112,25 +107,22 @@ namespace VentileClient.LauncherUtils
         private static long EXTRACTED_SIZE_TOTAL;
         private static long COMPRESSED_SIZE;
 
-        private static async void ExtractAppx(string AppxPath, string OutputPath, string dirName, string version)
+        private static void ExtractAppx(string AppxPath, string OutputPath, string dirName, string version)
         {
-            await Task.Run(() =>
+            if (!Directory.Exists(Path.Combine(OutputPath, dirName)))
             {
-                if (!Directory.Exists(Path.Combine(OutputPath, dirName)))
-                {
-                    Directory.CreateDirectory(Path.Combine(OutputPath, dirName));
-                    MAIN.versionLogger.Log("Created Directory: " + dirName + " in: " + OutputPath);
-                }
+                Directory.CreateDirectory(Path.Combine(OutputPath, dirName));
+                MAIN.versionLogger.Log("Created Directory: " + dirName + " in: " + OutputPath);
+            }
 
-                var _extractFile = new BackgroundWorker();
-                _extractFile.DoWork += new DoWorkEventHandler((sndr, e) => ExtractFile_DoWork(_extractFile, e, AppxPath, Path.Combine(OutputPath, dirName), version, dirName));
-                _extractFile.ProgressChanged += new ProgressChangedEventHandler((sndr, e) => ExtractFile_ProgressChanged(sndr, e, version));
-                _extractFile.RunWorkerCompleted += new RunWorkerCompletedEventHandler((sndr, e) => ExtractFile_RunWorkerCompleted(version, AppxPath, OutputPath, dirName));
-                _extractFile.WorkerReportsProgress = true;
+            var _extractFile = new BackgroundWorker();
+            _extractFile.DoWork += new DoWorkEventHandler((sndr, e) => ExtractFile_DoWork(_extractFile, e, AppxPath, Path.Combine(OutputPath, dirName), version, dirName));
+            _extractFile.ProgressChanged += new ProgressChangedEventHandler((sndr, e) => ExtractFile_ProgressChanged(sndr, e, version));
+            _extractFile.RunWorkerCompleted += new RunWorkerCompletedEventHandler((sndr, e) => ExtractFile_RunWorkerCompleted(version, AppxPath, OutputPath, dirName));
+            _extractFile.WorkerReportsProgress = true;
 
 
-                _extractFile.RunWorkerAsync();
-            });
+            _extractFile.RunWorkerAsync();
         }
 
         private static async void ExtractFile_DoWork(BackgroundWorker sender, DoWorkEventArgs e, string AppxPath, string OutputPath, string version, string dirName)
@@ -175,23 +167,20 @@ namespace VentileClient.LauncherUtils
             });
         }
 
-        private static async void Zip_ExtractProgress(BackgroundWorker sender, ExtractProgressEventArgs e)
+        private static void Zip_ExtractProgress(BackgroundWorker sender, ExtractProgressEventArgs e)
         {
-            await Task.Run(() =>
+            try
             {
-                try
+                if (e.TotalBytesToTransfer > 0)
                 {
-                    if (e.TotalBytesToTransfer > 0)
-                    {
-                        long percent = e.BytesTransferred * int.MaxValue / e.TotalBytesToTransfer;
-                        sender.ReportProgress((int)percent);
-                    }
+                    long percent = e.BytesTransferred * int.MaxValue / e.TotalBytesToTransfer;
+                    sender.ReportProgress((int)percent);
                 }
-                catch (Exception ex)
-                {
-                    MAIN.versionLogger.Log(ex, LogLevel.Information, LogLocation.Console);
-                }
-            });
+            }
+            catch (Exception ex)
+            {
+                MAIN.versionLogger.Log(ex, LogLevel.Information, LogLocation.Console);
+            }
         }
 
         private static void ExtractFile_RunWorkerCompleted(string version, string AppxPath, string OutputPath, string dirName)
