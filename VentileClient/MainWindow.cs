@@ -58,7 +58,8 @@ namespace VentileClient
             repoOwner = "Ventile-Client",
             versionsRepo = "VersionChanger",
             downloadRepo = "Download",
-            githubProductHeader = "VentileClientLauncher"
+            githubProductHeader = "VentileClientLauncher",
+            githubToken = "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"
         };
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
@@ -70,15 +71,6 @@ namespace VentileClient
         public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger versionLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
-
-        #region Toasts
-        public void Toast(string title, string msg)
-        {
-            var toast = new Toast();
-            toast.ShowToast(title, msg, configCS, themeCS);
-        }
-
-        #endregion
 
         #region Global Variables
 
@@ -120,13 +112,12 @@ namespace VentileClient
                 return;
             }
 
-
-
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
 
             InitializeComponent();
 
-            //_github.Credentials = new Credentials(LINK_SETTINGS.githubToken);
+            //Only needed when I reach api limit, to use my own token
+            if (link_settings.githubToken != "noToken") github.Credentials = new Credentials(link_settings.githubToken);
 
             INSTANCE = this;
 
@@ -170,11 +161,11 @@ namespace VentileClient
 
             if (!internet)
             {
-                this.Toast("Internet", "You don't have an active wifi connection!");
+                Notif.Toast("Internet", "You don't have an active wifi connection!");
             }
             if (!Directory.Exists(minecraftResourcePacks))
             {
-                this.Toast("Resource Pack", "I couldn't find your resource packs, maybe start minecraft?");
+                Notif.Toast("Resource Pack", "I couldn't find your resource packs, maybe start minecraft?");
             }
 
             ConfigManager.ReadCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
@@ -237,7 +228,7 @@ namespace VentileClient
             {
                 this.Hide();
                 TrayIcon.Visible = true;
-                this.Toast("Launcher", "Minimized to tray!");
+                Notif.Toast("Launcher", "Minimized to tray!");
                 _hidden = true;
             }
 
@@ -376,7 +367,7 @@ namespace VentileClient
         {
             if (!ventile_settings.isBeta)
             {
-                this.Toast("Version Manager", "Sorry this feature is too buggy! (It will be fixed)");
+                Notif.Toast("Version Manager", "Sorry this feature is too buggy! (It will be fixed)");
                 return;
             }
 
@@ -546,10 +537,10 @@ namespace VentileClient
             {
                 if (allowSelectVersion > 0)
                 {
-                    this.Toast("Version Manager", "Sorry, your still selecting your version!");
+                    Notif.Toast("Version Manager", "Sorry, your still selecting your version!");
                     return;
                 }
-                this.Toast("Version Manager", "Sorry, your still installing!");
+                Notif.Toast("Version Manager", "Sorry, your still installing!");
             }
         }
 
@@ -573,7 +564,7 @@ namespace VentileClient
             }
             catch (Exception ex)
             {
-                this.Toast("Error", "Sorry, there was an error launching...");
+                Notif.Toast("Error", "Sorry, there was an error launching...");
                 defaultLogger.Log(ex);
                 return;
             }
@@ -609,15 +600,15 @@ namespace VentileClient
             if (FileIn.ShowDialog() == DialogResult.OK)
             {
                 configCS.DefaultDLL = @FileIn.FileName;
-                this.Toast("DLL", "Your DLL is selected!");
+                Notif.Toast("DLL", "Your DLL is selected!");
                 if (!configCS.CustomDLL)
                 {
-                    this.Toast("DLL", "Enable Custom DLL to use your selected DLL!");
+                    Notif.Toast("DLL", "Enable Custom DLL to use your selected DLL!");
                 }
             }
             else
             {
-                this.Toast("DLL", "You didn't specify a DLL!");
+                Notif.Toast("DLL", "You didn't specify a DLL!");
             }
         }
 
@@ -665,7 +656,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -689,7 +680,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -713,7 +704,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -737,7 +728,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -761,7 +752,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -785,7 +776,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -864,7 +855,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -887,7 +878,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -910,7 +901,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -933,7 +924,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -956,7 +947,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -979,7 +970,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -1053,7 +1044,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -1076,7 +1067,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -1128,7 +1119,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -1149,7 +1140,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Internet", "You do not a wifi connection");
+                Notif.Toast("Internet", "You do not a wifi connection");
             }
         }
 
@@ -1354,7 +1345,7 @@ namespace VentileClient
                 }
                 else
                 {
-                    this.Toast("Error", "There was an error selecting image.");
+                    Notif.Toast("Error", "There was an error selecting image.");
                 }
             }
         }
@@ -1394,10 +1385,10 @@ namespace VentileClient
         private async void Cooldown(int sec)
         {
             _rpcCooldown = true;
-            this.Toast("Rich Presence", "Your on cooldown for " + sec + "s");
+            Notif.Toast("Rich Presence", "Your on cooldown for " + sec + "s");
             await Task.Delay(sec * 1000);
             _rpcCooldown = false;
-            this.Toast("Rich Presence", "Cooldown finished");
+            Notif.Toast("Rich Presence", "Cooldown finished");
         }
 
         private void buttonForRpc_Click(object sender, EventArgs e)
@@ -1823,7 +1814,7 @@ namespace VentileClient
         {
             if (_hoveredPreset == null)
             {
-                this.Toast("Presets", "There was an error saving!");
+                Notif.Toast("Presets", "There was an error saving!");
             }
             else
             {
@@ -1865,7 +1856,7 @@ namespace VentileClient
         {
             if (_hoveredPreset == null)
             {
-                this.Toast("Presets", "There was an error loading!");
+                Notif.Toast("Presets", "There was an error loading!");
             }
             else
             {
@@ -1925,7 +1916,7 @@ namespace VentileClient
                 }
                 else
                 {
-                    this.Toast("Presets", "Preset not found!");
+                    Notif.Toast("Presets", "Preset not found!");
                     ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
 
                     _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
@@ -2003,7 +1994,7 @@ namespace VentileClient
             }
             else
             {
-                this.Toast("Presets", "This preset doesn't exist!");
+                Notif.Toast("Presets", "This preset doesn't exist!");
                 ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
@@ -2101,7 +2092,7 @@ namespace VentileClient
                         if (Convert.ToInt32(_panel.Name.Substring(6)) == 8)
                             presetCS.p8 = them.Accent;
 
-                        this.Toast("Preset", "Preset Sucessfully Imported!");
+                        Notif.Toast("Preset", "Preset Sucessfully Imported!");
 
                         ColorManager.Global();
                         ColorManager.Home();
@@ -2115,19 +2106,19 @@ namespace VentileClient
                     }
                     catch
                     {
-                        this.Toast("Error", "There was an error :(");
+                        Notif.Toast("Error", "There was an error :(");
                         return;
                     }
                 }
                 else
                 {
-                    this.Toast("File Dialog", "The file you selected caused an error!");
+                    Notif.Toast("File Dialog", "The file you selected caused an error!");
                     return;
                 }
             }
             else
             {
-                this.Toast("File Dialog", "The file you selected caused an error!");
+                Notif.Toast("File Dialog", "The file you selected caused an error!");
                 return;
             }
         }

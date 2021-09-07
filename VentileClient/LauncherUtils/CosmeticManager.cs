@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VentileClient.JSON_Template_Classes;
+using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
 {
@@ -19,7 +20,7 @@ namespace VentileClient.LauncherUtils
             if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json")))
             {
 
-                MAIN.Toast("Pack Error", "Looks like your com.mojang folder isnt avaliable!");
+                Notif.Toast("Pack Error", "Looks like your com.mojang folder isnt avaliable!");
                 return new List<CosmeticsObject>();
 
             }

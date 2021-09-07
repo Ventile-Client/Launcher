@@ -138,12 +138,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\MCDataManager.cs" />
+    <Compile Include="Utils\Notif.cs" />
     <Compile Include="Utils\RPC.cs" />
-    <Compile Include="Forms\Toast.cs">
+    <Compile Include="Forms\ToastForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Toast.Designer.cs">
-      <DependentUpon>Toast.cs</DependentUpon>
+    <Compile Include="Forms\ToastForm.Designer.cs">
+      <DependentUpon>ToastForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\UpdateCheck.cs" />
     <Compile Include="Forms\UpdatePrompt.cs">
@@ -163,8 +164,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Toast.resx">
-      <DependentUpon>Toast.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ToastForm.resx">
+      <DependentUpon>ToastForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpdatePrompt.resx">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>

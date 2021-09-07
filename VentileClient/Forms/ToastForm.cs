@@ -7,7 +7,7 @@ using VentileClient.JSON_Template_Classes;
 
 namespace VentileClient
 {
-    public partial class Toast : Form
+    public partial class ToastForm : Form
     {
         //Rounded Window
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -21,7 +21,7 @@ namespace VentileClient
             int nHeightEllipse // width of ellipse
         );
 
-        public Toast()
+        public ToastForm()
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.None;
@@ -211,7 +211,7 @@ namespace VentileClient
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        var toast = (Toast)Application.OpenForms[fname];
+                        var toast = (ToastForm)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
@@ -235,7 +235,7 @@ namespace VentileClient
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        var toast = (Toast)Application.OpenForms[fname];
+                        var toast = (ToastForm)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
@@ -259,7 +259,7 @@ namespace VentileClient
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        var toast = (Toast)Application.OpenForms[fname];
+                        var toast = (ToastForm)Application.OpenForms[fname];
 
                         if (toast == null)
                         {
@@ -283,7 +283,7 @@ namespace VentileClient
                     for (int i = 0; i < 10; i++)
                     {
                         fname = "toast" + i.ToString();
-                        var toast = (Toast)Application.OpenForms[fname];
+                        var toast = (ToastForm)Application.OpenForms[fname];
 
                         if (toast == null)
                         {

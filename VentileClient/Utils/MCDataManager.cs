@@ -31,14 +31,14 @@ namespace VentileClient.Utils
             MAIN.versionLogger.Log("Starting backing up minecraft data!");
             MAIN.backingUp = true;
 
-            MAIN.Toast("Version Manager", "Backing up data...");
+            Notif.Toast("Version Manager", "Backing up data...");
 
             string sourceDirName = Path.Combine(MAIN.minecraftResourcePacks, @"..");
             string destDirName = @"C:\temp\VentileClient\Versions\.data\com.mojang";
 
             if (!Directory.Exists(sourceDirName))
             {
-                MAIN.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
+                Notif.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
                 MAIN.versionLogger.Log("Directory didnt exist: " + sourceDirName);
                 return;
             }
@@ -48,9 +48,10 @@ namespace VentileClient.Utils
                 await Task.Run(() =>
                 {
                     if (Directory.Exists(destDirName)) Directory.Delete(destDirName, true);
-                    FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+                        FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+
                     MAIN.versionLogger.Log("Backed up minecraft data!");
-                    MAIN.Toast("Version Manager", "Finished backing up!");
+                    Notif.Toast("Version Manager", "Finished backing up!");
                     MAIN.backedUp = true;
                     MAIN.backingUp = false;
                 });
@@ -58,7 +59,7 @@ namespace VentileClient.Utils
             catch (Exception err)
             {
                 MAIN.versionLogger.Log(err);
-                MAIN.Toast("Backup Error", "Sorry, there was an error backing up!");
+                Notif.Toast("Backup Error", "Sorry, there was an error backing up!");
                 MAIN.backedUp = true;
                 MAIN.backingUp = false;
             }
@@ -71,7 +72,7 @@ namespace VentileClient.Utils
 
             if (!Directory.Exists(sourceDirName))
             {
-                MAIN.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
+                Notif.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
                 MAIN.versionLogger.Log("Directory didn't exist! | " + sourceDirName);
                 MAIN.backedUp = true;
                 sndr.Enabled = true;
@@ -85,14 +86,16 @@ namespace VentileClient.Utils
                     if (Directory.Exists(destDirName)) Directory.Delete(destDirName, true);
                     FileSystem.CopyDirectory(sourceDirName, destDirName, true);
                     MAIN.backedUp = true;
-                    MAIN.Toast("Version Manager", "Backup finished, changing version...");
-                    await VersionManager.RegisterPackage(gameDir, sndr);
+                    Notif.Toast("Version Manager", "Backup finished, changing version...");
+
+                    string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
+                    await VersionManager.RegisterPackage(version, gameDir, sndr);
                 });
             }
             catch (Exception err)
             {
                 MAIN.versionLogger.Log(err);
-                MAIN.Toast("Version Error", "Sorry, there was an error...");
+                Notif.Toast("Version Error", "Sorry, there was an error...");
                 MAIN.backedUp = true;
                 sndr.Enabled = true;
             }

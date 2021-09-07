@@ -23,7 +23,7 @@ namespace VentileClient.Utils
             }
             catch (Exception ex)
             {
-                MAIN.Toast("Error", "There was an error :(");
+                Notif.Toast("Error", "There was an error :(");
                 MAIN.configLogger.Log(ex);
             }
         }
@@ -60,7 +60,7 @@ namespace VentileClient.Utils
                 }
                 catch (Exception ex)
                 {
-                    MAIN.Toast("Error", "There was an error :(");
+                    Notif.Toast("Error", "There was an error :(");
                     MAIN.configLogger.Log(ex);
                 }
             });
@@ -76,7 +76,7 @@ namespace VentileClient.Utils
             }
             catch (Exception ex)
             {
-                MAIN.Toast("Error", "There was an error :(");
+                Notif.Toast("Error", "There was an error :(");
                 MAIN.configLogger.Log(ex);
             }
         }
@@ -104,7 +104,7 @@ namespace VentileClient.Utils
                 }
                 catch (Exception ex)
                 {
-                    MAIN.Toast("Error", "There was an error :(");
+                    Notif.Toast("Error", "There was an error :(");
                     MAIN.configLogger.Log(ex);
                 }
             });
@@ -120,7 +120,7 @@ namespace VentileClient.Utils
             }
             catch (Exception ex)
             {
-                MAIN.Toast("Error", "There was an error :(");
+                Notif.Toast("Error", "There was an error :(");
                 MAIN.configLogger.Log(ex);
             }
         }
@@ -149,7 +149,7 @@ namespace VentileClient.Utils
                 }
                 catch (Exception ex)
                 {
-                    MAIN.Toast("Error", "There was an error :(");
+                    Notif.Toast("Error", "There was an error :(");
                     MAIN.configLogger.Log(ex);
                 }
             });
@@ -165,7 +165,7 @@ namespace VentileClient.Utils
             }
             catch (Exception ex)
             {
-                MAIN.Toast("Error", "There was an error :(");
+                Notif.Toast("Error", "There was an error :(");
                 MAIN.configLogger.Log(ex);
             }
         }
@@ -205,7 +205,7 @@ namespace VentileClient.Utils
                 }
                 catch (Exception ex)
                 {
-                    MAIN.Toast("Error", "There was an error :(");
+                    Notif.Toast("Error", "There was an error :(");
                     MAIN.configLogger.Log(ex);
                 }
             });

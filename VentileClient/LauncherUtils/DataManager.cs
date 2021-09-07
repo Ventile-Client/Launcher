@@ -237,6 +237,14 @@ namespace VentileClient.LauncherUtils
             CosmeticManager.Add("b6039dbe-c5f1-4544-afdb-dd4b9ed7d19e");
         }
 
+        //Settings
+        static int progressBarWidth = 410;
+        static int buttonWidth = 150;
+        static int spacing = 30;
+        static int topOffset = 15;
+        static int rightPanelOffset = 42;
+        static int rightButtonOffset = 70;
+
         public static async void Version()
         {
             //Colors
@@ -247,14 +255,6 @@ namespace VentileClient.LauncherUtils
             Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
             Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
             Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
-
-            //Settings
-            int progressBarWidth = 410;
-            int buttonWidth = 150;
-            int spacing = 30;
-            int topOffset = 15;
-            int rightPanelOffset = 42;
-            int rightButtonOffset = 70;
 
             MAIN.versionsTab.Controls.Clear();
             MAIN.versionsPanel.Controls.Clear();
@@ -338,6 +338,7 @@ namespace VentileClient.LauncherUtils
 
                 versionName.Location = new Point(9, (versionName.Height + spacing) * (i + 1) + topOffset);
 
+                Guna2ProgressBar.CheckForIllegalCrossThreadCalls = false;
 
                 // Progress Bar for downloading/extracting progress
                 var bar = new Guna2ProgressBar
@@ -368,7 +369,8 @@ namespace VentileClient.LauncherUtils
                     Visible = false,
                     TabStop = false
                 };
-                Guna2ProgressBar.CheckForIllegalCrossThreadCalls = false;
+
+                Guna2Button.CheckForIllegalCrossThreadCalls = false;
 
                 // Button to download appx from VersionChanger repo
                 var download = new Guna2Button()
@@ -388,10 +390,8 @@ namespace VentileClient.LauncherUtils
                     TabStop = false
                 };
 
-                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - rightButtonOffset, versionName.Location.Y);
                 download.Click += new EventHandler(DownloadVersion_Clicked);
-
-                Guna2Button.CheckForIllegalCrossThreadCalls = false;
+                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - rightButtonOffset, versionName.Location.Y);
 
                 // Select the version
                 var select = new Guna2Button()
@@ -449,9 +449,7 @@ namespace VentileClient.LauncherUtils
 
             MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
 
-            MAIN.PerformLayout();
-
-            //MAIN.versionsPanel.Height += topOffset * 2;
+            MAIN.versionsPanel.Height = MAIN.contentView.Height - topOffset;
 
             // Refreshes The Currently Installed Versions
             RefreshVersionList(versions);
@@ -687,7 +685,7 @@ namespace VentileClient.LauncherUtils
             MAIN.selectedDLLName = (sender as ToolStripMenuItem).Tag.ToString();
             if (MAIN.configCS.CustomDLL)
             {
-                MAIN.Toast("DLL", "Disable Custom DLL to use the default ones!");
+                Notif.Toast("DLL", "Disable Custom DLL to use the default ones!");
             }
         }
 
@@ -702,29 +700,60 @@ namespace VentileClient.LauncherUtils
             string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
             sndr.Enabled = false;
 
-            await MCDataManager.Backup();
+            //Reset Positions Because of bug
+            var label = (System.Windows.Forms.Label)ControlManager.GetControl(version, MAIN.versionsPanel);
+
+            var progressBar = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
+            var downloadButton = (Guna2Button)ControlManager.GetControl("download|" + version, MAIN.versionsPanel);
+            var uninstallButton = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
+            var selectButton = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
+
+            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + spacing);
+            downloadButton.Location = new Point(downloadButton.Location.X, label.Location.Y);
+            uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
+            selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);
+
+            //await MCDataManager.Backup();
             await VersionManager.DownloadVersion(version, sndr);
         }
         private static async void SelectVersion_Clicked(object sender, EventArgs e)
         {
+
             var sndr = sender as Guna2Button;
+
+            string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
             sndr.Enabled = false;
+
+            //Reset Positions Because of bug
+            var label = (System.Windows.Forms.Label)ControlManager.GetControl(version, MAIN.versionsPanel);
+
+            var progressBar = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
+            var downloadButton = (Guna2Button)ControlManager.GetControl("download|" + version, MAIN.versionsPanel);
+            var uninstallButton = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
+            var selectButton = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
+
+            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + spacing);
+            downloadButton.Location = new Point(downloadButton.Location.X, label.Location.Y);
+            uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
+            selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);
+
             if (MAIN.allowSelectVersion != 0)
             {
-                MAIN.Toast("Version Manager", "Sorry, you are already selecting a version!");
-                return;
-            }
-            MAIN.allowClose++;
-            MAIN.allowSelectVersion++;
-            string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
-            string gameDir = @"C:\temp\VentileClient\Versions\Minecraft-" + version;
-            if (!Directory.Exists(gameDir))
-            {
-                MAIN.Toast("Version Manager", "Sorry, there was an error!");
+                Notif.Toast("Version Manager", "Sorry, you are already selecting a version!");
                 return;
             }
 
-            await VersionManager.RegisterPackage(gameDir, sndr);
+            MAIN.allowClose++;
+            MAIN.allowSelectVersion++;
+
+            string gameDir = @"C:\temp\VentileClient\Versions\Minecraft-" + version;
+            if (!Directory.Exists(gameDir))
+            {
+                Notif.Toast("Version Manager", "Sorry, there was an error!");
+                return;
+            }
+
+            await VersionManager.RegisterPackage(version, gameDir, sndr);
         }
         private static async void UninstallVersion_Clicked(object sender, EventArgs e)
         {
@@ -733,11 +762,15 @@ namespace VentileClient.LauncherUtils
                 MAIN.allowClose++;
                 var sndr = sender as Guna2Button;
                 string version = ((Guna2Button)sender).Tag.ToString().Substring(sndr.Text.Length + 1);
+
+                var label = (System.Windows.Forms.Label)ControlManager.GetControl(version, MAIN.versionsPanel);
+
                 var ctrl2 = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
                 ctrl2.Invoke(new Action(() =>
                 {
                     ctrl2.Enabled = false;
                     ctrl2.Visible = true;
+                    ctrl2.Location = new Point(ctrl2.Location.X, label.Location.Y);
                 }));
 
                 ctrl2 = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
@@ -745,6 +778,7 @@ namespace VentileClient.LauncherUtils
                 {
                     ctrl2.Enabled = false;
                     ctrl2.Visible = true;
+                    ctrl2.Location = new Point(ctrl2.Location.X, label.Location.Y);
                 }));
 
                 if (Directory.Exists(@"C:\temp\VentileClient\Versions\" + "Minecraft-" + version))
@@ -755,6 +789,7 @@ namespace VentileClient.LauncherUtils
                 {
                     ctrl2.Enabled = true;
                     ctrl2.Visible = true;
+                    ctrl2.Location = new Point(ctrl2.Location.X, label.Location.Y);
                 }));
 
                 ctrl2 = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
@@ -762,6 +797,7 @@ namespace VentileClient.LauncherUtils
                 {
                     ctrl2.Enabled = true;
                     ctrl2.Visible = false;
+                    ctrl2.Location = new Point(ctrl2.Location.X, label.Location.Y);
                 }));
 
                 ctrl2 = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
@@ -769,7 +805,9 @@ namespace VentileClient.LauncherUtils
                 {
                     ctrl2.Enabled = true;
                     ctrl2.Visible = false;
+                    ctrl2.Location = new Point(ctrl2.Location.X, label.Location.Y);
                 }));
+
                 MAIN.allowClose--;
             });
         }

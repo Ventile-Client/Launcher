@@ -2,6 +2,7 @@
 using Ionic.Zip;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Management.Automation;
 using System.Net;
@@ -14,7 +15,7 @@ namespace VentileClient.LauncherUtils
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
 
-        public static async Task RegisterPackage(string gameDir, Guna2Button sndr)
+        public static async Task RegisterPackage(string version, string gameDir, Guna2Button sndr)
         {
             await Task.Run(() =>
             {
@@ -27,19 +28,28 @@ namespace VentileClient.LauncherUtils
                         var ps = PowerShell.Create();
                         ps.AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"");
                         ps.Invoke();
-                        MAIN.Toast("Version Manager", $"Switched Version!");
-                        MAIN.versionLogger.Log("Registered Package: " + gameDir);
+                        Notif.Toast("Version Manager", $"Switched Version: {version}");
+                        MAIN.versionLogger.Log($"Registered Package: {gameDir}");
+                        MAIN.allowSelectVersion--;
+                        MAIN.allowClose--;
+                        sndr.Enabled = true;
                     }
                     else
                     {
-                        MAIN.Toast("Version Manager", "There was an error switching the version!");
+                        Notif.Toast("Version Manager", "There was an error switching the version!");
                         MAIN.versionLogger.Log("AppxManifest.xml didn't exist! | " + manifestPath, LogLevel.Error);
+                        MAIN.allowSelectVersion--;
+                        MAIN.allowClose--;
+                        sndr.Enabled = true;
                     }
                 }
                 catch (Exception err)
                 {
-                    MAIN.Toast("Version Manager", "There was an error switching the version!");
+                    Notif.Toast("Version Manager", "There was an error switching the version!");
                     MAIN.versionLogger.Log(err);
+                    MAIN.allowSelectVersion--;
+                    MAIN.allowClose--;
+                    sndr.Enabled = true;
                 }
 
                 MAIN.allowSelectVersion--;
@@ -53,6 +63,7 @@ namespace VentileClient.LauncherUtils
         {
             await Task.Run(() =>
             {
+
                 var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
                 ctrl.Invoke(new Action(() =>
                 {
@@ -64,19 +75,18 @@ namespace VentileClient.LauncherUtils
                 string name = "Minecraft-" + version + ".Appx";
                 using (var client = new WebClient())
                 {
-                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sndr, e) => VersionDownloadProgressChanged(sndr, e, version));
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler((sndr, e) => VersionDownloadCompleted(sndr, e, version));
+                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sndr, e) => VersionDownloadProgressChanged(e, version));
+                    client.DownloadFileCompleted += new AsyncCompletedEventHandler((sndr, e) => VersionDownloadCompleted(version));
 
                     MAIN.versionLogger.Log("Started Downloading Version: " + version);
-                    var url = new Uri(link);
 
-                    client.DownloadFileAsync(url, Path.Combine(path, name));
+                    client.DownloadFileAsync(new Uri(link), Path.Combine(path, name));
                 }
             });
 
         }
 
-        private static async void VersionDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e, string version)
+        private static async void VersionDownloadProgressChanged(DownloadProgressChangedEventArgs e, string version)
         {
             await Task.Run(() =>
             {
@@ -88,7 +98,7 @@ namespace VentileClient.LauncherUtils
             });
         }
 
-        private static void VersionDownloadCompleted(object sender, AsyncCompletedEventArgs e, string version)
+        private static void VersionDownloadCompleted(string version)
         {
             MAIN.versionLogger.Log("Downloaded version: " + version);
             var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
@@ -102,11 +112,6 @@ namespace VentileClient.LauncherUtils
 
         #region Version Switcher - Extracting
 
-        //private BackgroundWorker _extractFile;
-        private static long FILE_SIZE;
-        private static long EXTRACTED_SIZE_TOTAL;
-        private static long COMPRESSED_SIZE;
-
         private static void ExtractAppx(string AppxPath, string OutputPath, string dirName, string version)
         {
             if (!Directory.Exists(Path.Combine(OutputPath, dirName)))
@@ -115,17 +120,14 @@ namespace VentileClient.LauncherUtils
                 MAIN.versionLogger.Log("Created Directory: " + dirName + " in: " + OutputPath);
             }
 
-            var _extractFile = new BackgroundWorker();
-            _extractFile.DoWork += new DoWorkEventHandler((sndr, e) => ExtractFile_DoWork(_extractFile, e, AppxPath, Path.Combine(OutputPath, dirName), version, dirName));
-            _extractFile.ProgressChanged += new ProgressChangedEventHandler((sndr, e) => ExtractFile_ProgressChanged(sndr, e, version));
-            _extractFile.RunWorkerCompleted += new RunWorkerCompletedEventHandler((sndr, e) => ExtractFile_RunWorkerCompleted(version, AppxPath, OutputPath, dirName));
-            _extractFile.WorkerReportsProgress = true;
+            long FILE_SIZE = new long();
+            long EXTRACTED_SIZE_TOTAL = new long();
+            long COMPRESSED_SIZE = new long();
 
-
-            _extractFile.RunWorkerAsync();
+            ExtractFile(AppxPath, Path.Combine(OutputPath, dirName), version, dirName, FILE_SIZE, EXTRACTED_SIZE_TOTAL, COMPRESSED_SIZE);
         }
 
-        private static async void ExtractFile_DoWork(BackgroundWorker sender, DoWorkEventArgs e, string AppxPath, string OutputPath, string version, string dirName)
+        private static async void ExtractFile(string AppxPath, string OutputPath, string version, string dirName, long FILE_SIZE, long EXTRACTED_SIZE_TOTAL, long COMPRESSED_SIZE)
         {
             await Task.Run(() =>
             {
@@ -137,7 +139,7 @@ namespace VentileClient.LauncherUtils
                     using (var zipFile = ZipFile.Read(AppxPath))
                     {
                         EXTRACTED_SIZE_TOTAL = 0;
-                        zipFile.ExtractProgress += new EventHandler<ExtractProgressEventArgs>((sndr, ee) => Zip_ExtractProgress(sender, ee));
+                        zipFile.ExtractProgress += new EventHandler<ExtractProgressEventArgs>((sndr, ee) => Zip_ExtractProgress(ee, version, COMPRESSED_SIZE, EXTRACTED_SIZE_TOTAL, FILE_SIZE));
                         foreach (ZipEntry entry in zipFile)
                         {
                             COMPRESSED_SIZE = entry.CompressedSize;
@@ -145,45 +147,18 @@ namespace VentileClient.LauncherUtils
                             EXTRACTED_SIZE_TOTAL += COMPRESSED_SIZE;
                         }
                     }
+
+                    ExtractComplete(AppxPath, OutputPath, version, dirName);
                 }
                 catch (Exception err)
                 {
-                    MAIN.Toast("Version Manager", "There was an error extracting!");
+                    Notif.Toast("Version Manager", "There was an error extracting!");
                     MAIN.versionLogger.Log(err);
-                    //ExtractFile_RunWorkerCompleted(version, AppxPath, OutputPath, dirName);
                 }
             });
         }
 
-        private static async void ExtractFile_ProgressChanged(object sender, ProgressChangedEventArgs e, string version)
-        {
-            await Task.Run(() =>
-            {
-                long totalPercent = (e.ProgressPercentage * COMPRESSED_SIZE + EXTRACTED_SIZE_TOTAL * int.MaxValue) / FILE_SIZE;
-                if (totalPercent > int.MaxValue)
-                    totalPercent = int.MaxValue;
-                var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
-                ctrl.Value = (int)totalPercent;
-            });
-        }
-
-        private static void Zip_ExtractProgress(BackgroundWorker sender, ExtractProgressEventArgs e)
-        {
-            try
-            {
-                if (e.TotalBytesToTransfer > 0)
-                {
-                    long percent = e.BytesTransferred * int.MaxValue / e.TotalBytesToTransfer;
-                    sender.ReportProgress((int)percent);
-                }
-            }
-            catch (Exception ex)
-            {
-                MAIN.versionLogger.Log(ex, LogLevel.Information, LogLocation.Console);
-            }
-        }
-
-        private static void ExtractFile_RunWorkerCompleted(string version, string AppxPath, string OutputPath, string dirName)
+        private static void ExtractComplete(string AppxPath, string OutputPath, string version, string dirName)
         {
             var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
             ctrl.Value = int.MaxValue;
@@ -210,19 +185,42 @@ namespace VentileClient.LauncherUtils
                 ctrl2.Visible = true;
             }));
 
-            MAIN.versionLogger.Log("Extracted Appx: " + AppxPath + " to: " + Path.Combine(OutputPath, dirName));
+            MAIN.versionLogger.Log("Extracted Appx: " + AppxPath + " to: " + OutputPath);
 
             try
             {
-                File.Delete(Path.Combine(OutputPath, dirName, "AppxSignature.p7x"));
+                File.Delete(Path.Combine(OutputPath, "AppxSignature.p7x"));
                 File.Delete(AppxPath);
             }
             catch (Exception ex)
             {
                 MAIN.versionLogger.Log(ex);
+                Notif.Toast("Version Switcher", "There was an error...");
             }
 
             MAIN.allowClose--;
+        }
+
+        private static void Zip_ExtractProgress(ExtractProgressEventArgs e, string version, long COMPRESSED_SIZE, long EXTRACTED_SIZE_TOTAL, long FILE_SIZE)
+        {
+            try
+            {
+                if (e.TotalBytesToTransfer > 0)
+                {
+                    long percent = e.BytesTransferred * int.MaxValue / e.TotalBytesToTransfer;
+
+                    long totalPercent = ((int)percent * COMPRESSED_SIZE + EXTRACTED_SIZE_TOTAL * int.MaxValue) / FILE_SIZE;
+                    if (totalPercent > int.MaxValue)
+                        totalPercent = int.MaxValue;
+
+                    var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
+                    ctrl.Value = (int)totalPercent;
+                }
+            }
+            catch (Exception ex)
+            {
+                MAIN.versionLogger.Log(ex, LogLevel.Information, LogLocation.Console);
+            }
         }
 
         #endregion

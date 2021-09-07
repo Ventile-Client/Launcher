@@ -35,5 +35,16 @@ namespace VentileClient.Utils
             }
             return ctrls;
         }
+
+        // Gets a single 
+        // ControlManager.Controls(MAIN.versionsPanel).Single(s => s.Tag.ToString() == version);
+
+        public static IEnumerable<Control> Controls(Control parentCtrl)
+        {
+            foreach (Control v in parentCtrl.Controls)
+            {
+                yield return v;
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace VentileClient
 {
-    partial class Toast
+    partial class ToastForm
     {
         /// <summary>
         /// Required designer variable.

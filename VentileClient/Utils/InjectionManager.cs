@@ -69,7 +69,7 @@ namespace VentileClient.Utils
         {
             if (!File.Exists(DownloadedDllFilePath))
             {
-                MAIN.Toast("DLL", "Not injecting, no file specified");
+                Notif.Toast("DLL", "Not injecting, no file specified");
                 return;
             }
             Task.Delay(1000);
@@ -90,18 +90,18 @@ namespace VentileClient.Utils
 
                 ALREADY_ATTEMPTED_INJECT = false;
 
-                MAIN.Toast("DLL", "Injected!");
+                Notif.Toast("DLL", "Injected!");
             }
             else
             {
                 if (!ALREADY_ATTEMPTED_INJECT)
                 {
                     ALREADY_ATTEMPTED_INJECT = true;
-                    MAIN.Toast("DLL", "Injection failed");
+                    Notif.Toast("DLL", "Injection failed");
                 }
                 else
                 {
-                    MAIN.Toast("Minecraft", "I cannot find minecraft! (Bedrock)");
+                    Notif.Toast("Minecraft", "I cannot find minecraft! (Bedrock)");
                     ALREADY_ATTEMPTED_INJECT = false;
                 }
             }

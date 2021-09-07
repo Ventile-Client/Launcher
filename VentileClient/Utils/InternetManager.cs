@@ -65,7 +65,7 @@ namespace VentileClient.Utils
                 DataManager.Home();
                 DataManager.Cosmetics();
                 ColorManager.Version();
-                MAIN.Toast("Internet", "Connection found!");
+                Notif.Toast("Internet", "Connection found!");
             }
             else if (!internet && PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
             {
@@ -75,7 +75,7 @@ namespace VentileClient.Utils
                 // Make the color variable smaller
                 Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
 
-                MAIN.Toast("Internet", "Could not find a connection");
+                Notif.Toast("Internet", "Could not find a connection");
 
                 var lbl = new System.Windows.Forms.Label()
                 {
