@@ -226,15 +226,23 @@ namespace VentileClient.LauncherUtils
 
             }
 
-            if (File.Exists(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip")))
+            try
             {
-                File.Delete(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip"));
+
+                if (File.Exists(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip")))
+                {
+                    File.Delete(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip"));
+                }
+
+                await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "CosmeticMixer.zip"), MC_RESOURCE, "CosmeticMixer.zip");
+            }
+            catch (Exception ex)
+            {
+                MAIN.defaultLogger.Log(ex);
             }
 
-            await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "CosmeticMixer.zip"), MC_RESOURCE, "CosmeticMixer.zip");
-
-            CosmeticManager.Remove("b6039dbe-c5f1-4544-afdb-dd4b9ed7d19e");
-            CosmeticManager.Add("b6039dbe-c5f1-4544-afdb-dd4b9ed7d19e");
+            CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+            CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
         }
 
         //Settings
@@ -245,7 +253,7 @@ namespace VentileClient.LauncherUtils
         static int rightPanelOffset = 42;
         static int rightButtonOffset = 70;
 
-        public static async void Version()
+        public static void Version(bool internetParam)
         {
             //Colors
             // Make the color variable smaller
@@ -262,10 +270,10 @@ namespace VentileClient.LauncherUtils
             MAIN.versionsPanel.Size = MAIN.contentView.Size;
             MAIN.versionsPanel.Width = MAIN.contentView.Width + rightPanelOffset;
 
-            //contentView.Width = 644 + rightOffset;
             MAIN.versionsPanel.AutoScroll = true;
 
-            if (!MAIN.internet) //Displays a tab that says you don't have internet
+            //Displays a tab that says you don't have internet
+            if (!MAIN.internet || !internetParam)
             {
                 var lbl = new System.Windows.Forms.Label()
                 {
@@ -275,8 +283,6 @@ namespace VentileClient.LauncherUtils
                     Location = new Point(5, topOffset),
                     ForeColor = foreColor
                 };
-                lbl.BringToFront();
-                MAIN.versionsPanel.Controls.Add(lbl);
 
                 var noInternet = new System.Windows.Forms.Label()
                 {
@@ -286,13 +292,16 @@ namespace VentileClient.LauncherUtils
                     Location = new Point(9, spacing + topOffset * 2),
                     ForeColor = foreColor
                 };
-                noInternet.BringToFront();
+
+                MAIN.versionsPanel.Controls.Add(lbl);
+                lbl.BringToFront();
+                
                 MAIN.versionsPanel.Controls.Add(noInternet);
+                noInternet.BringToFront();
 
+                MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
                 MAIN.contentView.SelectedTab = MAIN.versionsTab;
-
                 return;
-
             }
 
             // Title Of Panel
@@ -307,30 +316,16 @@ namespace VentileClient.LauncherUtils
             label.BringToFront();
 
             MAIN.versionsPanel.Controls.Add(label);
+            
 
-
-            // New List of class Version
-            var versions = new List<Version>();
-
-            IReadOnlyList<Release> releases = await MAIN.github.Repository.Release.GetAll(LINK_SETTINGS.repoOwner, LINK_SETTINGS.versionsRepo); // Gets all releases from the VersionChanger repo
-
-            foreach (Release release in releases) // Used to sort and add versions to the versions list
-            {
-                var v = new Version(release.TagName);
-                versions.Add(v);
-            }
-
-            versions.Sort(new VersionSorter()); //Sorts the versions becus mc versions system is trash
-            versions.Reverse();
-
-            for (int i = 0; i < versions.Count; i++) // Loop through all versions
+            for (int i = 0; i < MAIN.versions.Count; i++) // Loop through all versions
             {
                 // Label for version
                 var versionName = new System.Windows.Forms.Label()
                 {
                     Name = "versionLabel" + i.ToString(),
-                    Text = versions[i].ToString(),
-                    Tag = versions[i].ToString(),
+                    Text = MAIN.versions[i].ToString(),
+                    Tag = MAIN.versions[i].ToString(),
                     Font = new Font("Segoe UI", 14.25f),
                     AutoSize = true,
                     ForeColor = foreColor
@@ -452,7 +447,7 @@ namespace VentileClient.LauncherUtils
             MAIN.versionsPanel.Height = MAIN.contentView.Height - topOffset;
 
             // Refreshes The Currently Installed Versions
-            RefreshVersionList(versions);
+            RefreshVersionList(MAIN.versions);
         }
 
         public static void Settings()
@@ -652,7 +647,7 @@ namespace VentileClient.LauncherUtils
             MAIN.cosmeticsVLabel.Text = MAIN.ventile_settings.cosmeticsVersion;
         }
 
-        public static async void DLLS()
+        public static async void GetDLLS()
         {
             MAIN.DefaultDLLSelector.Items.Clear();
 
@@ -678,6 +673,25 @@ namespace VentileClient.LauncherUtils
                     MAIN.DefaultDLLSelector.Items.Add(item);
                 }
             }
+        }
+
+        static bool versionsRetrived = false;
+
+        public static async Task GetVersions(bool force)
+        {
+            if (versionsRetrived && !force) return;
+
+            IReadOnlyList<Release> releases = await MAIN.github.Repository.Release.GetAll(MAIN.link_settings.repoOwner, MAIN.link_settings.versionsRepo); // Gets all releases from the VersionChanger repo
+
+            foreach (Release release in releases) // Used to sort and add versions to the versions list
+            {
+                var v = new Version(release.TagName);
+                MAIN.versions.Add(v);
+            }
+
+            MAIN.versions.Sort(new VersionSorter()); //Sorts the versions becus mc versions system is trash
+            MAIN.versions.Reverse();
+            versionsRetrived = true;
         }
 
         private static void DLL_Click(object sender, EventArgs e)
@@ -713,7 +727,7 @@ namespace VentileClient.LauncherUtils
             uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
             selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);
 
-            //await MCDataManager.Backup();
+            await MCDataManager.Backup();
             await VersionManager.DownloadVersion(version, sndr);
         }
         private static async void SelectVersion_Clicked(object sender, EventArgs e)
@@ -838,20 +852,5 @@ namespace VentileClient.LauncherUtils
         }
 
         #endregion
-    }
-
-    internal class VersionSorter : IComparer<Version>
-    {
-        public int Compare(Version x, Version y)
-        {
-
-            if (x == null || y == null)
-            {
-                return 0;
-            }
-
-            return x.CompareTo(y);
-
-        }
     }
 }

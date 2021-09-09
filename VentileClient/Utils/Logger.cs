@@ -121,6 +121,7 @@ namespace VentileClient
 
         private Task<string> FormatOutput(LogLevel logLevel, string message)
         {
+            string.Format("", "", "", "", "", "", "", "", "");
             string output = string.Format("{0}: {1} : {2}\n   ", logLevel.ToString(), DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss tt"), message);
             var st = new StackTrace(3, true);
             for (int i = 4; i < st.GetFrames().Length - EXTRA_METHODS_FROM_STACK_TRACE; i++) // Change start index to decide how many methods to skip from the beginning (Extra Methods)
@@ -165,7 +166,7 @@ namespace VentileClient
         {
             if (_enabled)
             {
-                Debug.WriteLine(string.Format("\n-------------------\nLogger \"{0}\" Already Enabled!\n-------------------", _fileName));
+                Debug.WriteLine($"-------------------\nLogger \"{_fileName}\" Already Enabled!\n-------------------");
                 return;
             }
             using (StreamWriter sw = File.AppendText(Path.Combine(_dir, _fileName)))
@@ -181,7 +182,7 @@ namespace VentileClient
         {
             if (!_enabled)
             {
-                Debug.WriteLine(string.Format("-------------------\nLogger \"{0}\" Already Disabled!\n-------------------", _fileName));
+                Debug.WriteLine($"-------------------\nLogger \"{_fileName}\" Already Disabled!\n-------------------");
                 return;
             }
             using (StreamWriter sw = File.AppendText(Path.Combine(_dir, _fileName)))

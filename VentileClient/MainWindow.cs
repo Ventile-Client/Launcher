@@ -59,7 +59,7 @@ namespace VentileClient
             versionsRepo = "VersionChanger",
             downloadRepo = "Download",
             githubProductHeader = "VentileClientLauncher",
-            githubToken = "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"
+            githubToken = null
         };
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
@@ -104,20 +104,15 @@ namespace VentileClient
 
         public MainWindow()
         {
-            // Doesnt allow launcher to be opened twice
-            if (Process.GetProcesses().Count(p => p.ProcessName == Process.GetCurrentProcess().ProcessName) > 1)
-            {
-                MessageBox.Show("Launcher is already open!");
-                this.Close();
-                return;
-            }
-
-            github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
+            //Only allow app to open once is in Program.cs
 
             InitializeComponent();
 
+            github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
+
+
             //Only needed when I reach api limit, to use my own token
-            if (link_settings.githubToken != "noToken") github.Credentials = new Credentials(link_settings.githubToken);
+            if (link_settings.githubToken != null) github.Credentials = new Credentials(link_settings.githubToken);
 
             INSTANCE = this;
 
@@ -129,8 +124,7 @@ namespace VentileClient
             ConfigManager.ReadTheme(@"C:\temp\VentileClient\Presets\Theme.json");
 
             // Set the version's text
-            string beta = ventile_settings.isBeta ? "Beta" : "";
-            version.Text = $"{beta} {ventile_settings.launcherVersion}";
+            version.Text = $"{(ventile_settings.isBeta ? "Beta " : "")}{ventile_settings.launcherVersion}";
 
             // Check for internet
             internet = InternetManager.InternetCheck();
@@ -146,7 +140,7 @@ namespace VentileClient
                     .CheckForUpdate(themeCS, ventile_settings, internet, github);
 
                 // Checks for all avaliable dlls in github
-                DataManager.DLLS();
+                DataManager.GetDLLS();
             }
         }
 
@@ -155,14 +149,13 @@ namespace VentileClient
         public string minecraftResourcePacks = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\resource_packs");
         private ChangelogPrompt _currentChangelog;
 
-        private void MainWindow_Load(object sender, EventArgs e)
+        // List of all mc versions from github (Will initialize later)
+        // await DataManager.GetVersions(force?);
+        public List<Version> versions = new List<Version>();
+
+        private async void MainWindow_Load(object sender, EventArgs e)
         {
             ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
-
-            if (!internet)
-            {
-                Notif.Toast("Internet", "You don't have an active wifi connection!");
-            }
             if (!Directory.Exists(minecraftResourcePacks))
             {
                 Notif.Toast("Resource Pack", "I couldn't find your resource packs, maybe start minecraft?");
@@ -176,13 +169,18 @@ namespace VentileClient
             ColorManager.ChangeBackground();
 
             DataManager.Home();
-            DataManager.Version();
             DataManager.Cosmetics();
             DataManager.Settings();
             DataManager.About();
 
             // Initialize Rich Presence
             RPC.Idling();
+
+            //Get Repos
+            if (internet) 
+                await DataManager.GetVersions(true);
+
+            DataManager.Version(internet);
         }
 
         #region Timers
@@ -285,7 +283,8 @@ namespace VentileClient
 
         private void homeButton_Click(object sender, EventArgs e)
         {
-            if (contentView.SelectedTab == homeTab) return;
+            //if (contentView.SelectedTab == homeTab) return;
+            if (((Guna2Button)sender).Checked) return;
 
             DataManager.Home();
             ColorManager.Home();
@@ -322,7 +321,8 @@ namespace VentileClient
 
         private void cosmeticsButton_Click(object sender, EventArgs e)
         {
-            if (contentView.SelectedTab == cosmeticsTab) return;
+            //if (contentView.SelectedTab == cosmeticsTab) return;
+            if (((Guna2Button)sender).Checked) return;
 
             DataManager.Cosmetics();
             ColorManager.Cosmetics();
@@ -343,9 +343,8 @@ namespace VentileClient
 
             if (!internet) contentView.SelectedTab = versionsTab;
             else contentView.SelectedTab = cosmeticsTab;
-            RPC.ChangeState("Choosing Cosmetics...");
 
-            this.Refresh();
+            RPC.ChangeState("Choosing Cosmetics...");
 
             if (!configCS.PerformanceMode)
             {
@@ -353,8 +352,6 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
-
-
 
             homeButton.Checked = false;
             cosmeticsButton.Checked = true;
@@ -365,13 +362,8 @@ namespace VentileClient
 
         private void versionButton_Click(object sender, EventArgs e)
         {
-            if (!ventile_settings.isBeta)
-            {
-                Notif.Toast("Version Manager", "Sorry this feature is too buggy! (It will be fixed)");
-                return;
-            }
-
-            if (contentView.SelectedTab == versionsTab) return;
+            //if (contentView.SelectedTab == versionsTab) return;
+            if (((Guna2Button)sender).Checked) return;
 
             DataManager.Settings();
             ColorManager.Version();
@@ -409,7 +401,8 @@ namespace VentileClient
 
         private void settingsButton_Click(object sender, EventArgs e)
         {
-            if (contentView.SelectedTab == settingsTab) return;
+            //if (contentView.SelectedTab == settingsTab) return;
+            if (((Guna2Button)sender).Checked) return;
 
             DataManager.Settings();
             ColorManager.Settings();
@@ -449,7 +442,8 @@ namespace VentileClient
 
         private void aboutButton_Click(object sender, EventArgs e)
         {
-            if (contentView.SelectedTab == aboutTab) return;
+            //if (contentView.SelectedTab == aboutTab) return;
+            if (((Guna2Button)sender).Checked) return;
 
             DataManager.About();
             ColorManager.About();
@@ -503,7 +497,7 @@ namespace VentileClient
             if (allowClose == 0)
             {
                 if (_isClosing) return;
-                    _isClosing = true;
+                _isClosing = true;
 
                 ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
                 ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
@@ -2281,6 +2275,21 @@ namespace VentileClient
         public string githubProductHeader;
 
         public string githubToken;
+    }
+
+    internal class VersionSorter : IComparer<Version>
+    {
+        public int Compare(Version x, Version y)
+        {
+
+            if (x == null || y == null)
+            {
+                return 0;
+            }
+
+            return x.CompareTo(y);
+
+        }
     }
 
     #endregion

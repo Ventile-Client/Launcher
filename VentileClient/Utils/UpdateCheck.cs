@@ -33,7 +33,7 @@ namespace VentileClient
                 return;
             }
 
-            await DownloadManager.Download(string.Format(@"https://github.com/" + MainWindow.INSTANCE.link_settings.repoOwner + "/" + MainWindow.INSTANCE.link_settings.downloadRepo + "/releases/download/{0}/{1}", releases[0].TagName, "Changelog.txt"), @"C:\temp\VentileClient", "Changelog.txt");
+            await DownloadManager.Download($"https://github.com/{MainWindow.INSTANCE.link_settings.repoOwner}/{MainWindow.INSTANCE.link_settings.downloadRepo}/releases/download/{releases[0].TagName}/Changelog.txt", @"C:\temp\VentileClient", "Changelog.txt");
 
             string[] changelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
 

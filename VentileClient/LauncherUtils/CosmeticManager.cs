@@ -19,10 +19,8 @@ namespace VentileClient.LauncherUtils
         {
             if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json")))
             {
-
                 Notif.Toast("Pack Error", "Looks like your com.mojang folder isnt avaliable!");
                 return new List<CosmeticsObject>();
-
             }
 
             string json = File.ReadAllText(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"));
@@ -58,10 +56,9 @@ namespace VentileClient.LauncherUtils
             if (!IsEnabled(id))
             {
                 List<CosmeticsObject> packs = Packs();
+                if (packs.Count < 1) return;
 
-                if (packs[0].Pack_id == "error") return;
-
-                if (id == "b6039dbe-c5f1-4544-afdb-dd4b9ed7d19e")
+                if (id == PACK_INFO.ElementAt(16).Key)
                 {
                     packs.Insert(0, new CosmeticsObject()
                     {
@@ -90,8 +87,7 @@ namespace VentileClient.LauncherUtils
             if (IsEnabled(id))
             {
                 List<CosmeticsObject> packs = Packs();
-
-                if (packs[0].Pack_id == "error") return;
+                if (packs.Count < 1) return;
 
                 for (int i = 0; i < packs.Count; i++)
                 {

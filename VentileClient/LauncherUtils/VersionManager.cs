@@ -30,26 +30,17 @@ namespace VentileClient.LauncherUtils
                         ps.Invoke();
                         Notif.Toast("Version Manager", $"Switched Version: {version}");
                         MAIN.versionLogger.Log($"Registered Package: {gameDir}");
-                        MAIN.allowSelectVersion--;
-                        MAIN.allowClose--;
-                        sndr.Enabled = true;
                     }
                     else
                     {
                         Notif.Toast("Version Manager", "There was an error switching the version!");
                         MAIN.versionLogger.Log("AppxManifest.xml didn't exist! | " + manifestPath, LogLevel.Error);
-                        MAIN.allowSelectVersion--;
-                        MAIN.allowClose--;
-                        sndr.Enabled = true;
                     }
                 }
                 catch (Exception err)
                 {
                     Notif.Toast("Version Manager", "There was an error switching the version!");
                     MAIN.versionLogger.Log(err);
-                    MAIN.allowSelectVersion--;
-                    MAIN.allowClose--;
-                    sndr.Enabled = true;
                 }
 
                 MAIN.allowSelectVersion--;

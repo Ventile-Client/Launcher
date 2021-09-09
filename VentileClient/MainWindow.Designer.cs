@@ -3046,7 +3046,7 @@ namespace VentileClient
             // internetCheckTimer
             // 
             this.internetCheckTimer.Enabled = true;
-            this.internetCheckTimer.Interval = 5;
+            this.internetCheckTimer.Interval = 10;
             this.internetCheckTimer.Tick += new System.EventHandler(this.internetCheck_Tick);
             // 
             // MainWindow

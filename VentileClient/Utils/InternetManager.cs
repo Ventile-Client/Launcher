@@ -52,54 +52,26 @@ namespace VentileClient.Utils
             }
         }
 
-        private static List<bool> PREVIOUS_INTERNET_STATE = new List<bool>() { true };
+        private static List<bool> PREVIOUS_INTERNET_STATE = new List<bool>() { true, true };
 
-        public static void ReCheckInternet()
+        public static async void ReCheckInternet()
         {
-            bool internet = InternetGetConnectedState(out int _, 0);; 
+            bool internet = InternetGetConnectedState(out int _, 0);;
             PREVIOUS_INTERNET_STATE.Add(internet);
+            PREVIOUS_INTERNET_STATE.RemoveAt(PREVIOUS_INTERNET_STATE.Count - 3);
             if (internet && !PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
             {
                 if (MAIN.cosmeticsButton.Checked) MAIN.contentView.SelectedTab = MAIN.cosmeticsTab;
-                else if (MAIN.versionButton.Checked) MAIN.contentView.SelectedTab = MAIN.versionsTab;
-                DataManager.Home();
-                DataManager.Cosmetics();
-                ColorManager.Version();
+
                 Notif.Toast("Internet", "Connection found!");
+                DataManager.Cosmetics();
+                await DataManager.GetVersions(false);
+                DataManager.Version(true);
             }
             else if (!internet && PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
             {
-                MAIN.versionsPanel.Controls.Clear();
-
-                //Colors
-                // Make the color variable smaller
-                Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
-
-                Notif.Toast("Internet", "Could not find a connection");
-
-                var lbl = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Text = "No Internet...",
-                    Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                    Location = new Point(5, 14),
-                    ForeColor = foreColor
-                };
-                lbl.BringToFront();
-                MAIN.versionsPanel.Controls.Add(lbl);
-
-                var noInternet = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to acess the internet\n - You don't have an internet connection\n - If a reason isn't listed here, ask for help or contact the devs!",
-                    Font = new Font("Segoe UI", 14.25f),
-                    Location = new Point(9, 30 + 15 * 2),
-                    ForeColor = foreColor
-                };
-                noInternet.BringToFront();
-                MAIN.versionsPanel.Controls.Add(noInternet);
-
-                MAIN.contentView.SelectedTab = MAIN.versionsTab;
+                Notif.Toast("Internet", "You don't have an active wifi connection!");
+                DataManager.Version(false);
             }
         }
     }
