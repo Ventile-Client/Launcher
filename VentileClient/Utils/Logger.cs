@@ -121,10 +121,9 @@ namespace VentileClient
 
         private Task<string> FormatOutput(LogLevel logLevel, string message)
         {
-            string.Format("", "", "", "", "", "", "", "", "");
             string output = string.Format("{0}: {1} : {2}\n   ", logLevel.ToString(), DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss tt"), message);
-            var st = new StackTrace(3, true);
-            for (int i = 4; i < st.GetFrames().Length - EXTRA_METHODS_FROM_STACK_TRACE; i++) // Change start index to decide how many methods to skip from the beginning (Extra Methods)
+            var st = new StackTrace(7, true);
+            for (int i = 0; i < st.GetFrames().Length - EXTRA_METHODS_FROM_STACK_TRACE; i++) // Change start index to decide how many methods to skip from the beginning (Extra Methods)
             {
                 StackFrame sf = st.GetFrame(i);
                 output += string.Format("[Method: {0}, Line: {1}] <- ", sf.GetMethod(), sf.GetFileColumnNumber());

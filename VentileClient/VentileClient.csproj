@@ -206,6 +206,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>@echo off
+if %25ERRORLEVEL%25 GEQ 8 goto failed
+
 if $(ConfigurationName) == Release (
   cd $(TargetDir)
   mkdir LauncherZip
@@ -235,11 +237,22 @@ if $(ConfigurationName) == Release (
   rmdir /s /q $(TargetDir)LauncherZip
   echo Cleaned Up!
 
+  explorer "$(TargetDir)"
+
   echo --------------------------------------------------------------------------------------------------------------
   echo ^|
   echo ^|^ Built: $(TargetDir)
   echo ^|
   echo --------------------------------------------------------------------------------------------------------------
+
+  goto success
+
+  :failed
+  Failed Post Build!
+  exit 1
+
+  :success
+  exit 0
 ) else (
 echo -------------------------------------------------------------
 echo ^|^ IF BUILDING TO PUBLISH, SWITCH TO RELEASE MODE

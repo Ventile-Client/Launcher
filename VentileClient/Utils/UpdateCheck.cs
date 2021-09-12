@@ -35,7 +35,7 @@ namespace VentileClient
 
             await DownloadManager.Download($"https://github.com/{MainWindow.INSTANCE.link_settings.repoOwner}/{MainWindow.INSTANCE.link_settings.downloadRepo}/releases/download/{releases[0].TagName}/Changelog.txt", @"C:\temp\VentileClient", "Changelog.txt");
 
-            string[] changelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
+            string[] latestChangelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
 
             File.Delete(@"C:\temp\VentileClient\Changelog.txt");
 
@@ -44,7 +44,7 @@ namespace VentileClient
                 MainWindow.INSTANCE.Opacity = 0;
 
                 var updatePrompt = new UpdatePrompt(MainWindow.INSTANCE);
-                updatePrompt.UpdateVersionText(changelog, releases[0].TagName, themeCS);
+                updatePrompt.UpdateVersionText(latestChangelog, releases[0].TagName, themeCS);
                 updatePrompt.Opacity = 0;
                 updatePrompt.Show();
 

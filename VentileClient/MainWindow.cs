@@ -41,7 +41,6 @@ namespace VentileClient
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
 
-
         public VentileSettings ventile_settings = new VentileSettings()
         {
             launcherVersion = "4.1.0",
@@ -69,10 +68,9 @@ namespace VentileClient
         public GitHubClient github;
 
         // Error/Info Loggers
-
-        public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", false, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
-        public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", false, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
-        public Logger versionLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", false, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger versionLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
 
         #region Global Variables
 
@@ -111,7 +109,6 @@ namespace VentileClient
             InitializeComponent();
 
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
-
 
             //Only needed when I reach api limit, to use my own token
             if (link_settings.githubToken != null) github.Credentials = new Credentials(link_settings.githubToken);

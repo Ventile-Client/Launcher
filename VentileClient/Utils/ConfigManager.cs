@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using VentileClient.JSON_Template_Classes;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = MAIN.configCS;
+                    ConfigTemplate temp = MAIN.configCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -69,7 +67,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = MAIN.themeCS;
+                    ThemeTemplate temp = MAIN.themeCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -98,13 +96,73 @@ namespace VentileClient.Utils
             }
         }
 
+        public static void GetPresetColors(string directory)
+        {
+            try
+            {
+                foreach (string a in Directory.GetFiles(directory, "*.json"))
+                {
+                    string fileName = Path.GetFileName(a).Split('.')[0].ToLower();
+                    bool isPresetTheme = fileName.StartsWith("preset") && fileName.EndsWith("theme");
+                    if (isPresetTheme)
+                    {
+                        int presetThemeIndex = int.Parse(fileName.Replace("preset", string.Empty).Replace("theme", string.Empty));
+                        ThemeTemplate tempTheme;
+                        try
+                        {
+                            string path = $@"C:\temp\VentileClient\Presets\preset{presetThemeIndex}Theme.json";
+                            string temp = File.ReadAllText(path);
+                            tempTheme = JsonConvert.DeserializeObject<ThemeTemplate>(temp);
+
+                            if (presetThemeIndex == 1)
+                                MAIN.presetCS.p1 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 2)
+                                MAIN.presetCS.p2 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 3)
+                                MAIN.presetCS.p3 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 4)
+                                MAIN.presetCS.p4 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 5)
+                                MAIN.presetCS.p5 = tempTheme.Accent;
+
+                            if (presetThemeIndex ==6)
+                                MAIN.presetCS.p5 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 7)
+                                MAIN.presetCS.p7 = tempTheme.Accent;
+
+                            if (presetThemeIndex == 8)
+                                MAIN.presetCS.p8 = tempTheme.Accent;
+
+                            MAIN.configLogger.Log("Successfully read preset theme: " + Path.GetFileName(path));
+                        }
+                        catch (Exception ex)
+                        {
+                            Notif.Toast("Error", "There was an error :(");
+                            MAIN.configLogger.Log(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Notif.Toast("Error", "There was an error :(");
+                MAIN.configLogger.Log(ex);
+            }
+
+        }
+
         public static async void WritePresetColors(string path)
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    var temp = MAIN.presetCS;
+                    PresetColorsTemplate temp = MAIN.presetCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -139,7 +197,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = MAIN.cosmeticsCS;
+                    CosmeticsTemplate temp = MAIN.cosmeticsCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
