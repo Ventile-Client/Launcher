@@ -18,6 +18,8 @@ namespace VentileClient.JSON_Template_Classes
         string _rpcButtonLink;
         bool _customDLL;
         string _defaultDLL;
+        bool _persona;
+        string _personaLoc;
         int _injectDelay;
         bool _toasts;
         string _toastsLoc;
@@ -137,7 +139,28 @@ namespace VentileClient.JSON_Template_Classes
                 _defaultDLL = value;
             }
         }
-
+        public bool Persona
+        {
+            get
+            {
+                return _persona;
+            }
+            set
+            {
+                _persona = value;
+            }
+        }
+        public string PersonaLoc
+        {
+            get
+            {
+                return _personaLoc;
+            }
+            set
+            {
+                _personaLoc = value;
+            }
+        }
         public int InjectDelay
         {
             get
@@ -149,7 +172,6 @@ namespace VentileClient.JSON_Template_Classes
                 _injectDelay = value;
             }
         }
-
         public bool Toasts
         {
             get
@@ -186,7 +208,6 @@ namespace VentileClient.JSON_Template_Classes
                 _roundedButtons = value;
             }
         }
-
         public bool PerformanceMode
         {
             get
@@ -198,7 +219,6 @@ namespace VentileClient.JSON_Template_Classes
                 _performanceMode = value;
             }
         }
-
         public bool BackgroundImage
         {
             get
@@ -221,6 +241,5 @@ namespace VentileClient.JSON_Template_Classes
                 _backgroundImageLoc = value;
             }
         }
-
     }
 }

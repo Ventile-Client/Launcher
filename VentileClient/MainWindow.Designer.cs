@@ -26,7 +26,7 @@ namespace VentileClient
         public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Guna.UI2.AnimatorNS.Animation animation1 = new Guna.UI2.AnimatorNS.Animation();
+            Guna.UI2.AnimatorNS.Animation animation4 = new Guna.UI2.AnimatorNS.Animation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dragBar = new Guna.UI2.WinForms.Guna2Panel();
             this.minimizeButton = new Guna.UI2.WinForms.Guna2Button();
@@ -99,13 +99,13 @@ namespace VentileClient
             this.closeWindow = new Guna.UI2.WinForms.Guna2Button();
             this.devDLLLabel = new System.Windows.Forms.Label();
             this.RpcToggle = new Guna.UI2.WinForms.Guna2Button();
-            this.resourceLabel = new System.Windows.Forms.Label();
+            this.personaLabel = new System.Windows.Forms.Label();
             this.autoLabel = new System.Windows.Forms.Label();
             this.customDLLButton = new Guna.UI2.WinForms.Guna2Button();
             this.DefaultDLLSelector = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.openWindow = new Guna.UI2.WinForms.Guna2Button();
             this.autoInject = new Guna.UI2.WinForms.Guna2Button();
-            this.customLoc = new Guna.UI2.WinForms.Guna2Button();
+            this.personaLoc = new Guna.UI2.WinForms.Guna2Button();
             this.AppearanceButton = new Guna.UI2.WinForms.Guna2Button();
             this.Appearance = new System.Windows.Forms.TabPage();
             this.foreColorLabel = new System.Windows.Forms.Label();
@@ -1395,12 +1395,12 @@ namespace VentileClient
             this.Launcher.Controls.Add(this.closeWindow);
             this.Launcher.Controls.Add(this.devDLLLabel);
             this.Launcher.Controls.Add(this.RpcToggle);
-            this.Launcher.Controls.Add(this.resourceLabel);
+            this.Launcher.Controls.Add(this.personaLabel);
             this.Launcher.Controls.Add(this.autoLabel);
             this.Launcher.Controls.Add(this.customDLLButton);
             this.Launcher.Controls.Add(this.openWindow);
             this.Launcher.Controls.Add(this.autoInject);
-            this.Launcher.Controls.Add(this.customLoc);
+            this.Launcher.Controls.Add(this.personaLoc);
             this.Launcher.Controls.Add(this.AppearanceButton);
             this.FadeEffectBetweenPages.SetDecoration(this.Launcher, Guna.UI2.AnimatorNS.DecorationType.None);
             this.Launcher.Location = new System.Drawing.Point(5, 4);
@@ -1417,7 +1417,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.injectDelayLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.injectDelayLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.injectDelayLabel.ForeColor = System.Drawing.Color.White;
-            this.injectDelayLabel.Location = new System.Drawing.Point(452, 115);
+            this.injectDelayLabel.Location = new System.Drawing.Point(452, 109);
             this.injectDelayLabel.Name = "injectDelayLabel";
             this.injectDelayLabel.Size = new System.Drawing.Size(47, 20);
             this.injectDelayLabel.TabIndex = 101;
@@ -1437,7 +1437,7 @@ namespace VentileClient
             this.injectDelay.FocusedState.Parent = this.injectDelay;
             this.injectDelay.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.injectDelay.ForeColor = System.Drawing.Color.Black;
-            this.injectDelay.Location = new System.Drawing.Point(505, 112);
+            this.injectDelay.Location = new System.Drawing.Point(505, 106);
             this.injectDelay.Maximum = new decimal(new int[] {
             30,
             0,
@@ -1462,7 +1462,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonTextLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonTextLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonTextLabel.ForeColor = System.Drawing.Color.White;
-            this.rpcButtonTextLabel.Location = new System.Drawing.Point(241, 158);
+            this.rpcButtonTextLabel.Location = new System.Drawing.Point(241, 152);
             this.rpcButtonTextLabel.Name = "rpcButtonTextLabel";
             this.rpcButtonTextLabel.Size = new System.Drawing.Size(37, 20);
             this.rpcButtonTextLabel.TabIndex = 98;
@@ -1474,7 +1474,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.rpcLine, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcLine.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcLine.HidePromptOnLeave = true;
-            this.rpcLine.Location = new System.Drawing.Point(245, 109);
+            this.rpcLine.Location = new System.Drawing.Point(245, 103);
             this.rpcLine.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.rpcLine.Name = "rpcLine";
             this.rpcLine.Size = new System.Drawing.Size(143, 18);
@@ -1496,7 +1496,7 @@ namespace VentileClient
             this.buttonForRpc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.buttonForRpc.ForeColor = System.Drawing.Color.White;
             this.buttonForRpc.HoverState.Parent = this.buttonForRpc;
-            this.buttonForRpc.Location = new System.Drawing.Point(268, 133);
+            this.buttonForRpc.Location = new System.Drawing.Point(268, 127);
             this.buttonForRpc.Name = "buttonForRpc";
             this.buttonForRpc.ShadowDecoration.Parent = this.buttonForRpc;
             this.buttonForRpc.Size = new System.Drawing.Size(98, 19);
@@ -1512,7 +1512,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLinkLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonLinkLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonLinkLabel.ForeColor = System.Drawing.Color.White;
-            this.rpcButtonLinkLabel.Location = new System.Drawing.Point(241, 182);
+            this.rpcButtonLinkLabel.Location = new System.Drawing.Point(241, 176);
             this.rpcButtonLinkLabel.Name = "rpcButtonLinkLabel";
             this.rpcButtonLinkLabel.Size = new System.Drawing.Size(37, 20);
             this.rpcButtonLinkLabel.TabIndex = 97;
@@ -1524,7 +1524,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonText, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonText.HidePromptOnLeave = true;
-            this.rpcButtonText.Location = new System.Drawing.Point(285, 158);
+            this.rpcButtonText.Location = new System.Drawing.Point(285, 152);
             this.rpcButtonText.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.rpcButtonText.Name = "rpcButtonText";
             this.rpcButtonText.Size = new System.Drawing.Size(103, 18);
@@ -1537,7 +1537,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLink, Guna.UI2.AnimatorNS.DecorationType.None);
             this.rpcButtonLink.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rpcButtonLink.HidePromptOnLeave = true;
-            this.rpcButtonLink.Location = new System.Drawing.Point(285, 182);
+            this.rpcButtonLink.Location = new System.Drawing.Point(285, 176);
             this.rpcButtonLink.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.rpcButtonLink.Name = "rpcButtonLink";
             this.rpcButtonLink.Size = new System.Drawing.Size(103, 18);
@@ -1573,7 +1573,7 @@ namespace VentileClient
             this.hideWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.hideWindow.ForeColor = System.Drawing.Color.White;
             this.hideWindow.HoverState.Parent = this.hideWindow;
-            this.hideWindow.Location = new System.Drawing.Point(23, 75);
+            this.hideWindow.Location = new System.Drawing.Point(23, 69);
             this.hideWindow.Name = "hideWindow";
             this.hideWindow.ShadowDecoration.Parent = this.hideWindow;
             this.hideWindow.Size = new System.Drawing.Size(141, 29);
@@ -1598,7 +1598,7 @@ namespace VentileClient
             this.minWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.minWindow.ForeColor = System.Drawing.Color.White;
             this.minWindow.HoverState.Parent = this.minWindow;
-            this.minWindow.Location = new System.Drawing.Point(23, 110);
+            this.minWindow.Location = new System.Drawing.Point(23, 104);
             this.minWindow.Name = "minWindow";
             this.minWindow.ShadowDecoration.Parent = this.minWindow;
             this.minWindow.Size = new System.Drawing.Size(141, 29);
@@ -1637,7 +1637,7 @@ namespace VentileClient
             this.closeWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.closeWindow.ForeColor = System.Drawing.Color.White;
             this.closeWindow.HoverState.Parent = this.closeWindow;
-            this.closeWindow.Location = new System.Drawing.Point(22, 144);
+            this.closeWindow.Location = new System.Drawing.Point(22, 138);
             this.closeWindow.Name = "closeWindow";
             this.closeWindow.ShadowDecoration.Parent = this.closeWindow;
             this.closeWindow.Size = new System.Drawing.Size(141, 29);
@@ -1676,7 +1676,7 @@ namespace VentileClient
             this.RpcToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.RpcToggle.ForeColor = System.Drawing.Color.White;
             this.RpcToggle.HoverState.Parent = this.RpcToggle;
-            this.RpcToggle.Location = new System.Drawing.Point(245, 75);
+            this.RpcToggle.Location = new System.Drawing.Point(245, 69);
             this.RpcToggle.Name = "RpcToggle";
             this.RpcToggle.ShadowDecoration.Parent = this.RpcToggle;
             this.RpcToggle.Size = new System.Drawing.Size(141, 29);
@@ -1688,17 +1688,17 @@ namespace VentileClient
             // 
             // resourceLabel
             // 
-            this.resourceLabel.AutoSize = true;
-            this.resourceLabel.BackColor = System.Drawing.Color.Transparent;
-            this.FadeEffectBetweenPages.SetDecoration(this.resourceLabel, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.resourceLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resourceLabel.ForeColor = System.Drawing.Color.White;
-            this.resourceLabel.Location = new System.Drawing.Point(463, 183);
-            this.resourceLabel.Name = "resourceLabel";
-            this.resourceLabel.Size = new System.Drawing.Size(131, 25);
-            this.resourceLabel.TabIndex = 84;
-            this.resourceLabel.Text = "Blank Setting";
-            this.resourceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.personaLabel.AutoSize = true;
+            this.personaLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.personaLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.personaLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.personaLabel.ForeColor = System.Drawing.Color.White;
+            this.personaLabel.Location = new System.Drawing.Point(446, 177);
+            this.personaLabel.Name = "resourceLabel";
+            this.personaLabel.Size = new System.Drawing.Size(165, 25);
+            this.personaLabel.TabIndex = 84;
+            this.personaLabel.Text = "Persona Location";
+            this.personaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // autoLabel
             // 
@@ -1707,7 +1707,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.autoLabel, Guna.UI2.AnimatorNS.DecorationType.None);
             this.autoLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoLabel.ForeColor = System.Drawing.Color.White;
-            this.autoLabel.Location = new System.Drawing.Point(36, 244);
+            this.autoLabel.Location = new System.Drawing.Point(36, 238);
             this.autoLabel.Name = "autoLabel";
             this.autoLabel.Size = new System.Drawing.Size(110, 25);
             this.autoLabel.TabIndex = 85;
@@ -1730,7 +1730,7 @@ namespace VentileClient
             this.customDLLButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.customDLLButton.ForeColor = System.Drawing.Color.White;
             this.customDLLButton.HoverState.Parent = this.customDLLButton;
-            this.customDLLButton.Location = new System.Drawing.Point(456, 75);
+            this.customDLLButton.Location = new System.Drawing.Point(456, 69);
             this.customDLLButton.Name = "customDLLButton";
             this.customDLLButton.ShadowDecoration.Parent = this.customDLLButton;
             this.customDLLButton.Size = new System.Drawing.Size(141, 29);
@@ -1770,7 +1770,7 @@ namespace VentileClient
             this.openWindow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.openWindow.ForeColor = System.Drawing.Color.White;
             this.openWindow.HoverState.Parent = this.openWindow;
-            this.openWindow.Location = new System.Drawing.Point(22, 179);
+            this.openWindow.Location = new System.Drawing.Point(22, 173);
             this.openWindow.Name = "openWindow";
             this.openWindow.ShadowDecoration.Parent = this.openWindow;
             this.openWindow.Size = new System.Drawing.Size(141, 29);
@@ -1795,7 +1795,7 @@ namespace VentileClient
             this.autoInject.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.autoInject.ForeColor = System.Drawing.Color.White;
             this.autoInject.HoverState.Parent = this.autoInject;
-            this.autoInject.Location = new System.Drawing.Point(23, 277);
+            this.autoInject.Location = new System.Drawing.Point(23, 274);
             this.autoInject.Name = "autoInject";
             this.autoInject.ShadowDecoration.Parent = this.autoInject;
             this.autoInject.Size = new System.Drawing.Size(141, 29);
@@ -1805,30 +1805,30 @@ namespace VentileClient
             this.autoInject.UseTransparentBackground = true;
             this.autoInject.Click += new System.EventHandler(this.autoInject_Click);
             // 
-            // customLoc
+            // personaLoc
             // 
-            this.customLoc.Animated = true;
-            this.customLoc.AutoRoundedCorners = true;
-            this.customLoc.BackColor = System.Drawing.Color.Transparent;
-            this.customLoc.BorderRadius = 13;
-            this.customLoc.CheckedState.Parent = this.customLoc;
-            this.customLoc.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.customLoc.CustomImages.Parent = this.customLoc;
-            this.FadeEffectBetweenPages.SetDecoration(this.customLoc, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.customLoc.DisabledState.Parent = this.customLoc;
-            this.customLoc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.customLoc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.customLoc.ForeColor = System.Drawing.Color.White;
-            this.customLoc.HoverState.Parent = this.customLoc;
-            this.customLoc.Location = new System.Drawing.Point(456, 229);
-            this.customLoc.Name = "customLoc";
-            this.customLoc.ShadowDecoration.Parent = this.customLoc;
-            this.customLoc.Size = new System.Drawing.Size(141, 29);
-            this.customLoc.TabIndex = 94;
-            this.customLoc.TabStop = false;
-            this.customLoc.Text = "Blank Button";
-            this.customLoc.UseTransparentBackground = true;
-            this.customLoc.Click += new System.EventHandler(this.blankButton_Click);
+            this.personaLoc.Animated = true;
+            this.personaLoc.AutoRoundedCorners = true;
+            this.personaLoc.BackColor = System.Drawing.Color.Transparent;
+            this.personaLoc.BorderRadius = 13;
+            this.personaLoc.CheckedState.Parent = this.personaLoc;
+            this.personaLoc.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.personaLoc.CustomImages.Parent = this.personaLoc;
+            this.FadeEffectBetweenPages.SetDecoration(this.personaLoc, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.personaLoc.DisabledState.Parent = this.personaLoc;
+            this.personaLoc.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.personaLoc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.personaLoc.ForeColor = System.Drawing.Color.White;
+            this.personaLoc.HoverState.Parent = this.personaLoc;
+            this.personaLoc.Location = new System.Drawing.Point(456, 217);
+            this.personaLoc.Name = "personaLoc";
+            this.personaLoc.ShadowDecoration.Parent = this.personaLoc;
+            this.personaLoc.Size = new System.Drawing.Size(141, 29);
+            this.personaLoc.TabIndex = 94;
+            this.personaLoc.TabStop = false;
+            this.personaLoc.Text = "Choose";
+            this.personaLoc.UseTransparentBackground = true;
+            this.personaLoc.Click += new System.EventHandler(this.personaLoc_Click);
             // 
             // AppearanceButton
             // 
@@ -2785,7 +2785,7 @@ namespace VentileClient
             this.changeLogLink.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.changeLogLink.LinkColor = System.Drawing.Color.RoyalBlue;
-            this.changeLogLink.Location = new System.Drawing.Point(268, 425);
+            this.changeLogLink.Location = new System.Drawing.Point(268, 426);
             this.changeLogLink.Name = "changeLogLink";
             this.changeLogLink.Size = new System.Drawing.Size(83, 20);
             this.changeLogLink.TabIndex = 33;
@@ -3023,22 +3023,22 @@ namespace VentileClient
             // 
             this.FadeEffectBetweenPages.AnimationType = Guna.UI2.AnimatorNS.AnimationType.Transparent;
             this.FadeEffectBetweenPages.Cursor = null;
-            animation1.AnimateOnlyDifferences = true;
-            animation1.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.BlindCoeff")));
-            animation1.LeafCoeff = 0F;
-            animation1.MaxTime = 1F;
-            animation1.MinTime = 0F;
-            animation1.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.MosaicCoeff")));
-            animation1.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation1.MosaicShift")));
-            animation1.MosaicSize = 0;
-            animation1.Padding = new System.Windows.Forms.Padding(0);
-            animation1.RotateCoeff = 0F;
-            animation1.RotateLimit = 0F;
-            animation1.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.ScaleCoeff")));
-            animation1.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation1.SlideCoeff")));
-            animation1.TimeCoeff = 0F;
-            animation1.TransparencyCoeff = 1F;
-            this.FadeEffectBetweenPages.DefaultAnimation = animation1;
+            animation4.AnimateOnlyDifferences = true;
+            animation4.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation4.BlindCoeff")));
+            animation4.LeafCoeff = 0F;
+            animation4.MaxTime = 1F;
+            animation4.MinTime = 0F;
+            animation4.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation4.MosaicCoeff")));
+            animation4.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation4.MosaicShift")));
+            animation4.MosaicSize = 0;
+            animation4.Padding = new System.Windows.Forms.Padding(0);
+            animation4.RotateCoeff = 0F;
+            animation4.RotateLimit = 0F;
+            animation4.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation4.ScaleCoeff")));
+            animation4.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation4.SlideCoeff")));
+            animation4.TimeCoeff = 0F;
+            animation4.TransparencyCoeff = 1F;
+            this.FadeEffectBetweenPages.DefaultAnimation = animation4;
             this.FadeEffectBetweenPages.Interval = 1;
             this.FadeEffectBetweenPages.MaxAnimationTime = 500;
             this.FadeEffectBetweenPages.TimeStep = 0.04F;
@@ -3224,12 +3224,12 @@ namespace VentileClient
         public Guna.UI2.WinForms.Guna2Button closeWindow;
         public System.Windows.Forms.Label devDLLLabel;
         public Guna.UI2.WinForms.Guna2Button RpcToggle;
-        public System.Windows.Forms.Label resourceLabel;
+        public System.Windows.Forms.Label personaLabel;
         public System.Windows.Forms.Label autoLabel;
         public Guna.UI2.WinForms.Guna2Button customDLLButton;
         public Guna.UI2.WinForms.Guna2Button openWindow;
         public Guna.UI2.WinForms.Guna2Button autoInject;
-        public Guna.UI2.WinForms.Guna2Button customLoc;
+        public Guna.UI2.WinForms.Guna2Button personaLoc;
         public Guna.UI2.WinForms.Guna2Button AppearanceButton;
         public Guna.UI2.WinForms.Guna2ContextMenuStrip presets;
         public System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;

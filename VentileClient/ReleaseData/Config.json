@@ -8,6 +8,8 @@
   "RpcButtonLink": "https://none",
   "CustomDLL": true,
   "DefaultDLL": "",
+  "Persona": true,
+  "PersonaLoc": "",
   "InjectDelay": 0,
   "Toasts": true,
   "ToastsLoc": "topRight",

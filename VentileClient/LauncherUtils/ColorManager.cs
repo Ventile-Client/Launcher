@@ -518,7 +518,7 @@ namespace VentileClient.LauncherUtils
             MAIN.devDLLLabel.BackColor = backColor;
             MAIN.injectDelayLabel.BackColor = backColor;
             MAIN.autoLabel.BackColor = backColor;
-            MAIN.resourceLabel.BackColor = backColor;
+            MAIN.personaLabel.BackColor = backColor;
             MAIN.rpcButtonTextLabel.BackColor = backColor;
             MAIN.rpcButtonLinkLabel.BackColor = backColor;
 
@@ -527,7 +527,7 @@ namespace VentileClient.LauncherUtils
             MAIN.devDLLLabel.ForeColor = foreColor;
             MAIN.injectDelayLabel.ForeColor = foreColor;
             MAIN.autoLabel.ForeColor = foreColor;
-            MAIN.resourceLabel.ForeColor = foreColor;
+            MAIN.personaLabel.ForeColor = foreColor;
             MAIN.rpcButtonTextLabel.ForeColor = foreColor;
             MAIN.rpcButtonLinkLabel.ForeColor = foreColor;
 
@@ -575,9 +575,9 @@ namespace VentileClient.LauncherUtils
 
 
             //Blank Setting
-            MAIN.customLoc.CheckedState.FillColor = accentColor;
-            MAIN.customLoc.ForeColor = foreColor;
-            MAIN.customLoc.FillColor = backColor2;
+            MAIN.personaLoc.CheckedState.FillColor = accentColor;
+            MAIN.personaLoc.ForeColor = foreColor;
+            MAIN.personaLoc.FillColor = backColor2;
 
             MAIN.AppearanceButton.ForeColor = foreColor;
             MAIN.AppearanceButton.FillColor = backColor2;
@@ -681,7 +681,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.resetThemes.AutoRoundedCorners = true;
                 MAIN.customDLLButton.AutoRoundedCorners = true;
                 MAIN.injectDelay.AutoRoundedCorners = true;
-                MAIN.customLoc.AutoRoundedCorners = true;
+                MAIN.personaLoc.AutoRoundedCorners = true;
                 MAIN.roundedToggle.AutoRoundedCorners = true;
                 MAIN.toastsToggle.AutoRoundedCorners = true;
                 MAIN.toastsSelector.AutoRoundedCorners = true;
@@ -705,7 +705,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.resetThemes.AutoRoundedCorners = false;
                 MAIN.customDLLButton.AutoRoundedCorners = false;
                 MAIN.injectDelay.AutoRoundedCorners = false;
-                MAIN.customLoc.AutoRoundedCorners = false;
+                MAIN.personaLoc.AutoRoundedCorners = false;
                 MAIN.roundedToggle.AutoRoundedCorners = false;
                 MAIN.toastsToggle.AutoRoundedCorners = false;
                 MAIN.toastsSelector.AutoRoundedCorners = false;
@@ -730,7 +730,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.AppearanceButton2.Animated = false;
                 MAIN.resetThemes.Animated = false;
                 MAIN.customDLLButton.Animated = false;
-                MAIN.customLoc.Animated = false;
+                MAIN.personaLoc.Animated = false;
                 MAIN.roundedToggle.Animated = false;
                 MAIN.toastsToggle.Animated = false;
                 MAIN.toastsSelector.Animated = false;
@@ -754,7 +754,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.AppearanceButton2.Animated = true;
                 MAIN.resetThemes.Animated = true;
                 MAIN.customDLLButton.Animated = true;
-                MAIN.customLoc.Animated = true;
+                MAIN.personaLoc.Animated = true;
                 MAIN.roundedToggle.Animated = true;
                 MAIN.toastsToggle.Animated = true;
                 MAIN.toastsSelector.Animated = true;

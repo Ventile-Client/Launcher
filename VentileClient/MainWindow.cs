@@ -18,6 +18,8 @@ using Guna.UI2.WinForms;
 using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 using VentileClient.LauncherUtils;
+using WK.Libraries.BetterFolderBrowserNS;
+using Microsoft.VisualBasic.FileIO;
 
 namespace VentileClient
 {
@@ -46,8 +48,8 @@ namespace VentileClient
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
             isBeta = true,
-            rpcClientID = "832806990953840710",
-            changelog = Properties.Resources.Changelog.Split('\n')
+            rpcID = "832806990953840710",
+            changelog = Properties.Resources.Changelog.Trim().Split('\n')
         };
 
 
@@ -66,7 +68,7 @@ namespace VentileClient
 
         public GitHubClient github;
 
-        // Loggers
+        // Error/Info Loggers
 
         public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", false, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", false, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
@@ -150,12 +152,12 @@ namespace VentileClient
         private ChangelogPrompt _currentChangelog;
 
         // List of all mc versions from github (Will initialize later)
-        // await DataManager.GetVersions(force?);
         public List<Version> versions = new List<Version>();
 
         private async void MainWindow_Load(object sender, EventArgs e)
         {
             ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
+
             if (!Directory.Exists(minecraftResourcePacks))
             {
                 Notif.Toast("Resource Pack", "I couldn't find your resource packs, maybe start minecraft?");
@@ -570,14 +572,17 @@ namespace VentileClient
                     if (configCS.CustomDLL)
                     {
                         if (configCS.DefaultDLL.Length > 0)
-                        {
                             InjectionManager.InjectDLL(configCS.DefaultDLL);
-                        }
+                        else
+                            Notif.Toast("DLL", "Not injecting, no file specified");
                     }
                     else
                     {
                         //Inject Selected DLL
-                        InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\DLLS", selectedDLLName));
+                        if (selectedDLLName != null)
+                            InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\DLLS", selectedDLLName));
+                        else
+                            Notif.Toast("DLL", "Not injecting, no file specified");
                     }
                 }
             }
@@ -620,7 +625,10 @@ namespace VentileClient
                 else
                 {
                     //Inject Selected DLL
-                    InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\DLLS", selectedDLLName));
+                    if (selectedDLLName != null)
+                        InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\DLLS", selectedDLLName));
+                    else
+                        Notif.Toast("DLL", "Not injecting, no file specified");
                 }
             }
         }
@@ -639,8 +647,8 @@ namespace VentileClient
                 cBlack.Checked = true;
                 cosmeticsCS.cBlack = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(0).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -663,8 +671,8 @@ namespace VentileClient
                 cWhite.Checked = true;
                 cosmeticsCS.cWhite = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(1).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -687,8 +695,8 @@ namespace VentileClient
                 cPink.Checked = true;
                 cosmeticsCS.cPink = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(2).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -711,8 +719,8 @@ namespace VentileClient
                 cBlue.Checked = true;
                 cosmeticsCS.cBlue = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(3).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -735,8 +743,8 @@ namespace VentileClient
                 cYellow.Checked = true;
                 cosmeticsCS.cYellow = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(4).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -759,8 +767,8 @@ namespace VentileClient
                 cRick.Checked = true;
                 cosmeticsCS.cRick = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(5).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -838,8 +846,8 @@ namespace VentileClient
                 mBlack.Checked = true;
                 cosmeticsCS.mBlack = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(6).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -861,8 +869,8 @@ namespace VentileClient
                 mWhite.Checked = true;
                 cosmeticsCS.mWhite = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(7).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -884,8 +892,8 @@ namespace VentileClient
                 mPink.Checked = true;
                 cosmeticsCS.mPink = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(8).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -907,8 +915,8 @@ namespace VentileClient
                 mBlue.Checked = true;
                 cosmeticsCS.mBlue = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(9).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -930,8 +938,8 @@ namespace VentileClient
                 mYellow.Checked = true;
                 cosmeticsCS.mYellow = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(10).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -953,8 +961,8 @@ namespace VentileClient
                 mRick.Checked = true;
                 cosmeticsCS.mRick = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(11).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1029,8 +1037,8 @@ namespace VentileClient
                 aGlowing.Checked = true;
                 cosmeticsCS.aGlowing = true;
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(12).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1052,8 +1060,8 @@ namespace VentileClient
                 cosmeticsCS.aGlowing = true;
 
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(13).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1104,8 +1112,8 @@ namespace VentileClient
                 cosmeticsCS.oWavy = true;
 
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(14).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1125,8 +1133,8 @@ namespace VentileClient
                 cosmeticsCS.oKagune = true;
 
                 CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(15).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(17).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(17).Key);
+                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1434,9 +1442,42 @@ namespace VentileClient
             configCS.InjectDelay = (int)injectDelay.Value;
         }
 
-        private void blankButton_Click(object sender, EventArgs e)
+        private void personaLoc_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("Blank Button!");
+            if (configCS.Persona)
+            {
+                configCS.Persona = false;
+                personaLoc.Checked = false;
+                configCS.PersonaLoc = "";
+                VersionManager.RemovePersona();
+            }
+            else
+            {
+                var personaFolder = new BetterFolderBrowser();
+
+                personaFolder.Title = "Choose your persona folder!";
+                if (Directory.Exists(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_8wekyb3d8bbwe\data\skin_packs"))
+                    personaFolder.RootFolder = @"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_8wekyb3d8bbwe\data\skin_packs";
+                else
+                    personaFolder.RootFolder = @"C:\";
+
+                // Allow multi-selection of folders.
+                personaFolder.Multiselect = false;
+
+                if (personaFolder.ShowDialog() == DialogResult.OK)
+                {
+                    configCS.PersonaLoc = personaFolder.SelectedFolder;
+                    Notif.Toast("Persona", "Persona Selected!");
+                }
+                else
+                {
+                    Notif.Toast("Persona", "There was an error selecting your persona!");
+                    return;
+                }
+                VersionManager.ImportPersona(false);
+                configCS.Persona = true;
+                personaLoc.Checked = true;
+            }
         }
 
         //Appearance
@@ -2247,9 +2288,8 @@ namespace VentileClient
 
         #endregion
 
-        #endregion   
+        #endregion        
     }
-
     #region Small Classes
 
     public class VentileSettings
@@ -2259,7 +2299,7 @@ namespace VentileClient
         public string cosmeticsVersion;
         public bool isBeta;
 
-        public string rpcClientID;
+        public string rpcID;
 
         public string[] changelog;
     }

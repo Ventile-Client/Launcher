@@ -1,8 +1,8 @@
 ﻿using Guna.UI2.WinForms;
 using Ionic.Zip;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Management.Automation;
 using System.Net;
@@ -47,6 +47,46 @@ namespace VentileClient.LauncherUtils
                 MAIN.allowClose--;
                 sndr.Enabled = true;
             });
+        }
+
+        public static async void ImportPersona(bool isDefault)
+        {
+            if (isDefault)
+            {
+                Directory.CreateDirectory(@"C:\temp\VentileClient\Versions\.data\defaultPersona");
+                FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, @"C:\temp\VentileClient\Versions\.data\defaultPersona", true);
+            }
+
+            if (Directory.Exists(MAIN.configCS.PersonaLoc))
+            {
+                foreach (DirectoryInfo folder in new DirectoryInfo(@"C:\temp\VentileClient\Versions").GetDirectories())
+                {
+                    if (!folder.Name.StartsWith("."))
+                    {
+                        await Task.Run(() =>
+                        {
+                            Directory.CreateDirectory(Path.Combine(folder.FullName, "data/skin_packs/persona"));
+                            FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, Path.Combine(folder.FullName, "data/skin_packs/persona"), true);
+                        });
+                    }
+                }
+            }
+        }
+
+        public static async void RemovePersona()
+        {
+            if (!Directory.Exists(@"C:\temp\VentileClient\Versions\.data\defaultPersona")) return;
+            foreach (DirectoryInfo folder in new DirectoryInfo(@"C:\temp\VentileClient\Versions").GetDirectories())
+            {
+                if (!folder.Name.StartsWith("."))
+                {
+                    await Task.Run(() =>
+                    {
+                        Directory.CreateDirectory(Path.Combine(folder.FullName, "data/skin_packs/persona"));
+                        FileSystem.CopyDirectory(@"C:\temp\VentileClient\Versions\.data\defaultPersona", Path.Combine(folder.FullName, "data/skin_packs/persona"), true);
+                    });
+                }
+            }
         }
 
         #region Version Switcher - Downloading
@@ -190,6 +230,7 @@ namespace VentileClient.LauncherUtils
             }
 
             MAIN.allowClose--;
+            ImportPersona(true);
         }
 
         private static void Zip_ExtractProgress(ExtractProgressEventArgs e, string version, long COMPRESSED_SIZE, long EXTRACTED_SIZE_TOTAL, long FILE_SIZE)

@@ -34,25 +34,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = new ConfigTemplate()
-                    {
-                        WindowState = MAIN.configCS.WindowState,
-                        AutoInject = MAIN.configCS.AutoInject,
-                        RichPresence = MAIN.configCS.RichPresence,
-                        RpcText = MAIN.configCS.RpcText,
-                        RpcButton = MAIN.configCS.RpcButton,
-                        RpcButtonLink = MAIN.configCS.RpcButtonLink,
-                        RpcButtonText = MAIN.configCS.RpcButtonText,
-                        CustomDLL = MAIN.configCS.CustomDLL,
-                        DefaultDLL = MAIN.configCS.DefaultDLL,
-                        InjectDelay = MAIN.configCS.InjectDelay,
-                        Toasts = MAIN.configCS.Toasts,
-                        ToastsLoc = MAIN.configCS.ToastsLoc,
-                        RoundedButtons = MAIN.configCS.RoundedButtons,
-                        PerformanceMode = MAIN.configCS.PerformanceMode,
-                        BackgroundImageLoc = MAIN.configCS.BackgroundImageLoc,
-                        BackgroundImage = MAIN.configCS.BackgroundImage
-                    };
+                    var temp = MAIN.configCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -87,16 +69,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = new ThemeTemplate()
-                    {
-                        Theme = MAIN.themeCS.Theme,
-                        Background = MAIN.themeCS.Background,
-                        SecondBackground = MAIN.themeCS.SecondBackground,
-                        Foreground = MAIN.themeCS.Foreground,
-                        Accent = MAIN.themeCS.Accent,
-                        Outline = MAIN.themeCS.Outline,
-                        Faded = MAIN.themeCS.Faded
-                    };
+                    var temp = MAIN.themeCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -131,17 +104,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = new PresetColorsTemplate()
-                    {
-                        p1 = MAIN.presetCS.p1,
-                        p2 = MAIN.presetCS.p2,
-                        p3 = MAIN.presetCS.p3,
-                        p4 = MAIN.presetCS.p4,
-                        p5 = MAIN.presetCS.p5,
-                        p6 = MAIN.presetCS.p6,
-                        p7 = MAIN.presetCS.p7,
-                        p8 = MAIN.presetCS.p8,
-                    };
+                    var temp = MAIN.presetCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -176,28 +139,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    var temp = new CosmeticsTemplate()
-                    {
-                        cBlack = MAIN.cosmeticsCS.cBlack,
-                        cWhite = MAIN.cosmeticsCS.cWhite,
-                        cPink = MAIN.cosmeticsCS.cPink,
-                        cBlue = MAIN.cosmeticsCS.cBlue,
-                        cYellow = MAIN.cosmeticsCS.cYellow,
-                        cRick = MAIN.cosmeticsCS.cRick,
-
-                        mBlack = MAIN.cosmeticsCS.mBlack,
-                        mWhite = MAIN.cosmeticsCS.mWhite,
-                        mPink = MAIN.cosmeticsCS.mPink,
-                        mBlue = MAIN.cosmeticsCS.mBlue,
-                        mYellow = MAIN.cosmeticsCS.mYellow,
-                        mRick = MAIN.cosmeticsCS.mRick,
-
-                        aGlowing = MAIN.cosmeticsCS.aGlowing,
-                        aSlide = MAIN.cosmeticsCS.aSlide,
-
-                        oWavy = MAIN.cosmeticsCS.oWavy,
-                        oKagune = MAIN.cosmeticsCS.oKagune,
-                    };
+                    var temp = MAIN.cosmeticsCS;
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);

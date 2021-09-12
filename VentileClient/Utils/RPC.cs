@@ -8,7 +8,7 @@ namespace VentileClient
 {
     public static class RPC
     {
-        static DiscordRpcClient client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcClientID);
+        static DiscordRpcClient client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
 
         static ConfigTemplate config = MainWindow.INSTANCE.configCS;
 
@@ -19,7 +19,7 @@ namespace VentileClient
                 if (!client.IsInitialized)
                 {
 
-                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcClientID);
+                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
                     client.Initialize();
                 }
 
@@ -91,7 +91,7 @@ namespace VentileClient
                 if (!client.IsInitialized)
                 {
 
-                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcClientID);
+                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
                     client.Initialize();
                 }
 

@@ -527,15 +527,23 @@ namespace VentileClient.LauncherUtils
             //Auto Inject
             if (MAIN.configCS.AutoInject)
             {
-                MAIN.configCS.AutoInject = true;
                 MAIN.autoInject.Checked = true;
                 MAIN.autoInject.Text = "On";
             }
             else
             {
-                MAIN.configCS.AutoInject = false;
                 MAIN.autoInject.Checked = false;
                 MAIN.autoInject.Text = "Off";
+            }
+
+            //Persona
+            if (MAIN.configCS.Persona)
+            {
+                MAIN.personaLoc.Checked = true;
+            }
+            else
+            {
+                MAIN.personaLoc.Checked = false;
             }
 
             //Theme
