@@ -500,7 +500,6 @@ namespace VentileClient.LauncherUtils
 
         public static void Settings()
         {
-
             // Make the color variable smaller
             Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
             Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);

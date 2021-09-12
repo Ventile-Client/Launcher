@@ -161,7 +161,7 @@ namespace VentileClient
             }
 
             ConfigManager.ReadCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
-            ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+            ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
 
             ColorManager.Global();
             ColorManager.Home();
@@ -501,7 +501,6 @@ namespace VentileClient
                 ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
                 ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
-                ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
 
                 RPC.Disable();
 
@@ -1850,7 +1849,7 @@ namespace VentileClient
             }
             else
             {
-                ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
 
                 if (Convert.ToInt32(_panel.Name.Substring(6)) == 1)
                     presetCS.p1 = themeCS.Accent;
@@ -1877,7 +1876,6 @@ namespace VentileClient
                     presetCS.p8 = themeCS.Accent;
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.Accent);
-                ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
 
                 ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + ".json");
                 ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + "Theme.json");
@@ -1949,7 +1947,7 @@ namespace VentileClient
                 else
                 {
                     Notif.Toast("Presets", "Preset not found!");
-                    ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+                    ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
 
                     _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
 
@@ -1977,8 +1975,6 @@ namespace VentileClient
 
                     if (Convert.ToInt32(_panel.Name.Substring(6)) == 8)
                         presetCS.p8 = themeCS.SecondBackground;
-
-                    ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
                 }
             }
         }
@@ -1993,7 +1989,7 @@ namespace VentileClient
                     File.Delete(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + "Theme.json");
                 }
                 catch { }
-                ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
 
@@ -2021,13 +2017,11 @@ namespace VentileClient
 
                 if (Convert.ToInt32(_panel.Name.Substring(6)) == 8)
                     presetCS.p8 = themeCS.SecondBackground;
-
-                ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
             }
             else
             {
                 Notif.Toast("Presets", "This preset doesn't exist!");
-                ConfigManager.ReadPresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
+                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
 
@@ -2055,8 +2049,6 @@ namespace VentileClient
 
                 if (Convert.ToInt32(_panel.Name.Substring(6)) == 8)
                     presetCS.p8 = themeCS.SecondBackground;
-
-                ConfigManager.WritePresetColors(@"C:\temp\VentileClient\Presets\PresetColors.json");
             }
         }
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
