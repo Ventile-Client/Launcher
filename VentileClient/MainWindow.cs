@@ -19,7 +19,6 @@ using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 using VentileClient.LauncherUtils;
 using WK.Libraries.BetterFolderBrowserNS;
-using Microsoft.VisualBasic.FileIO;
 
 namespace VentileClient
 {
@@ -178,7 +177,7 @@ namespace VentileClient
             RPC.Idling();
 
             //Get Repos
-            if (internet) 
+            if (internet)
                 await DataManager.GetVersions(true);
 
             DataManager.Version(internet);
@@ -1455,9 +1454,10 @@ namespace VentileClient
             }
             else
             {
-                var personaFolder = new BetterFolderBrowser();
-
-                personaFolder.Title = "Choose your persona folder!";
+                var personaFolder = new BetterFolderBrowser
+                {
+                    Title = "Choose your persona folder!"
+                };
                 if (Directory.Exists(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_8wekyb3d8bbwe\data\skin_packs"))
                     personaFolder.RootFolder = @"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_8wekyb3d8bbwe\data\skin_packs";
                 else
