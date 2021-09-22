@@ -1,17 +1,7 @@
-﻿Ventile Launcher 
+﻿Version 4.2.0 Changelog:
  - Added:
-    Animations
-    Changelog
-    Performance Mode
-    Inject Delay
-    Built In DLL's
-    PNG Background Support
-    Version Switcher
-    Persona Injector
+    Help Button
 
  - Removed:
-    Custom Resource Pack Location
 
  - Fixes:
-    Slightly Increased Performance
-    Rich Presence

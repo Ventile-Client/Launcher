@@ -49,24 +49,39 @@ namespace VentileClient.LauncherUtils
             });
         }
 
-        public static async void ImportPersona(bool isDefault)
+        public static async void ImportPersona(bool isDefault, bool copyPersona)
         {
-            if (isDefault)
+            if (copyPersona)
             {
-                Directory.CreateDirectory(@"C:\temp\VentileClient\Versions\.data\defaultPersona");
-                FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, @"C:\temp\VentileClient\Versions\.data\defaultPersona", true);
+                if (Directory.Exists(MAIN.configCS.PersonaLoc))
+                {
+                    Directory.CreateDirectory(@"C:\temp\VentileClient\Versions\.data\defaultPersona");
+                    FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, @"C:\temp\VentileClient\Versions\.data\defaultPersona", true);
+                }
+                else
+                {
+                    Notif.Toast("Persona", "It seems your persona folder doesn't exist!");
+                }
             }
 
-            if (Directory.Exists(MAIN.configCS.PersonaLoc))
+            string path = MAIN.configCS.PersonaLoc;
+
+            if (isDefault)
+            {
+                path = @"C:\temp\VentileClient\Versions\.data\defaultPersona";
+            }
+
+            if (Directory.Exists(path))
             {
                 foreach (DirectoryInfo folder in new DirectoryInfo(@"C:\temp\VentileClient\Versions").GetDirectories())
                 {
-                    if (!folder.Name.StartsWith("."))
+                    if (folder.Name.StartsWith("Minecraft-"))
                     {
                         await Task.Run(() =>
                         {
-                            Directory.CreateDirectory(Path.Combine(folder.FullName, "data/skin_packs/persona"));
-                            FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, Path.Combine(folder.FullName, "data/skin_packs/persona"), true);
+                            string personaPath = Path.Combine(folder.FullName, "data/skin_packs/persona");
+                            Directory.CreateDirectory(personaPath);
+                            FileSystem.CopyDirectory(path, personaPath, true);
                         });
                     }
                 }
@@ -230,7 +245,7 @@ namespace VentileClient.LauncherUtils
             }
 
             MAIN.allowClose--;
-            ImportPersona(true);
+            ImportPersona(true, false);
         }
 
         private static void Zip_ExtractProgress(ExtractProgressEventArgs e, string version, long COMPRESSED_SIZE, long EXTRACTED_SIZE_TOTAL, long FILE_SIZE)

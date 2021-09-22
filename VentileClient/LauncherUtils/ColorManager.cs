@@ -852,6 +852,8 @@ namespace VentileClient.LauncherUtils
             MAIN.website.BackColor = backColor;
             MAIN.discord.BackColor = backColor;
 
+            MAIN.helpButton.ForeColor = foreColor;
+            MAIN.helpButton.BackColor = backColor;
 
             MAIN.cosmeticsVLabel.BackColor = backColor;
             MAIN.cosmeticsVLabel.ForeColor = fadedColor;
@@ -863,6 +865,18 @@ namespace VentileClient.LauncherUtils
             MAIN.clientVLabel.ForeColor = fadedColor;
 
             MAIN.aboutTab.BackColor = backColor;
+
+            //Performance Mode
+            if (MAIN.configCS.PerformanceMode)
+            {
+                MAIN.helpButton.Animated = false;
+                MAIN.helpButton.Animated = false;
+            }
+            else
+            {
+                MAIN.helpButton.Animated = true;
+                MAIN.helpButton.Animated = true;
+            }
         }
 
     }

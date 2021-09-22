@@ -6,6 +6,7 @@
 # My Exclusions
 VentileClient/Personal
 VentileClient/Secrets
+VentileClient/bin
 
 # User-specific files
 *.rsuser

@@ -43,12 +43,13 @@ namespace VentileClient
 
         public VentileSettings ventile_settings = new VentileSettings()
         {
-            launcherVersion = "4.1.0",
+            launcherVersion = "4.2.0",
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
             isBeta = true,
             rpcID = "832806990953840710",
-            changelog = Properties.Resources.Changelog.Trim().Split('\n')
+            changelog = Properties.Resources.Changelog.Trim().Split('\n'),
+            help = Properties.Resources.Help.Trim().Split('\n')
         };
 
 
@@ -147,6 +148,7 @@ namespace VentileClient
 
         public string minecraftResourcePacks = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\resource_packs");
         private ChangelogPrompt _currentChangelog;
+        private HelpPrompt _currentHelp;
 
         // List of all mc versions from github (Will initialize later)
         public List<Version> versions = new List<Version>();
@@ -225,17 +227,15 @@ namespace VentileClient
             {
                 this.Hide();
                 TrayIcon.Visible = true;
-                Notif.Toast("Launcher", "Minimized to tray!");
                 _hidden = true;
+                Notif.Toast("Launcher", "Minimized to tray!");
             }
 
             if (configCS.WindowState == "hide" && !(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _hidden)
             {
                 TrayIcon.Visible = false;
                 this.Show();
-                this.BringToFront();
-                this.TopMost = true;
-                this.TopMost = false;
+                this.Activate();
                 _hidden = false;
             }
 
@@ -243,6 +243,12 @@ namespace VentileClient
             {
                 this.WindowState = FormWindowState.Minimized;
                 _hidden = true;
+                Notif.Toast("Launcher", "Minimized!");
+            }
+
+            if (configCS.WindowState == "minimize" && !(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _hidden)
+            {
+                _hidden = false;
             }
 
             if (configCS.WindowState == "close" && Process.GetProcessesByName("Minecraft.Windows").Length > 0)
@@ -1470,9 +1476,9 @@ namespace VentileClient
                     Notif.Toast("Persona", "There was an error selecting your persona!");
                     return;
                 }
-                VersionManager.ImportPersona(false);
                 configCS.Persona = true;
                 personaLoc.Checked = true;
+                VersionManager.ImportPersona(false, true);
             }
         }
 
@@ -2275,10 +2281,21 @@ namespace VentileClient
             _currentChangelog.Show();
         }
 
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            // New changelog window
+            if ((HelpPrompt)System.Windows.Forms.Application.OpenForms["HelpPrompt"] != null) return;
+            _currentHelp = new HelpPrompt(themeCS, ventile_settings.help);
+            _currentHelp.Show();
+        }
+
         #endregion
 
-        #endregion        
+        #endregion
+
+
     }
+
     #region Small Classes
 
     public class VentileSettings
@@ -2291,6 +2308,7 @@ namespace VentileClient
         public string rpcID;
 
         public string[] changelog;
+        public string[] help;
     }
 
     public class LinkSettings

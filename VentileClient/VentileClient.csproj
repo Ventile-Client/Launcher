@@ -14,6 +14,21 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -106,6 +121,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\HelpPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HelpPrompt.Designer.cs">
+      <DependentUpon>HelpPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ChangelogPrompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,7 +147,7 @@
     <Compile Include="Utils\ControlManager.cs" />
     <Compile Include="Utils\InjectionManager.cs" />
     <Compile Include="Utils\InternetManager.cs" />
-    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\DebugLogger.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,6 +177,9 @@
     <Compile Include="Forms\UpdatePrompt.Designer.cs">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\HelpPrompt.resx">
+      <DependentUpon>HelpPrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangelogPrompt.resx">
       <DependentUpon>ChangelogPrompt.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,12 +203,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppLogo.ico" />
-    <Content Include="Personal\Add.txt" />
-    <Content Include="Personal\Extras.txt" />
     <Content Include="Personal\Fix.txt" />
     <Content Include="Personal\OnRelease.txt" />
     <Content Include="ReleaseData\Changelog.txt" />
     <Content Include="Personal\WorkOn.txt" />
+    <Content Include="ReleaseData\Help.txt" />
     <None Include="packages.config" />
     <None Include="ReleaseData\Config.json" />
     <None Include="ReleaseData\Cosmetics.json" />
@@ -196,7 +219,18 @@
     <None Include="Resources\background2.png" />
     <None Include="Resources\background.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName)==Release (
@@ -205,53 +239,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>@echo off
-if %25ERRORLEVEL%25 GEQ 8 goto failed
 
 if $(ConfigurationName) == Release (
-  cd $(TargetDir)
-  mkdir LauncherZip
-  echo Created Temporary Launcher Zip Folder
-  cd LauncherZip
-  move $(TargetDir)*.* $(TargetDir)LauncherZip
-  echo Movied Files to Launcher Zip Folder
-  del *.xml
-  echo Deleted .xml files
-  del *.pdb
-  echo Deleted .pdb files
-  del *.winmd
-  echo Deleted .winmd files
-  powershell Compress-Archive -Path "$(TargetDir)LauncherZip\*.*" -DestinationPath "$(TargetDir)\VentileClient.zip"
-  echo Zipped Launcher
-
-  cd $(TargetDir)
-  mkdir PresetsZip
-  echo Created Temporary Presets Zip Folder
-  cd PresetsZip
-  for /R $(ProjectDir)ReleaseData %25%25f in (*.json) do copy "%25%25f" $(TargetDir)PresetsZip\
-  echo Copied .json files
-  powershell Compress-Archive -Path "$(TargetDir)PresetsZip\*.*" -DestinationPath "$(TargetDir)\Presets.zip"
-  echo Zipped Presets
-  cd $(TargetDir)
-  rmdir /s /q $(TargetDir)PresetsZip
-  rmdir /s /q $(TargetDir)LauncherZip
-  echo Cleaned Up!
-
-  explorer "$(TargetDir)"
-
-  echo --------------------------------------------------------------------------------------------------------------
-  echo ^|
-  echo ^|^ Built: $(TargetDir)
-  echo ^|
-  echo --------------------------------------------------------------------------------------------------------------
-
-  goto success
-
-  :failed
-  Failed Post Build!
-  exit 1
-
-  :success
-  exit 0
+  $(SolutionDir)\TextFormatterBecusLazy\bin\Release\TextFormatterBecusLazy.exe $(TargetDir) $(ProjectDir)
 ) else (
 echo -------------------------------------------------------------
 echo ^|^ IF BUILDING TO PUBLISH, SWITCH TO RELEASE MODE

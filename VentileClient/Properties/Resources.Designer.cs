@@ -83,25 +83,23 @@ namespace VentileClient.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ventile Launcher 
         /// - Added:
-        ///    Animations
-        ///    Changelog
-        ///    Performance Mode
-        ///    Inject Delay
-        ///    Default DLL&apos;s
-        ///    PNG Background Support
-        ///
-        ///- In Progress:
-        ///    Version Switcher
         ///
         /// - Removed:
-        ///    Custom Resource Pack Location
         ///
-        /// - Fixes:
-        ///    Slightly Increased Performance.
+        /// - Fixes:.
         /// </summary>
         internal static string Changelog {
             get {
                 return ResourceManager.GetString("Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
