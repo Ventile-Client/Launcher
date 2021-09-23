@@ -54,11 +54,6 @@ namespace VentileClient
 
         public LinkSettings link_settings = new LinkSettings()
         {
-            discordInvite = @"https://discord.gg/T2QtgdrtAY",
-            websiteLink = @"https://ventile-client.github.io/Web/",
-            repoOwner = "Ventile-Client",
-            versionsRepo = "VersionChanger",
-            downloadRepo = "Download",
             githubProductHeader = "VentileClientLauncher",
             githubToken = null
         };
@@ -68,9 +63,9 @@ namespace VentileClient
         public GitHubClient github;
 
         // Error/Info Loggers
-        public Logger defaultLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
-        public Logger configLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
-        public Logger versionLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger dLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger cLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger vLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
 
         #region Global Variables
 
@@ -105,6 +100,17 @@ namespace VentileClient
         public MainWindow()
         {
             //Only allow app to open once is in Program.cs
+
+            //Get Link settings
+            DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.txt");
+            string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.txt");
+            var tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
+            link_settings.discordInvite = tmpSettings.discordInvite;
+            link_settings.websiteLink = tmpSettings.websiteLink;
+            link_settings.repoOwner = tmpSettings.repoOwner;
+            link_settings.versionsRepo = tmpSettings.versionsRepo;
+            link_settings.downloadRepo = tmpSettings.downloadRepo;
+            File.Delete(@"C:\temp\VentileClient\link_settings.txt");
 
             InitializeComponent();
 
@@ -205,7 +211,7 @@ namespace VentileClient
             if (e.Button == MouseButtons.Right) return;
             TrayIcon.Visible = false;
             this.Show();
-            this.BringToFront();
+            this.Activate();
         }
 
         private void TrayQuit_Click(object sender, EventArgs e)
@@ -217,7 +223,7 @@ namespace VentileClient
         {
             TrayIcon.Visible = false;
             this.Show();
-            this.BringToFront();
+            this.Activate();
         }
 
         private void tick_Tick(object sender, EventArgs e)
@@ -268,7 +274,7 @@ namespace VentileClient
             else if (!(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _inGameTest)
             {
                 _inGameTest = false;
-                RPC.ChangeState("Idling the Launcher...");
+                RPC.Idling();
             }
         }
 
@@ -496,8 +502,6 @@ namespace VentileClient
         bool _isClosing;
         private void close(string logText)
         {
-
-
             if (allowClose == 0)
             {
                 if (_isClosing) return;
@@ -509,8 +513,7 @@ namespace VentileClient
 
                 RPC.Disable();
 
-                defaultLogger.Log(logText);
-                //Close all loggers
+                dLogger.Log(logText);
                 closeButton.DisabledState.FillColor = closeButton.FillColor;
                 closeButton.DisabledState.BorderColor = closeButton.DisabledState.BorderColor;
                 closeButton.DisabledState.ForeColor = closeButton.ForeColor;
@@ -518,6 +521,7 @@ namespace VentileClient
                 closeButton.Enabled = false;
 
 
+                //Close all loggers
                 FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
                 foreach (FieldInfo fieldInfo in fis)
                 {
@@ -562,7 +566,7 @@ namespace VentileClient
             catch (Exception ex)
             {
                 Notif.Toast("Error", "Sorry, there was an error launching...");
-                defaultLogger.Log(ex);
+                dLogger.Log(ex);
                 return;
             }
             if (configCS.AutoInject)
@@ -654,7 +658,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), minecraftResourcePacks, "BlackVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), minecraftResourcePacks, "BlackVentileCape.zip");
 
             }
             else
@@ -678,7 +682,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileCape.zip"), minecraftResourcePacks, "WhiteVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileCape.zip"), minecraftResourcePacks, "WhiteVentileCape.zip");
 
             }
             else
@@ -702,7 +706,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileCape.zip"), minecraftResourcePacks, "PinkVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileCape.zip"), minecraftResourcePacks, "PinkVentileCape.zip");
 
             }
             else
@@ -726,7 +730,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileCape.zip"), minecraftResourcePacks, "BlueVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileCape.zip"), minecraftResourcePacks, "BlueVentileCape.zip");
 
             }
             else
@@ -750,7 +754,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileCape.zip"), minecraftResourcePacks, "YellowVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileCape.zip"), minecraftResourcePacks, "YellowVentileCape.zip");
 
             }
             else
@@ -774,7 +778,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileCape.zip"), minecraftResourcePacks, "RickVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileCape.zip"), minecraftResourcePacks, "RickVentileCape.zip");
 
             }
             else
@@ -853,7 +857,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileMask.zip"), minecraftResourcePacks, "BlackVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileMask.zip"), minecraftResourcePacks, "BlackVentileMask.zip");
 
             }
             else
@@ -876,7 +880,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileMask.zip"), minecraftResourcePacks, "WhiteVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileMask.zip"), minecraftResourcePacks, "WhiteVentileMask.zip");
 
             }
             else
@@ -899,7 +903,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileMask.zip"), minecraftResourcePacks, "PinkVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileMask.zip"), minecraftResourcePacks, "PinkVentileMask.zip");
 
             }
             else
@@ -922,7 +926,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileMask.zip"), minecraftResourcePacks, "BlueVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileMask.zip"), minecraftResourcePacks, "BlueVentileMask.zip");
 
             }
             else
@@ -945,7 +949,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileMask.zip"), minecraftResourcePacks, "YellowVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileMask.zip"), minecraftResourcePacks, "YellowVentileMask.zip");
 
             }
             else
@@ -968,7 +972,7 @@ namespace VentileClient
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileMask.zip"), minecraftResourcePacks, "RickVentileMask.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileMask.zip"), minecraftResourcePacks, "RickVentileMask.zip");
 
             }
             else
@@ -1043,7 +1047,7 @@ namespace VentileClient
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), minecraftResourcePacks, "GlowingVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), minecraftResourcePacks, "GlowingVentileCape.zip");
             }
             else
             {
@@ -1066,7 +1070,7 @@ namespace VentileClient
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), minecraftResourcePacks, "SlidingVentileCape.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), minecraftResourcePacks, "SlidingVentileCape.zip");
             }
             else
             {
@@ -1118,7 +1122,7 @@ namespace VentileClient
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), minecraftResourcePacks, "WavyVentile.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), minecraftResourcePacks, "WavyVentile.zip");
             }
             else
             {
@@ -1139,7 +1143,7 @@ namespace VentileClient
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
-                await DownloadManager.Download(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "Kagune.zip"), minecraftResourcePacks, "KaguneVentile.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "Kagune.zip"), minecraftResourcePacks, "KaguneVentile.zip");
             }
             else
             {
@@ -2292,8 +2296,6 @@ namespace VentileClient
         #endregion
 
         #endregion
-
-
     }
 
     #region Small Classes

@@ -53,7 +53,7 @@ namespace VentileClient.LauncherUtils
                 }
                 catch (Exception ex)
                 {
-                    MAIN.defaultLogger.Log(ex);
+                    MAIN.dLogger.Log(ex);
                 }
             }
 

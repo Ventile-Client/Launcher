@@ -21,7 +21,7 @@ namespace VentileClient.LauncherUtils
             {
                 try
                 {
-                    MAIN.versionLogger.Log("Registering Package: " + gameDir);
+                    MAIN.vLogger.Log("Registering Package: " + gameDir);
                     string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
                     if (File.Exists(manifestPath))
                     {
@@ -29,18 +29,18 @@ namespace VentileClient.LauncherUtils
                         ps.AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"");
                         ps.Invoke();
                         Notif.Toast("Version Manager", $"Switched Version: {version}");
-                        MAIN.versionLogger.Log($"Registered Package: {gameDir}");
+                        MAIN.vLogger.Log($"Registered Package: {gameDir}");
                     }
                     else
                     {
                         Notif.Toast("Version Manager", "There was an error switching the version!");
-                        MAIN.versionLogger.Log("AppxManifest.xml didn't exist! | " + manifestPath, LogLevel.Error);
+                        MAIN.vLogger.Log("AppxManifest.xml didn't exist! | " + manifestPath, LogLevel.Error);
                     }
                 }
                 catch (Exception err)
                 {
                     Notif.Toast("Version Manager", "There was an error switching the version!");
-                    MAIN.versionLogger.Log(err);
+                    MAIN.vLogger.Log(err);
                 }
 
                 MAIN.allowSelectVersion--;
@@ -124,7 +124,7 @@ namespace VentileClient.LauncherUtils
                     client.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sndr, e) => VersionDownloadProgressChanged(e, version));
                     client.DownloadFileCompleted += new AsyncCompletedEventHandler((sndr, e) => VersionDownloadCompleted(version));
 
-                    MAIN.versionLogger.Log("Started Downloading Version: " + version);
+                    MAIN.vLogger.Log("Started Downloading Version: " + version);
 
                     client.DownloadFileAsync(new Uri(link), Path.Combine(path, name));
                 }
@@ -146,7 +146,7 @@ namespace VentileClient.LauncherUtils
 
         private static void VersionDownloadCompleted(string version)
         {
-            MAIN.versionLogger.Log("Downloaded version: " + version);
+            MAIN.vLogger.Log("Downloaded version: " + version);
             var ctrl = (Guna2ProgressBar)ControlManager.GetControl("bar|" + version, MAIN.versionsPanel);
             ctrl.Maximum = int.MaxValue;
             ctrl.Value = 0;
@@ -163,7 +163,7 @@ namespace VentileClient.LauncherUtils
             if (!Directory.Exists(Path.Combine(OutputPath, dirName)))
             {
                 Directory.CreateDirectory(Path.Combine(OutputPath, dirName));
-                MAIN.versionLogger.Log("Created Directory: " + dirName + " in: " + OutputPath);
+                MAIN.vLogger.Log("Created Directory: " + dirName + " in: " + OutputPath);
             }
 
             long FILE_SIZE = new long();
@@ -179,7 +179,7 @@ namespace VentileClient.LauncherUtils
             {
                 try
                 {
-                    MAIN.versionLogger.Log("Started to extract version: " + version);
+                    MAIN.vLogger.Log("Started to extract version: " + version);
                     var fileInfo = new FileInfo(AppxPath);
                     FILE_SIZE = fileInfo.Length;
                     using (var zipFile = ZipFile.Read(AppxPath))
@@ -199,7 +199,7 @@ namespace VentileClient.LauncherUtils
                 catch (Exception err)
                 {
                     Notif.Toast("Version Manager", "There was an error extracting!");
-                    MAIN.versionLogger.Log(err);
+                    MAIN.vLogger.Log(err);
                 }
             });
         }
@@ -231,7 +231,7 @@ namespace VentileClient.LauncherUtils
                 ctrl2.Visible = true;
             }));
 
-            MAIN.versionLogger.Log("Extracted Appx: " + AppxPath + " to: " + OutputPath);
+            MAIN.vLogger.Log("Extracted Appx: " + AppxPath + " to: " + OutputPath);
 
             try
             {
@@ -240,7 +240,7 @@ namespace VentileClient.LauncherUtils
             }
             catch (Exception ex)
             {
-                MAIN.versionLogger.Log(ex);
+                MAIN.vLogger.Log(ex);
                 Notif.Toast("Version Switcher", "There was an error...");
             }
 
@@ -266,7 +266,7 @@ namespace VentileClient.LauncherUtils
             }
             catch (Exception ex)
             {
-                MAIN.versionLogger.Log(ex, LogLevel.Information, LogLocation.Console);
+                MAIN.vLogger.Log(ex, LogLevel.Information, LogLocation.Console);
             }
         }
 

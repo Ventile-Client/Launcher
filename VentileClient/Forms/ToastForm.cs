@@ -123,9 +123,9 @@ namespace VentileClient
                         this.timer1.Interval = 1;
                         this.Opacity -= 0.1;
                         this.Left -= 3;
-                        if (this.Opacity == 0.0)
+                        if (base.Opacity == 0.0)
                         {
-                            this.Close();
+                            base.Close();
                         }
                     }
 
@@ -134,9 +134,9 @@ namespace VentileClient
                         this.timer1.Interval = 1;
                         this.Opacity -= 0.1;
                         this.Left -= 3;
-                        if (this.Opacity == 0.0)
+                        if (base.Opacity == 0.0)
                         {
-                            this.Close();
+                            base.Close();
                         }
                     }
 
@@ -146,9 +146,9 @@ namespace VentileClient
                         this.Opacity -= 0.1;
 
                         this.Left += 3;
-                        if (this.Opacity == 0.0)
+                        if (base.Opacity == 0.0)
                         {
-                            this.Close();
+                            base.Close();
                         }
                     }
 
@@ -157,9 +157,9 @@ namespace VentileClient
                         this.timer1.Interval = 1;
                         this.Opacity -= 0.1; //Fade out
                         this.Left += 3; //Move to the right
-                        if (this.Opacity == 0.0)
+                        if (base.Opacity == 0.0)
                         {
-                            this.Close(); //Close
+                            base.Close(); //Close
                         }
                     }
                     break;
@@ -223,12 +223,7 @@ namespace VentileClient
                         }
                     }
 
-                    this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width - 5;
-
-                    this.Show();
-                    this._action = EnmAction.start;
-                    this.timer1.Interval = 1;
-                    timer1.Start();
+                    this._x = Screen.PrimaryScreen.WorkingArea.Width - base.Width - 5;
                     break;
 
                 case "bottomright":
@@ -247,12 +242,7 @@ namespace VentileClient
                         }
                     }
 
-                    this._x = Screen.PrimaryScreen.WorkingArea.Width - this.Width - 5;
-
-                    this.Show();
-                    this._action = EnmAction.start;
-                    this.timer1.Interval = 1;
-                    timer1.Start();
+                    this._x = Screen.PrimaryScreen.WorkingArea.Width - base.Width - 5;
                     break;
 
                 case "topleft":
@@ -272,11 +262,6 @@ namespace VentileClient
                     }
 
                     this._x = 5;
-
-                    this.Show();
-                    this._action = EnmAction.start;
-                    this.timer1.Interval = 1;
-                    this.timer1.Start();
                     break;
 
                 case "bottomleft":
@@ -296,13 +281,13 @@ namespace VentileClient
                     }
 
                     this._x = 5;
-
-                    this.Show();
-                    this._action = EnmAction.start;
-                    this.timer1.Interval = 1;
-                    this.timer1.Start();
                     break;
             }
+
+            this.Show();
+            this._action = EnmAction.start;
+            this.timer1.Interval = 1;
+            this.timer1.Start();
         }
     }
 }

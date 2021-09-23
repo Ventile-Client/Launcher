@@ -64,7 +64,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"BlackVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), MC_RESOURCE, "BlackVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), MC_RESOURCE, "BlackVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(0).Key);
                 }
                 MAIN.cBlack.Checked = true;
@@ -75,7 +75,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"WhiteVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileCape.zip"), MC_RESOURCE, "WhiteVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileCape.zip"), MC_RESOURCE, "WhiteVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(1).Key);
                 }
                 MAIN.cWhite.Checked = true;
@@ -85,7 +85,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"PinkVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileCape.zip"), MC_RESOURCE, "PinkVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileCape.zip"), MC_RESOURCE, "PinkVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(2).Key);
                 }
                 MAIN.cPink.Checked = true;
@@ -95,7 +95,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"BlueVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileCape.zip"), MC_RESOURCE, "BlueVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileCape.zip"), MC_RESOURCE, "BlueVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(3).Key);
                 }
                 MAIN.cBlue.Checked = true;
@@ -105,7 +105,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"YellowVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileCape.zip"), MC_RESOURCE, "YellowVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileCape.zip"), MC_RESOURCE, "YellowVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(4).Key);
                 }
                 MAIN.cYellow.Checked = true;
@@ -115,7 +115,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"RickVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileCape.zip"), MC_RESOURCE, "RickVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileCape.zip"), MC_RESOURCE, "RickVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(5).Key);
                 }
                 MAIN.cRick.Checked = true;
@@ -127,7 +127,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"BlackVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileMask.zip"), MC_RESOURCE, "BlackVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileMask.zip"), MC_RESOURCE, "BlackVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(6).Key);
                 }
                 MAIN.mBlack.Checked = true;
@@ -137,7 +137,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"WhiteVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileMask.zip"), MC_RESOURCE, "WhiteVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileMask.zip"), MC_RESOURCE, "WhiteVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(7).Key);
                 }
                 MAIN.mWhite.Checked = true;
@@ -147,7 +147,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"PinkVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileMask.zip"), MC_RESOURCE, "PinkVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileMask.zip"), MC_RESOURCE, "PinkVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(8).Key);
                 }
                 MAIN.mPink.Checked = true;
@@ -157,7 +157,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"BlueVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileMask.zip"), MC_RESOURCE, "BlueVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileMask.zip"), MC_RESOURCE, "BlueVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(9).Key);
                 }
                 MAIN.mBlue.Checked = true;
@@ -167,7 +167,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"BlackVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileMask.zip"), MC_RESOURCE, "YellowVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileMask.zip"), MC_RESOURCE, "YellowVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(10).Key);
                 }
                 MAIN.mYellow.Checked = true;
@@ -177,7 +177,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"RickVentileMask.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileMask.zip"), MC_RESOURCE, "RickVentileMask.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileMask.zip"), MC_RESOURCE, "RickVentileMask.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(11).Key);
                 }
                 MAIN.mRick.Checked = true;
@@ -189,7 +189,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"GlowingVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), MC_RESOURCE, "GlowingVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), MC_RESOURCE, "GlowingVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(12).Key);
                 }
                 MAIN.aGlowing.Checked = true;
@@ -199,7 +199,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"SlidingVentileCape.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), MC_RESOURCE, "SlidingVentileCape.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), MC_RESOURCE, "SlidingVentileCape.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(13).Key);
                 }
                 MAIN.aSlide.Checked = true;
@@ -209,7 +209,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"WavyVentile.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), MC_RESOURCE, "WavyVentile.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), MC_RESOURCE, "WavyVentile.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(14).Key);
                 }
                 MAIN.oWavy.Checked = true;
@@ -219,7 +219,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (!File.Exists(Path.Combine(MC_RESOURCE, @"KaguneVentile.zip")))
                 {
-                    await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "KaguneVentile.zip"), MC_RESOURCE, "KaguneVentile.zip");
+                    await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "KaguneVentile.zip"), MC_RESOURCE, "KaguneVentile.zip");
                     CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(15).Key);
                 }
                 MAIN.oKagune.Checked = true;
@@ -234,11 +234,11 @@ namespace VentileClient.LauncherUtils
                     File.Delete(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip"));
                 }
 
-                await DownloadManager.Download(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "CosmeticMixer.zip"), MC_RESOURCE, "CosmeticMixer.zip");
+                await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + LINK_SETTINGS.repoOwner + "/" + LINK_SETTINGS.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "CosmeticMixer.zip"), MC_RESOURCE, "CosmeticMixer.zip");
             }
             catch (Exception ex)
             {
-                MAIN.defaultLogger.Log(ex);
+                MAIN.dLogger.Log(ex);
             }
 
             CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
@@ -246,12 +246,12 @@ namespace VentileClient.LauncherUtils
         }
 
         //Settings
-        static int progressBarWidth = 410;
-        static int buttonWidth = 150;
-        static int spacing = 30;
-        static int topOffset = 15;
-        static int rightPanelOffset = 42;
-        static int rightButtonOffset = 70;
+        static int PROGRESS_BAR_WIDTH = 410;
+        static int BUTTON_WIDTH = 150;
+        static int SPACING = 30;
+        static int TOP_OFFSET = 15;
+        static int RIGHT_PANEL_OFFSET = 42;
+        static int RIGHT_BUTTON_OFFSET = 70;
 
         public static void Version(bool internetParam)
         {
@@ -268,7 +268,7 @@ namespace VentileClient.LauncherUtils
             MAIN.versionsPanel.Controls.Clear();
 
             MAIN.versionsPanel.Size = MAIN.contentView.Size;
-            MAIN.versionsPanel.Width = MAIN.contentView.Width + rightPanelOffset;
+            MAIN.versionsPanel.Width = MAIN.contentView.Width + RIGHT_PANEL_OFFSET;
 
             MAIN.versionsPanel.AutoScroll = true;
 
@@ -280,7 +280,7 @@ namespace VentileClient.LauncherUtils
                     AutoSize = true,
                     Text = "No Internet...",
                     Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                    Location = new Point(5, topOffset),
+                    Location = new Point(5, TOP_OFFSET),
                     ForeColor = foreColor
                 };
 
@@ -289,7 +289,7 @@ namespace VentileClient.LauncherUtils
                     AutoSize = true,
                     Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to acess the internet\n - You don't have an internet connection\n - If a reason isn't listed here, ask for help or contact thedevs!",
                     Font = new Font("Segoe UI", 14.25f),
-                    Location = new Point(9, spacing + topOffset * 2),
+                    Location = new Point(9, SPACING + TOP_OFFSET * 2),
                     ForeColor = foreColor
                 };
 
@@ -310,7 +310,7 @@ namespace VentileClient.LauncherUtils
                 AutoSize = true,
                 Text = "Version Selector",
                 Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                Location = new Point(5, topOffset),
+                Location = new Point(5, TOP_OFFSET),
                 ForeColor = foreColor
             };
             label.BringToFront();
@@ -331,7 +331,7 @@ namespace VentileClient.LauncherUtils
                     ForeColor = foreColor
                 };
 
-                versionName.Location = new Point(9, (versionName.Height + spacing) * (i + 1) + topOffset);
+                versionName.Location = new Point(9, (versionName.Height + SPACING) * (i + 1) + TOP_OFFSET);
 
                 Guna2ProgressBar.CheckForIllegalCrossThreadCalls = false;
 
@@ -342,7 +342,7 @@ namespace VentileClient.LauncherUtils
                     UseTransparentBackground = true,
                     Tag = "bar|" + versionName.Tag,
                     Height = versionName.Height - 5,
-                    Width = progressBarWidth,
+                    Width = PROGRESS_BAR_WIDTH,
                     ForeColor = foreColor,
                     FillColor = backColor2,
                     ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.Gradient,
@@ -360,7 +360,7 @@ namespace VentileClient.LauncherUtils
                     accentColor.B + MAIN.progressBarGradientOffset < 255 ? accentColor.B + MAIN.progressBarGradientOffset : accentColor.B
                     ),
 
-                    Location = new Point(versionName.Location.X + 15, versionName.Location.Y + spacing),
+                    Location = new Point(versionName.Location.X + 15, versionName.Location.Y + SPACING),
                     Visible = false,
                     TabStop = false
                 };
@@ -374,7 +374,7 @@ namespace VentileClient.LauncherUtils
                     Text = "Download",
                     Tag = "download|" + versionName.Tag,
                     Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
-                    Width = buttonWidth,
+                    Width = BUTTON_WIDTH,
                     Height = versionName.Height + 10,
                     ForeColor = foreColor,
                     FillColor = backColor2,
@@ -386,7 +386,7 @@ namespace VentileClient.LauncherUtils
                 };
 
                 download.Click += new EventHandler(DownloadVersion_Clicked);
-                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - rightButtonOffset, versionName.Location.Y);
+                download.Location = new Point(MAIN.versionsPanel.Width - download.Width - RIGHT_BUTTON_OFFSET, versionName.Location.Y);
 
                 // Select the version
                 var select = new Guna2Button()
@@ -395,7 +395,7 @@ namespace VentileClient.LauncherUtils
                     Text = "Select",
                     Tag = "select|" + versionName.Tag,
                     Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
-                    Width = buttonWidth,
+                    Width = BUTTON_WIDTH,
                     Height = versionName.Height + 10,
                     ForeColor = foreColor,
                     FillColor = backColor2,
@@ -408,7 +408,7 @@ namespace VentileClient.LauncherUtils
                 };
 
                 select.Click += new EventHandler(SelectVersion_Clicked);
-                select.Location = new Point(MAIN.versionsPanel.Width - select.Width - rightButtonOffset, versionName.Location.Y);
+                select.Location = new Point(MAIN.versionsPanel.Width - select.Width - RIGHT_BUTTON_OFFSET, versionName.Location.Y);
 
                 // Delete the version
                 var uninstall = new Guna2Button()
@@ -417,7 +417,7 @@ namespace VentileClient.LauncherUtils
                     Text = "Uninstall",
                     Tag = "uninstall|" + versionName.Tag,
                     Font = new Font("Segoe UI", 14.25f, FontStyle.Bold),
-                    Width = buttonWidth,
+                    Width = BUTTON_WIDTH,
                     Height = versionName.Height + 10,
                     ForeColor = foreColor,
                     FillColor = backColor2,
@@ -430,7 +430,7 @@ namespace VentileClient.LauncherUtils
                 };
 
                 uninstall.Click += new EventHandler(UninstallVersion_Clicked);
-                uninstall.Location = new Point(MAIN.versionsPanel.Width - uninstall.Width * 2 - (10 + rightButtonOffset), versionName.Location.Y);
+                uninstall.Location = new Point(MAIN.versionsPanel.Width - uninstall.Width * 2 - (10 + RIGHT_BUTTON_OFFSET), versionName.Location.Y);
 
 
                 // Add Buttons to stuff ykyk
@@ -444,7 +444,7 @@ namespace VentileClient.LauncherUtils
 
             MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
 
-            MAIN.versionsPanel.Height = MAIN.contentView.Height - topOffset;
+            MAIN.versionsPanel.Height = MAIN.contentView.Height - TOP_OFFSET;
 
             // Refreshes The Currently Installed Versions
             RefreshVersionList(MAIN.versions);
@@ -669,7 +669,7 @@ namespace VentileClient.LauncherUtils
             {
                 if (dll.Type == "file" && dll.Name.EndsWith(".dll"))
                 {
-                    await DownloadManager.Download(dll.DownloadUrl, @"C:\temp\VentileClient\Dlls", dll.Name);
+                    await DownloadManager.DownloadAsync(dll.DownloadUrl, @"C:\temp\VentileClient\Dlls", dll.Name);
 
                     var item = new ToolStripMenuItem()
                     {
@@ -683,11 +683,11 @@ namespace VentileClient.LauncherUtils
             }
         }
 
-        static bool versionsRetrived = false;
+        static bool VERSIONS_RETRIVED = false;
 
         public static async Task GetVersions(bool force)
         {
-            if (versionsRetrived && !force) return;
+            if (VERSIONS_RETRIVED && !force) return;
 
             IReadOnlyList<Release> releases = await MAIN.github.Repository.Release.GetAll(MAIN.link_settings.repoOwner, MAIN.link_settings.versionsRepo); // Gets all releases from the VersionChanger repo
 
@@ -699,7 +699,7 @@ namespace VentileClient.LauncherUtils
 
             MAIN.versions.Sort(new VersionSorter()); //Sorts the versions becus mc versions system is trash
             MAIN.versions.Reverse();
-            versionsRetrived = true;
+            VERSIONS_RETRIVED = true;
         }
 
         private static void DLL_Click(object sender, EventArgs e)
@@ -730,7 +730,7 @@ namespace VentileClient.LauncherUtils
             var uninstallButton = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
             var selectButton = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
 
-            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + spacing);
+            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + SPACING);
             downloadButton.Location = new Point(downloadButton.Location.X, label.Location.Y);
             uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
             selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);
@@ -754,7 +754,7 @@ namespace VentileClient.LauncherUtils
             var uninstallButton = (Guna2Button)ControlManager.GetControl("uninstall|" + version, MAIN.versionsPanel);
             var selectButton = (Guna2Button)ControlManager.GetControl("select|" + version, MAIN.versionsPanel);
 
-            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + spacing);
+            progressBar.Location = new Point(progressBar.Location.X, label.Location.Y + SPACING);
             downloadButton.Location = new Point(downloadButton.Location.X, label.Location.Y);
             uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
             selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);

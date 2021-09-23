@@ -8,30 +8,30 @@ namespace VentileClient
 {
     public static class RPC
     {
-        static DiscordRpcClient client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
+        static DiscordRpcClient CLIENT = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
 
-        static ConfigTemplate config = MainWindow.INSTANCE.configCS;
+        static ConfigTemplate CONFIG = MainWindow.INSTANCE.configCS;
 
         public static void Idling()
         {
-            if (config.RichPresence)
+            if (CONFIG.RichPresence)
             {
-                if (!client.IsInitialized)
+                if (!CLIENT.IsInitialized)
                 {
 
-                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
-                    client.Initialize();
+                    CLIENT = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
+                    CLIENT.Initialize();
                 }
 
                 // Sets the rich presence
                 try
                 {
-                    if (config.RpcButton)
+                    if (CONFIG.RpcButton)
                     {
-                        client.SetPresence(new RichPresence()
+                        CLIENT.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = config.RpcText,
+                            State = CONFIG.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
@@ -40,17 +40,17 @@ namespace VentileClient
                             },
                             Buttons = new Button[]
                             {
-                                new Button() { Label = config.RpcButtonText, Url = config.RpcButtonLink },
+                                new Button() { Label = CONFIG.RpcButtonText, Url = CONFIG.RpcButtonLink },
                                 new Button() { Label = "Ventile's Server", Url = "https://discord.gg/ventile" }
                             }
                         });
                     }
                     else
                     {
-                        client.SetPresence(new RichPresence()
+                        CLIENT.SetPresence(new RichPresence()
                         {
                             Details = "Idling In Launcher...",
-                            State = config.RpcText,
+                            State = CONFIG.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
@@ -66,7 +66,7 @@ namespace VentileClient
                 }
                 catch (Exception ex)
                 {
-                    MainWindow.INSTANCE.defaultLogger.Log(ex);
+                    MainWindow.INSTANCE.dLogger.Log(ex);
                 }
             }
         }
@@ -76,34 +76,34 @@ namespace VentileClient
             Thread.Sleep(100);
             try
             {
-                client.Dispose();
+                CLIENT.Dispose();
             }
             catch (Exception ex)
             {
-                MainWindow.INSTANCE.defaultLogger.Log(ex);
+                MainWindow.INSTANCE.dLogger.Log(ex);
             }
         }
 
         public static void ChangeState(string detail)
         {
-            if (config.RichPresence)
+            if (CONFIG.RichPresence)
             {
-                if (!client.IsInitialized)
+                if (!CLIENT.IsInitialized)
                 {
 
-                    client = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
-                    client.Initialize();
+                    CLIENT = new DiscordRpcClient(MainWindow.INSTANCE.ventile_settings.rpcID);
+                    CLIENT.Initialize();
                 }
 
                 // Sets the rich presence
                 try
                 {
-                    if (config.RpcButton)
+                    if (CONFIG.RpcButton)
                     {
-                        client.SetPresence(new RichPresence()
+                        CLIENT.SetPresence(new RichPresence()
                         {
                             Details = detail,
-                            State = config.RpcText,
+                            State = CONFIG.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
@@ -112,17 +112,17 @@ namespace VentileClient
                             },
                             Buttons = new Button[]
                             {
-                                new Button() { Label = config.RpcButtonText, Url = config.RpcButtonLink },
+                                new Button() { Label = CONFIG.RpcButtonText, Url = CONFIG.RpcButtonLink },
                                 new Button() { Label = "Ventile's Server", Url = "https://discord.gg/ventile" }
                             }
                         });
                     }
                     else
                     {
-                        client.SetPresence(new RichPresence()
+                        CLIENT.SetPresence(new RichPresence()
                         {
                             Details = detail,
-                            State = config.RpcText,
+                            State = CONFIG.RpcText,
                             Timestamps = new Timestamps(),
                             Assets = new Assets()
                             {
@@ -138,7 +138,7 @@ namespace VentileClient
                 }
                 catch (Exception ex)
                 {
-                    MainWindow.INSTANCE.defaultLogger.Log(ex);
+                    MainWindow.INSTANCE.dLogger.Log(ex);
                 }
             }
         }

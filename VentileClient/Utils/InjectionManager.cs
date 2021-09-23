@@ -13,14 +13,7 @@ namespace VentileClient.Utils
 {
     public static class InjectionManager
     {
-        static MainWindow MAIN = MainWindow.INSTANCE;
-
-
-
-
         //                    THIS CODE IS NOT BY ME, I HAVE NOT CODED THIS INJECTOR, 12BRENDON34 HAS GIVEN IT TO ME BECAUSE IM TO STIPUD TO FIGURE THIS OUT                    \\
-
-
 
         private static void ApplyAppPackages(string DLLPath)
         {
@@ -91,6 +84,7 @@ namespace VentileClient.Utils
                 ALREADY_ATTEMPTED_INJECT = false;
 
                 Notif.Toast("DLL", "Injected!");
+                Notif.Toast("Path", DownloadedDllFilePath);
             }
             else
             {

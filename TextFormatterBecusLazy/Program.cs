@@ -7,31 +7,31 @@ namespace TextFormatterBecusLazy
 {
     class Program
     {
-        static string TargetDir;
-        static string ProjectDir;
+        static string TARGET_DIR;
+        static string PROJECT_DIR;
         static void Main(string[] args)
         {
 
-            TargetDir = args[0] ?? @"C:\Users\Death\source\repos\_VentileRemake\VentileClient\VentileClient\bin\x64\Release";
-            ProjectDir = args[1] ?? @"C:\Users\Death\source\repos\_VentileRemake\VentileClient\VentileClient";
+            TARGET_DIR = args[0] ?? @"C:\Users\Death\source\repos\_VentileRemake\VentileClient\VentileClient\bin\x64\Release";
+            PROJECT_DIR = args[1] ?? @"C:\Users\Death\source\repos\_VentileRemake\VentileClient\VentileClient";
 
 
-            Directory.CreateDirectory(Path.Combine(TargetDir, "LauncherZip"));
+            Directory.CreateDirectory(Path.Combine(TARGET_DIR, "LauncherZip"));
             Console.WriteLine("Created Temporary Launcher Zip Folder");
 
             Console.WriteLine("Begin Moving Launcher Files:");
-            foreach (string file in Directory.GetFiles(TargetDir))
+            foreach (string file in Directory.GetFiles(TARGET_DIR))
             {
                 var mFile = new FileInfo(file);
 
-                mFile.MoveTo(Path.Combine(TargetDir, "LauncherZip", mFile.Name));
+                mFile.MoveTo(Path.Combine(TARGET_DIR, "LauncherZip", mFile.Name));
                 Console.WriteLine("  Moved: " + mFile.Name);
 
             }
             Console.WriteLine("Movied Files to Launcher Zip Folder");
 
             Console.WriteLine("Begin Deleting Excess Files:");
-            foreach (string file in Directory.GetFiles(Path.Combine(TargetDir, "LauncherZip")))
+            foreach (string file in Directory.GetFiles(Path.Combine(TARGET_DIR, "LauncherZip")))
             {
                 var mFile = new FileInfo(file);
 
@@ -44,34 +44,14 @@ namespace TextFormatterBecusLazy
             Console.WriteLine("Deleted Excess Files");
 
             Console.WriteLine("Zipping Launcher");
-            ZipFile.CreateFromDirectory(Path.Combine(TargetDir, "LauncherZip"), Path.Combine(TargetDir, "VentileClient.zip"));
+            ZipFile.CreateFromDirectory(Path.Combine(TARGET_DIR, "LauncherZip"), Path.Combine(TARGET_DIR, "VentileClient.zip"));
             Console.WriteLine("Zipped Launcher");
 
-            Directory.CreateDirectory(Path.Combine(TargetDir, "PresetsZip"));
-            Console.WriteLine("Created Temporary Presets Zip Folder");
-
-            Console.WriteLine("Begin Copying Preset Files:");
-            foreach (string file in Directory.GetFiles(Path.Combine(ProjectDir, "ReleaseData")))
-            {
-                var mFile = new FileInfo(file);
-
-                if (file.EndsWith(".json"))
-                {
-
-                    mFile.CopyTo(Path.Combine(TargetDir, "PresetsZip", mFile.Name));
-                    Console.WriteLine("  Copied: " + mFile.Name);
-                }
-            }
-
-            Console.WriteLine("Zipping Presets");
-            ZipFile.CreateFromDirectory(Path.Combine(TargetDir, "PresetsZip"), Path.Combine(TargetDir, "Presets.zip"));
-            Console.WriteLine("Zipped Presets");
-
+            File.Copy(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"), Path.Combine(TARGET_DIR, "Changelog.txt"));
             Console.WriteLine("Copied Changelog");
-            File.Copy(Path.Combine(ProjectDir, "ReleaseData\\Changelog.txt"), Path.Combine(TargetDir, "Changelog.txt"));
 
-            Directory.Delete(Path.Combine(TargetDir, "LauncherZip"), true);
-            Directory.Delete(Path.Combine(TargetDir, "PresetsZip"), true);
+            Directory.Delete(Path.Combine(TARGET_DIR, "LauncherZip"), true);
+            Directory.Delete(Path.Combine(TARGET_DIR, "PresetsZip"), true);
             Console.WriteLine("Deleted Extra Folders");
 
             FormatDiscord();
@@ -79,11 +59,11 @@ namespace TextFormatterBecusLazy
 
             Console.WriteLine("Cleaned Up!");
 
-            Process.Start(TargetDir);
+            Process.Start(TARGET_DIR);
 
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("|");
-            Console.WriteLine($"| Built: {TargetDir}");
+            Console.WriteLine($"| Built: {TARGET_DIR}");
             Console.WriteLine("|");
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
 
@@ -92,10 +72,10 @@ namespace TextFormatterBecusLazy
 
         static void FormatDiscord()
         {
-            string[] changelogLines = File.ReadAllLines(Path.Combine(ProjectDir, "ReleaseData\\Changelog.txt"));
-           
+            string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
 
-            using (var sw = new StreamWriter(Path.Combine(TargetDir, "DiscordChangelog.txt"))) //path
+
+            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, "DiscordChangelog.txt"))) //path
             {
                 for (int i = 0; i < changelogLines.Length; i++)
                 {
@@ -114,14 +94,15 @@ namespace TextFormatterBecusLazy
                 }
                 sw.Close();
             }
+            Console.WriteLine("Formatted Discord");
         }
 
         static void FormatGithub()
         {
-            string[] changelogLines = File.ReadAllLines(Path.Combine(ProjectDir, "ReleaseData\\Changelog.txt"));
+            string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
 
 
-            using (var sw = new StreamWriter(Path.Combine(TargetDir, "GithubChangelog.txt"))) //path
+            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, "GithubChangelog.txt"))) //path
             {
                 for (int i = 0; i < changelogLines.Length; i++)
                 {
@@ -136,7 +117,9 @@ namespace TextFormatterBecusLazy
                 }
                 sw.Close();
             }
+            Console.WriteLine("Formatted Github");
         }
+
     }
 }
 
