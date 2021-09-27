@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -14,14 +15,19 @@ namespace VentileClient.Utils
 
                 try
                 {
-                    using (var client = new WebClient())
+                    string combinedPath = Path.Combine(path, name);
+                    if (Directory.Exists(path))
                     {
-                        client.DownloadFile(link, Path.Combine(path, name));
+
+                        using (var client = new WebClient())
+                        {
+                            client.DownloadFile(link, combinedPath);
+                        }
                     }
                 }
-                catch
+                catch (Exception err)
                 {
-                    MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}", LogLevel.Error);
+                    MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
                 }
                 return Task.CompletedTask;
             });
@@ -31,16 +37,20 @@ namespace VentileClient.Utils
         {
             try
             {
-                using (var client = new WebClient())
+                string combinedPath = Path.Combine(path, name);
+                if (Directory.Exists(path))
                 {
-                    client.DownloadFile(link, Path.Combine(path, name));
+
+                    using (var client = new WebClient())
+                    {
+                        client.DownloadFile(link, combinedPath);
+                    }
                 }
             }
-            catch
+            catch (Exception err)
             {
-                MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}", LogLevel.Error);
+                MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
             }
-
             return Task.CompletedTask;
         }
     }

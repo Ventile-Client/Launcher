@@ -100,5 +100,41 @@ namespace VentileClient.Utils
                 sndr.Enabled = true;
             }
         }
+
+        public static async Task Import()
+        {
+            if (MAIN.backingUp)
+            {
+                MAIN.vLogger.Log("Already Importing!");
+                return;
+            }
+            MAIN.vLogger.Log("Starting importing minecraft data!");
+            MAIN.backingUp = true;
+
+            string destDirName = Path.Combine(MAIN.minecraftResourcePacks, @"..");
+            string sourceDirName = @"C:\temp\VentileClient\Versions\.data\com.mojang";
+
+            if (!Directory.Exists(sourceDirName))
+            {
+                MAIN.vLogger.Log("Directory didnt exist: " + sourceDirName);
+                return;
+            }
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+
+                    MAIN.vLogger.Log("Imported minecraft data!");
+                    MAIN.backingUp = false;
+                });
+            }
+            catch (Exception err)
+            {
+                MAIN.vLogger.Log(err);
+                MAIN.backingUp = false;
+            }
+        }
     }
 }

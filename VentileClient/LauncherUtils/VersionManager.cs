@@ -17,10 +17,12 @@ namespace VentileClient.LauncherUtils
 
         public static async Task RegisterPackage(string version, string gameDir, Guna2Button sndr)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
+                    await UninstallMC();
+                    return Task.CompletedTask;
                     MAIN.vLogger.Log("Registering Package: " + gameDir);
                     string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
                     if (File.Exists(manifestPath))
@@ -28,6 +30,7 @@ namespace VentileClient.LauncherUtils
                         var ps = PowerShell.Create();
                         ps.AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"");
                         ps.Invoke();
+                        await MCDataManager.Import();
                         Notif.Toast("Version Manager", $"Switched Version: {version}");
                         MAIN.vLogger.Log($"Registered Package: {gameDir}");
                     }
@@ -46,6 +49,35 @@ namespace VentileClient.LauncherUtils
                 MAIN.allowSelectVersion--;
                 MAIN.allowClose--;
                 sndr.Enabled = true;
+                return Task.CompletedTask;
+            });
+        }
+
+        public static async Task UninstallMC()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    MAIN.vLogger.Log("Checking Installation Location Of Minecraft");
+                    
+                    foreach (PSObject result in PowerShell.Create().AddCommand("Get-AppxPackage").AddParameter("Name", "Microsoft.MinecraftUWP").Invoke())
+                    {
+                        MAIN.vLogger.Log(result.ToString());
+                    }
+                    return Task.CompletedTask;
+                    MAIN.vLogger.Log("Uninstalling Minecraft");
+                    var ps = PowerShell.Create();
+                    ps.AddScript("get-appxpackage Microsoft.MinecraftUWP | remove-appxpackage");
+                    ps.Invoke();
+                    MAIN.vLogger.Log($"Uninstalled Minecraft");
+
+                }
+                catch (Exception err)
+                {
+                    MAIN.vLogger.Log(err);
+                }
+                return Task.CompletedTask;
             });
         }
 

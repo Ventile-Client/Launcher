@@ -107,7 +107,7 @@ namespace VentileClient
         private void changeLogLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // New changelog window
-            if ((ChangelogPrompt)System.Windows.Forms.Application.OpenForms["ChangelogPrompt"] != null) return;
+            if ((ChangelogPrompt)Application.OpenForms["ChangelogPrompt"] != null) return;
             _chnglogPrmpt = new ChangelogPrompt(_themeCS, _changelog);
             _chnglogPrmpt.Show();
         }

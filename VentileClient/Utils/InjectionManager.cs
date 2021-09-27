@@ -85,6 +85,7 @@ namespace VentileClient.Utils
 
                 Notif.Toast("DLL", "Injected!");
                 Notif.Toast("Path", DownloadedDllFilePath);
+                MainWindow.INSTANCE.dLogger.Log($"DLL Injected: {DownloadedDllFilePath}");
             }
             else
             {
@@ -92,11 +93,13 @@ namespace VentileClient.Utils
                 {
                     ALREADY_ATTEMPTED_INJECT = true;
                     Notif.Toast("DLL", "Injection failed");
+                    MainWindow.INSTANCE.dLogger.Log($"Injection Failed: {DownloadedDllFilePath}");
                 }
                 else
                 {
-                    Notif.Toast("Minecraft", "I cannot find minecraft! (Bedrock)");
                     ALREADY_ATTEMPTED_INJECT = false;
+                    Notif.Toast("Minecraft", "I cannot find minecraft! (Bedrock)");
+                    MainWindow.INSTANCE.dLogger.Log($"Minecraft Bedrock doesn't exist.");
                 }
             }
         }

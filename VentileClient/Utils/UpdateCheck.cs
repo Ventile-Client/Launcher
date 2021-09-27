@@ -10,7 +10,7 @@ namespace VentileClient
 {
     public class UpdateCheck
     {
-        public async void CheckForUpdate(ThemeTemplate themeCS, VentileSettings ventileSettings, bool internet, GitHubClient github)
+        public async void CheckForUpdate(ThemeTemplate themeCS, VentileSettings ventileSettings, LinkSettings link_settings, bool internet, GitHubClient github)
         {
             if (File.Exists(@"C:\temp\VentileClient\Version.txt"))
             {
@@ -33,14 +33,14 @@ namespace VentileClient
                 return;
             }
 
-            await DownloadManager.DownloadAsync($"https://github.com/{MainWindow.INSTANCE.link_settings.repoOwner}/{MainWindow.INSTANCE.link_settings.downloadRepo}/releases/download/{releases[0].TagName}/Changelog.txt", @"C:\temp\VentileClient", "Changelog.txt");
-
-            string[] latestChangelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
-
-            File.Delete(@"C:\temp\VentileClient\Changelog.txt");
-
             if (releases[0].TagName != ventileSettings.launcherVersion && !ventileSettings.isBeta)
             {
+                await DownloadManager.DownloadAsync($"https://github.com/{link_settings.repoOwner}/{link_settings.downloadRepo}/releases/download/{releases[0].TagName}/Changelog.txt", @"C:\temp\VentileClient", "Changelog.txt");
+
+                string[] latestChangelog = File.ReadAllLines(@"C:\temp\VentileClient\Changelog.txt");
+
+                File.Delete(@"C:\temp\VentileClient\Changelog.txt");
+
                 MainWindow.INSTANCE.Opacity = 0;
 
                 var updatePrompt = new UpdatePrompt(MainWindow.INSTANCE);

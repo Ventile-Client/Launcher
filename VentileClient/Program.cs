@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using VentileClient.Forms;
 
 namespace VentileClient
 {
@@ -33,14 +34,14 @@ namespace VentileClient
         [STAThread]
         static void Main()
         {
-            string procName = Process.GetCurrentProcess().ProcessName;
+            /*string procName = Process.GetCurrentProcess().ProcessName;
             Process[] proc = Process.GetProcessesByName(procName);
             if (proc.Length > 1) // 1 because of the current process
             {
                 MessageBox.Show("Launcher is already open!");
                 BringProcessToFront(proc[0]);
                 return;
-            }
+            }*/
 
 
             Application.EnableVisualStyles();

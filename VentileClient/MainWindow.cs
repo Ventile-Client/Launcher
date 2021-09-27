@@ -19,6 +19,7 @@ using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 using VentileClient.LauncherUtils;
 using WK.Libraries.BetterFolderBrowserNS;
+using VentileClient.Forms;
 
 namespace VentileClient
 {
@@ -55,7 +56,7 @@ namespace VentileClient
         public LinkSettings link_settings = new LinkSettings()
         {
             githubProductHeader = "VentileClientLauncher",
-            githubToken = null
+            githubToken = "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"
         };
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
@@ -102,15 +103,15 @@ namespace VentileClient
             //Only allow app to open once is in Program.cs
 
             //Get Link settings
-            DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.txt");
-            string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.txt");
-            var tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
+            DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.json");
+            string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.json");
+            LinkSettings tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
             link_settings.discordInvite = tmpSettings.discordInvite;
             link_settings.websiteLink = tmpSettings.websiteLink;
             link_settings.repoOwner = tmpSettings.repoOwner;
             link_settings.versionsRepo = tmpSettings.versionsRepo;
             link_settings.downloadRepo = tmpSettings.downloadRepo;
-            File.Delete(@"C:\temp\VentileClient\link_settings.txt");
+            File.Delete(@"C:\temp\VentileClient\link_settings.json");
 
             InitializeComponent();
 
@@ -142,7 +143,7 @@ namespace VentileClient
             else
             {
                 new UpdateCheck()
-                    .CheckForUpdate(themeCS, ventile_settings, internet, github);
+                    .CheckForUpdate(themeCS, ventile_settings, link_settings, internet, github);
 
                 // Checks for all avaliable dlls in github
                 DataManager.GetDLLS();
@@ -2287,6 +2288,8 @@ namespace VentileClient
 
         private void helpButton_Click(object sender, EventArgs e)
         {
+            new HelpForm2(themeCS, ventile_settings.help).Show();
+            return;
             // New changelog window
             if ((HelpPrompt)System.Windows.Forms.Application.OpenForms["HelpPrompt"] != null) return;
             _currentHelp = new HelpPrompt(themeCS, ventile_settings.help);

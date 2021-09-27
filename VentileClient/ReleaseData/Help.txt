@@ -1,1 +1,19 @@
-﻿This should help you understand how to use this launcher!
+﻿.Home
+  > Launch Minecraft
+      - Opens Minecraft Bedrock, and automically injects your dll (If Auto Inject is enabled)
+
+  > Select DLL
+      - Opens a file prompt, which is where you choose your custom dll (Custom DLL must be enabled)
+
+  > Inject
+      - Injects the selected DLL (if Auto Inject is disabled)
+
+.Cosmetics
+  > Launch Minecraft
+      - Opens Minecraft Bedrock, and automically injects your dll (If Auto Inject is enabled)
+
+  > Select DLL
+      - Opens a file prompt, which is where you choose your custom dll (Custom DLL must be enabled)
+
+  > Inject
+      - Injects the selected DLL (if Auto Inject is disabled)
