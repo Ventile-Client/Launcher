@@ -65,7 +65,7 @@ namespace VentileClient.Utils
 
                 Notif.Toast("Internet", "Connection found!");
                 DataManager.Cosmetics();
-                await DataManager.GetVersions(false);
+                await DataManager.GetMCVersions(false);
                 DataManager.Version(true);
             }
             else if (!internet && PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])

@@ -34,7 +34,8 @@ namespace VentileClient.Utils
                         ToastsLoc = "topRight",
                         RoundedButtons = true,
                         BackgroundImage = false,
-                        BackgroundImageLoc = null
+                        BackgroundImageLoc = null,
+                        DefaultProfile = "Default"
                     };
 
                     WriteConfig(path);

@@ -8,31 +8,52 @@ using System.Management.Automation;
 using System.Net;
 using System.Threading.Tasks;
 using VentileClient.Utils;
+using Windows.Management.Core;
 
 namespace VentileClient.LauncherUtils
 {
     public static class VersionManager
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
-
-        public static async Task RegisterPackage(string version, string gameDir, Guna2Button sndr)
+        static string MINECRAFT_NAME = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
+        public static async Task ReRegisterPackage(string version, string gameDir, Guna2Button sndr)
         {
             await Task.Run(async () =>
             {
                 try
                 {
-                    await UninstallMC();
-                    return Task.CompletedTask;
+                    await MCDataManager.SaveProfile("Default");
+                    MAIN.vLogger.Log("Checking Installation Location Of Minecraft");
+                    PowerShell.Create()
+                        .AddScript(@"Get-AppxPackage Microsoft.MinecraftUWP >> C:\temp\VentileClient\mcInfo.txt")
+                        .Invoke();
+                    foreach (var line in File.ReadAllLines(@"C:\temp\VentileClient\mcInfo.txt"))
+                    {
+                        if (line.StartsWith("InstallLocation"))
+                        {
+                            string[] args = line.Split(' ');
+                            for (int i = 0; i < args.Length; i++)
+                            {
+                                args[i] = args[i].Trim();
+                            }
+                        MAIN.vLogger.Log(args[2]);
+                            if (!(gameDir == (args[2] ?? "none")))
+                            {
+                                await UninstallMC();
+                            }
+                        }
+                    }
+                    File.Delete(@"C:\temp\VentileClient\mcInfo.txt");
                     MAIN.vLogger.Log("Registering Package: " + gameDir);
                     string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
                     if (File.Exists(manifestPath))
                     {
-                        var ps = PowerShell.Create();
-                        ps.AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"");
-                        ps.Invoke();
-                        await MCDataManager.Import();
+                        PowerShell.Create()
+                            .AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"")
+                            .Invoke();
                         Notif.Toast("Version Manager", $"Switched Version: {version}");
                         MAIN.vLogger.Log($"Registered Package: {gameDir}");
+                        await RestoreMCData();
                     }
                     else
                     {
@@ -45,11 +66,9 @@ namespace VentileClient.LauncherUtils
                     Notif.Toast("Version Manager", "There was an error switching the version!");
                     MAIN.vLogger.Log(err);
                 }
-
                 MAIN.allowSelectVersion--;
                 MAIN.allowClose--;
                 sndr.Enabled = true;
-                return Task.CompletedTask;
             });
         }
 
@@ -59,17 +78,10 @@ namespace VentileClient.LauncherUtils
             {
                 try
                 {
-                    MAIN.vLogger.Log("Checking Installation Location Of Minecraft");
-                    
-                    foreach (PSObject result in PowerShell.Create().AddCommand("Get-AppxPackage").AddParameter("Name", "Microsoft.MinecraftUWP").Invoke())
-                    {
-                        MAIN.vLogger.Log(result.ToString());
-                    }
-                    return Task.CompletedTask;
                     MAIN.vLogger.Log("Uninstalling Minecraft");
-                    var ps = PowerShell.Create();
-                    ps.AddScript("get-appxpackage Microsoft.MinecraftUWP | remove-appxpackage");
-                    ps.Invoke();
+                    PowerShell.Create()
+                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Remove-AppxPackage")
+                        .Invoke();
                     MAIN.vLogger.Log($"Uninstalled Minecraft");
 
                 }
@@ -81,14 +93,34 @@ namespace VentileClient.LauncherUtils
             });
         }
 
+        private static async Task RestoreMCData()
+        {
+            await Task.Run(() =>
+            {
+                var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
+
+                if (!Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles\", MAIN.configCS.DefaultProfile ?? "Default")))
+                {
+                    Notif.Toast("MC Data", $"Sorry, I couldn't find the \"{MAIN.configCS.DefaultProfile ?? "Default"}\" profile!");
+                    return;
+                }
+
+                Directory.CreateDirectory(Path.Combine(data.LocalFolder.Path, "games"));
+
+                MAIN.vLogger.Log($"Creating Shortcut To Profile: {(MAIN.configCS.DefaultProfile ?? "Default")} in: {data.LocalFolder.Path}");
+                Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\"), "com.mojang");
+                MAIN.vLogger.Log($"Created Shortcut!");
+            });
+        }
+
         public static async void ImportPersona(bool isDefault, bool copyPersona)
         {
             if (copyPersona)
             {
                 if (Directory.Exists(MAIN.configCS.PersonaLoc))
                 {
-                    Directory.CreateDirectory(@"C:\temp\VentileClient\Versions\.data\defaultPersona");
-                    FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, @"C:\temp\VentileClient\Versions\.data\defaultPersona", true);
+                    Directory.CreateDirectory(@"C:\temp\VentileClient\Versions\Profiles\defaultPersona");
+                    FileSystem.CopyDirectory(MAIN.configCS.PersonaLoc, @"C:\temp\VentileClient\Versions\Profiles\defaultPersona", true);
                 }
                 else
                 {

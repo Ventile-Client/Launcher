@@ -1,13 +1,8 @@
 ﻿using Guna.UI2.WinForms;
 using Microsoft.VisualBasic.FileIO;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using VentileClient.JSON_Template_Classes;
 using VentileClient.LauncherUtils;
 
 namespace VentileClient.Utils
@@ -16,29 +11,24 @@ namespace VentileClient.Utils
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
 
-        public static async Task Backup(bool force = false)
+        public static async Task SaveProfile(string ProfileName)
         {
-            if (MAIN.backingUp)
+            if (MAIN.savingProfile.Contains(ProfileName))
             {
-                MAIN.vLogger.Log("Already Backing Up!");
+                Notif.Toast("Profile Manager", "Already Saving Data to profile: " + ProfileName);
+                MAIN.vLogger.Log("Already Saving Data to profile: " + ProfileName);
                 return;
             }
-            if (!force && MAIN.backedUp)
-            {
-                MAIN.vLogger.Log("Wasn't Forced, didn't backup com.mojang");
-                return;
-            }
-            MAIN.vLogger.Log("Starting backing up minecraft data!");
-            MAIN.backingUp = true;
 
-            Notif.Toast("Version Manager", "Backing up data...");
+            MAIN.vLogger.Log("Saving current Minecraft data to profile: " + ProfileName);
+            MAIN.savingProfile.Add(ProfileName);
 
-            string sourceDirName = Path.Combine(MAIN.minecraftResourcePacks, @"..");
-            string destDirName = @"C:\temp\VentileClient\Versions\.data\com.mojang";
+            string sourceDirName = Path.Combine(MAIN.minecraftResourcePacks, "..");
+            string destDirName = @"C:\temp\VentileClient\Profiles\" + ProfileName;
 
             if (!Directory.Exists(sourceDirName))
             {
-                Notif.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
+                Notif.Toast("Profile Manager", "Sorry, I couldn't find your com.mojang!");
                 MAIN.vLogger.Log("Directory didnt exist: " + sourceDirName);
                 return;
             }
@@ -47,76 +37,83 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
-                    if (Directory.Exists(destDirName)) Directory.Delete(destDirName, true);
-                        FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+                    if (Directory.Exists(destDirName))
+                        Directory.Delete(destDirName, true);
 
-                    MAIN.vLogger.Log("Backed up minecraft data!");
-                    Notif.Toast("Version Manager", "Finished backing up!");
-                    MAIN.backedUp = true;
-                    MAIN.backingUp = false;
+                    Directory.CreateDirectory(destDirName);
+
+                    FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+
+                    Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
+                    MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
+                    MAIN.savingProfile.Remove(ProfileName);
                 });
             }
             catch (Exception err)
             {
+                Notif.Toast("Profile Manager", $"Sorry, there was an error saving to profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log(err);
-                Notif.Toast("Backup Error", "Sorry, there was an error backing up!");
-                MAIN.backedUp = true;
-                MAIN.backingUp = false;
+                MAIN.savingProfile.Remove(ProfileName);
             }
         }
-        public static async Task BackupAndRegister(string gameDir, Guna2Button sndr)
-        {
-            MAIN.vLogger.Log("Starting backup and register");
-            string sourceDirName = Path.Combine(MAIN.minecraftResourcePacks, @"..");
-            string destDirName = @"C:\temp\VentileClient\Versions\.data\com.mojang";
 
-            if (!Directory.Exists(sourceDirName))
+        public static async Task DeleteProfile(string ProfileName)
+        {
+            if (MAIN.savingProfile.Contains(ProfileName))
             {
-                Notif.Toast("Backup Error", "Sorry, please manually back up your com.mojang folder!");
-                MAIN.vLogger.Log("Directory didn't exist! | " + sourceDirName);
-                MAIN.backedUp = true;
-                sndr.Enabled = true;
+                Notif.Toast("Profile Manager", "Already Deleting profile: " + ProfileName);
+                MAIN.vLogger.Log("Already Deleting profile: " + ProfileName);
+                return;
+            }
+            MAIN.vLogger.Log("Deleting profile: " + ProfileName);
+            MAIN.savingProfile.Add(ProfileName);
+
+            string profilePath = $@"C:\temp\VentileClient\Versions\Profiles\{(MAIN.configCS.DefaultProfile ?? "Default")}";
+
+            if (!Directory.Exists(profilePath))
+            {
+                Notif.Toast("Profile Manager", "Sorry, I couldn't find your profile!");
+                MAIN.vLogger.Log("Directory didnt exist: " + profilePath);
                 return;
             }
 
             try
             {
-                await Task.Run(async () =>
+                await Task.Run(() =>
                 {
-                    if (Directory.Exists(destDirName)) Directory.Delete(destDirName, true);
-                    FileSystem.CopyDirectory(sourceDirName, destDirName, true);
-                    MAIN.backedUp = true;
-                    Notif.Toast("Version Manager", "Backup finished, changing version...");
+                        Directory.Delete(profilePath, true);
 
-                    string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
-                    await VersionManager.RegisterPackage(version, gameDir, sndr);
+                    Notif.Toast("Profile Manager", $"Deleted Profile: \"{ProfileName}\"");
+                    MAIN.vLogger.Log($"Deleted Profile: {ProfileName}");
+                    MAIN.savingProfile.Remove(ProfileName);
                 });
             }
             catch (Exception err)
             {
+                Notif.Toast("Profile Manager", $"Sorry, there was an error saving to profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log(err);
-                Notif.Toast("Version Error", "Sorry, there was an error...");
-                MAIN.backedUp = true;
-                sndr.Enabled = true;
+                MAIN.savingProfile.Remove(ProfileName);
             }
         }
 
-        public static async Task Import()
+        public static async Task ImportProfile()
         {
-            if (MAIN.backingUp)
+            if (MAIN.importing)
             {
+                Notif.Toast("Profile Manager", "Already Importing Profile!");
                 MAIN.vLogger.Log("Already Importing!");
                 return;
             }
-            MAIN.vLogger.Log("Starting importing minecraft data!");
-            MAIN.backingUp = true;
+            MAIN.vLogger.Log("Starting importing Minecraft data!");
+            MAIN.importing = true;
 
-            string destDirName = Path.Combine(MAIN.minecraftResourcePacks, @"..");
-            string sourceDirName = @"C:\temp\VentileClient\Versions\.data\com.mojang";
+            string shortcutPath = Path.Combine(MAIN.minecraftResourcePacks, @"..");
+            string gotoPath = $@"C:\temp\VentileClient\Versions\Profiles\{(MAIN.configCS.DefaultProfile ?? "Default")}";
 
-            if (!Directory.Exists(sourceDirName))
+            if (!Directory.Exists(gotoPath))
             {
-                MAIN.vLogger.Log("Directory didnt exist: " + sourceDirName);
+                Notif.Toast("Profile Manager", $"Sorry, the profile \"{(MAIN.configCS.DefaultProfile ?? "Default")}\" didn't exist!");
+                MAIN.vLogger.Log("Directory didnt exist: " + gotoPath);
                 return;
             }
 
@@ -124,16 +121,18 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
-                    FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+                    Shortcuts.Create(gotoPath, shortcutPath, "com.mojang");
 
-                    MAIN.vLogger.Log("Imported minecraft data!");
-                    MAIN.backingUp = false;
+                    Notif.Toast("Profile Manager", $"Loaded Profile: \"{(MAIN.configCS.DefaultProfile ?? "Default")}\"");
+                    MAIN.vLogger.Log("Imported Minecraft data!");
+                    MAIN.importing = false;
                 });
             }
             catch (Exception err)
             {
+                Notif.Toast("Profile Manager", $"Sorry, there was an error loading profile: \"{(MAIN.configCS.DefaultProfile ?? "Default")}\"");
                 MAIN.vLogger.Log(err);
-                MAIN.backingUp = false;
+                MAIN.importing = false;
             }
         }
     }

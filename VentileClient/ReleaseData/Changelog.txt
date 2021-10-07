@@ -1,7 +1,9 @@
 ﻿Version 4.2.0 Changelog:
  - Added:
     Help Button
+    Profiles
 
  - Removed:
 
  - Fixes:
+    Version Switcher

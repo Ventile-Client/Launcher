@@ -27,6 +27,7 @@ namespace VentileClient.JSON_Template_Classes
         bool _performanceMode;
         bool _backgroundImage;
         string _backgroundImageLoc;
+        string _defaultProfile;
 
         public string WindowState
         {
@@ -239,6 +240,18 @@ namespace VentileClient.JSON_Template_Classes
             set
             {
                 _backgroundImageLoc = value;
+            }
+        }
+
+        public string DefaultProfile
+        {
+            get
+            {
+                return _defaultProfile;
+            }
+            set
+            {
+                _defaultProfile = value;
             }
         }
     }

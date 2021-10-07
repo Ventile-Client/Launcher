@@ -20,6 +20,8 @@ using VentileClient.Utils;
 using VentileClient.LauncherUtils;
 using WK.Libraries.BetterFolderBrowserNS;
 using VentileClient.Forms;
+using System.Management.Automation;
+using System.Threading;
 
 namespace VentileClient
 {
@@ -56,7 +58,7 @@ namespace VentileClient
         public LinkSettings link_settings = new LinkSettings()
         {
             githubProductHeader = "VentileClientLauncher",
-            githubToken = "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"
+            githubToken = null
         };
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
@@ -90,7 +92,8 @@ namespace VentileClient
 
         #region MCData Management
 
-        public bool backingUp;
+        public bool importing;
+        public List<string> savingProfile = new List<string>();
 
         #endregion
 
@@ -161,6 +164,7 @@ namespace VentileClient
 
         private async void MainWindow_Load(object sender, EventArgs e)
         {
+
             ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
 
             if (!Directory.Exists(minecraftResourcePacks))
@@ -185,7 +189,7 @@ namespace VentileClient
 
             //Get Repos
             if (internet)
-                await DataManager.GetVersions(true);
+                await DataManager.GetMCVersions(true);
 
             DataManager.Version(internet);
         }
@@ -2288,8 +2292,8 @@ namespace VentileClient
 
         private void helpButton_Click(object sender, EventArgs e)
         {
-            new HelpForm2(themeCS, ventile_settings.help).Show();
-            return;
+            /*new HelpForm2(themeCS, ventile_settings.help).Show();
+            return;*/
             // New changelog window
             if ((HelpPrompt)System.Windows.Forms.Application.OpenForms["HelpPrompt"] != null) return;
             _currentHelp = new HelpPrompt(themeCS, ventile_settings.help);

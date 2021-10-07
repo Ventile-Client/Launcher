@@ -119,6 +119,7 @@
     <Reference Include="Windows">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.19041.0\Windows.winmd</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\FlowLayout.cs">
@@ -182,6 +183,7 @@
     <Compile Include="Forms\ToastForm.Designer.cs">
       <DependentUpon>ToastForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Shortcuts.cs" />
     <Compile Include="Utils\UpdateCheck.cs" />
     <Compile Include="Forms\UpdatePrompt.cs">
       <SubType>Form</SubType>
@@ -189,6 +191,8 @@
     <Compile Include="Forms\UpdatePrompt.Designer.cs">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\VersionManager2.cs" />
+    <Compile Include="Utils\VersionManager3.cs" />
     <EmbeddedResource Include="Forms\FlowLayout.resx">
       <DependentUpon>FlowLayout.cs</DependentUpon>
     </EmbeddedResource>
@@ -248,6 +252,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

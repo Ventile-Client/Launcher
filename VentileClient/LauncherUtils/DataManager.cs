@@ -295,7 +295,7 @@ namespace VentileClient.LauncherUtils
 
                 MAIN.versionsPanel.Controls.Add(lbl);
                 lbl.BringToFront();
-                
+
                 MAIN.versionsPanel.Controls.Add(noInternet);
                 noInternet.BringToFront();
 
@@ -316,7 +316,7 @@ namespace VentileClient.LauncherUtils
             label.BringToFront();
 
             MAIN.versionsPanel.Controls.Add(label);
-            
+
 
             for (int i = 0; i < MAIN.versions.Count; i++) // Loop through all versions
             {
@@ -447,7 +447,7 @@ namespace VentileClient.LauncherUtils
             MAIN.versionsPanel.Height = MAIN.contentView.Height - TOP_OFFSET;
 
             // Refreshes The Currently Installed Versions
-            RefreshVersionList(MAIN.versions);
+            RefreshInstalledVErsions(MAIN.versions);
         }
 
         public static void Settings()
@@ -685,7 +685,7 @@ namespace VentileClient.LauncherUtils
 
         static bool VERSIONS_RETRIVED = false;
 
-        public static async Task GetVersions(bool force)
+        public static async Task GetMCVersions(bool force)
         {
             if (VERSIONS_RETRIVED && !force) return;
 
@@ -706,9 +706,7 @@ namespace VentileClient.LauncherUtils
         {
             MAIN.selectedDLLName = (sender as ToolStripMenuItem).Tag.ToString();
             if (MAIN.configCS.CustomDLL)
-            {
                 Notif.Toast("DLL", "Disable Custom DLL to use the default ones!");
-            }
         }
 
         #region Version Clicked Events
@@ -735,16 +733,13 @@ namespace VentileClient.LauncherUtils
             uninstallButton.Location = new Point(uninstallButton.Location.X, label.Location.Y);
             selectButton.Location = new Point(selectButton.Location.X, label.Location.Y);
 
-            await MCDataManager.Backup();
             await VersionManager.DownloadVersion(version, sndr);
         }
         private static async void SelectVersion_Clicked(object sender, EventArgs e)
         {
-
             var sndr = sender as Guna2Button;
 
             string version = sndr.Tag.ToString().Substring(sndr.Text.Length + 1);
-            sndr.Enabled = false;
 
             //Reset Positions Because of bug
             var label = (System.Windows.Forms.Label)ControlManager.GetControl(version, MAIN.versionsPanel);
@@ -765,9 +760,6 @@ namespace VentileClient.LauncherUtils
                 return;
             }
 
-            MAIN.allowClose++;
-            MAIN.allowSelectVersion++;
-
             string gameDir = @"C:\temp\VentileClient\Versions\Minecraft-" + version;
             if (!Directory.Exists(gameDir))
             {
@@ -775,7 +767,11 @@ namespace VentileClient.LauncherUtils
                 return;
             }
 
-            await VersionManager.RegisterPackage(version, gameDir, sndr);
+            MAIN.allowClose++;
+            MAIN.allowSelectVersion++;
+            sndr.Enabled = false;
+
+            await VersionManager.ReRegisterPackage(version, gameDir, sndr);
         }
         private static async void UninstallVersion_Clicked(object sender, EventArgs e)
         {
@@ -838,7 +834,7 @@ namespace VentileClient.LauncherUtils
 
         #region Version Extras
 
-        private static void RefreshVersionList(List<Version> versions)
+        private static void RefreshInstalledVErsions(List<Version> versions)
         {
             foreach (Version version in versions)
             {
