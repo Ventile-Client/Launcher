@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Security.AccessControl;
-using System.IO;
-using System.Security.Principal;
 
 namespace VentileClient.Utils
 {

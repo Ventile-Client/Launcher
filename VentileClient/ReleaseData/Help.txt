@@ -1,19 +1,121 @@
-﻿.Home
+﻿General
+    > Close Button (X)
+        - Closes the application and saves your config and theme
+
+    > Minimize Button (-)
+        + Click: Minimizes launcher to your taskbar
+        + Right Click: Hides the launcher to your tray
+
+
+Home
   > Launch Minecraft
-      - Opens Minecraft Bedrock, and automically injects your dll (If Auto Inject is enabled)
+      - Opens Minecraft Bedrock, and automically injects your dll 
+          (If Auto Inject is enabled)
 
   > Select DLL
-      - Opens a file prompt, which is where you choose your custom dll (Custom DLL must be enabled)
+      - Opens a file prompt, which is where you choose your custom dll 
+          (Custom DLL must be enabled)
 
   > Inject
-      - Injects the selected DLL (if Auto Inject is disabled)
+      - Injects the selected DLL 
+          (if Auto Inject is disabled)
 
-.Cosmetics
-  > Launch Minecraft
-      - Opens Minecraft Bedrock, and automically injects your dll (If Auto Inject is enabled)
+Cosmetics
+    > Capes
+        - Custom capes that only appear on yourself 
+            (Overides any animated capes)
 
-  > Select DLL
-      - Opens a file prompt, which is where you choose your custom dll (Custom DLL must be enabled)
+    > Masks
+        - Custom face masks that only appear on yourself
 
-  > Inject
-      - Injects the selected DLL (if Auto Inject is disabled)
+    > Animated Capes
+        - Custom animated capes that only appear on yourself 
+            (Overides any capes)
+
+    > Other
+        - Any cosmetics/overlays that don't fall into previous categories
+            (Wavy Overlay just makes any cape you wear wAvY)
+
+Version
+    > Download
+        - Downloads the version and extracts it
+
+    > Uninstall
+        - Deletes the version from your computer 
+            (Persona in that folder as well)
+
+    > Select
+        - Changes your current version
+
+Settings
+    ~ Launcher
+        > Window State
+            - Where the launcher goes after minecraft has been launched
+
+        > Auto Inject
+            - Whether your selected DLL is automatically injected
+                (Optional delay to inject)
+
+        > Developer DLL
+            - Allows you to choose a custom DLL you would like to inject
+                + Local File: Located on the home page, allows you to select a DLL from your computer
+                + Right Click: Shows all the built in DLLs you can select from
+
+        > Persona Location
+            - Specify your persona's location, and it copies it into all of
+                your version directories
+
+    ~ Appearance
+        > Theme
+            - Modifies all colors except accent colors to the chosen theme
+
+        > Background Color
+            - Modifies the brightness of the background
+
+        > Accent Color
+            - Modifies the RGB values of the accents
+
+        > Outline COlor
+            - Modifies the brightness of the outlines
+
+        > Button Color
+            - Modifies the brightness of the buttons fill color
+
+        > Text Color
+            - Modifies the brightness of the text
+
+        > Presets
+            - Right click the boxes to
+               + Save: Saves your current config and theme
+               + Load: Loads the selected config and theme
+               + Delete: Deletes the selected config and theme
+               + Import: Asks for configuration and theme file
+               + Export: Copies the selected config and theme file, and allows you to share them around
+
+    ~ Extras
+        > Background Image: 
+            - Allows you to select an image from your computer for the launcher background
+
+        > Toasts:
+            - Enables/Disables Toast notifications and where they appear
+
+        > Rounded Buttons:
+            - Enables/Disables whether the buttons are rounded or square
+
+        > Performance Mode:
+            - Enables/Disables animations and transitions
+
+About
+    - Information about the launcher and the team
+
+    Launcher Version
+        - The current version of the launcher
+
+    Cosmetics Version
+        - The versions of the cosmetics that are built in
+
+    Client Version
+        - The version of the built in client
+
+    Changelog
+        - The current changes in this launcher

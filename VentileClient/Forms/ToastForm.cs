@@ -183,6 +183,7 @@ namespace VentileClient
 
         public void ShowToast(string title, string msg, ConfigTemplate conf, ThemeTemplate theme)
         {
+            MainWindow.INSTANCE.dLogger.Log("Toast Called : " + title + " | " + msg);
             _configCS = conf;
             _themeCS = theme;
 

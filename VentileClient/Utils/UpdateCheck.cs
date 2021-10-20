@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 
@@ -22,7 +21,11 @@ namespace VentileClient
                 File.Delete(@"C:\temp\VentileClient\Version.zip");
             }
 
-            if (!internet) return;
+            if (!internet || !GithubManager.HaveRequests())
+            {
+                MainWindow.INSTANCE.fadeIn.Start();
+                return;
+            }
 
             IReadOnlyList<Release> releases = await github.Repository.Release.GetAll(MainWindow.INSTANCE.link_settings.repoOwner, MainWindow.INSTANCE.link_settings.downloadRepo); // Gets all releases from the VersionChanger repo
 

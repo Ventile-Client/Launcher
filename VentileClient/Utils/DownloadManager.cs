@@ -27,20 +27,19 @@ namespace VentileClient.Utils
                 }
                 catch (Exception err)
                 {
-                    MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
+                    MAIN?.dLogger?.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
                 }
                 return Task.CompletedTask;
             });
         }
 
-        public static Task Download(string link, string path, string name)
+        public static void Download(string link, string path, string name)
         {
             try
             {
                 string combinedPath = Path.Combine(path, name);
                 if (Directory.Exists(path))
                 {
-
                     using (var client = new WebClient())
                     {
                         client.DownloadFile(link, combinedPath);
@@ -49,9 +48,8 @@ namespace VentileClient.Utils
             }
             catch (Exception err)
             {
-                MAIN.dLogger.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
+                MAIN?.dLogger?.Log($"Failed to download\n   Link: {link}\n   Path: {Path.Combine(path, name)}\n   Error: {err.Message}", LogLevel.Error);
             }
-            return Task.CompletedTask;
         }
     }
 }

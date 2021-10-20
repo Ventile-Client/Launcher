@@ -31,13 +31,13 @@ namespace VentileClient
         {
             this.components = new System.ComponentModel.Container();
             this.Title = new System.Windows.Forms.Label();
-            this.HelpLog = new System.Windows.Forms.Label();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.fadeIn = new System.Windows.Forms.Timer(this.components);
             this.fadeOut = new System.Windows.Forms.Timer(this.components);
             this.CloseButton = new Guna.UI2.WinForms.Guna2Button();
             this.HelplogScrollPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.CoverUpSliderPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.HelpLog = new System.Windows.Forms.Label();
             this.HelplogScrollPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,17 +51,6 @@ namespace VentileClient
             this.Title.Size = new System.Drawing.Size(61, 30);
             this.Title.TabIndex = 1;
             this.Title.Text = "Help:";
-            // 
-            // ChangeLog
-            // 
-            this.HelpLog.AutoSize = true;
-            this.HelpLog.BackColor = System.Drawing.Color.Transparent;
-            this.HelpLog.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HelpLog.ForeColor = System.Drawing.Color.Silver;
-            this.HelpLog.Location = new System.Drawing.Point(0, 0);
-            this.HelpLog.Name = "ChangeLog";
-            this.HelpLog.Size = new System.Drawing.Size(0, 20);
-            this.HelpLog.TabIndex = 2;
             // 
             // guna2DragControl1
             // 
@@ -106,13 +95,12 @@ namespace VentileClient
             this.CloseButton.UseTransparentBackground = true;
             this.CloseButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // ChangeLogScrollPanel
+            // HelplogScrollPanel
             // 
-            this.HelplogScrollPanel.AutoScroll = true;
             this.HelplogScrollPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.HelplogScrollPanel.Controls.Add(this.HelpLog);
             this.HelplogScrollPanel.Location = new System.Drawing.Point(22, 53);
-            this.HelplogScrollPanel.Name = "ChangeLogScrollPanel";
+            this.HelplogScrollPanel.Name = "HelplogScrollPanel";
             this.HelplogScrollPanel.ShadowDecoration.Parent = this.HelplogScrollPanel;
             this.HelplogScrollPanel.Size = new System.Drawing.Size(302, 280);
             this.HelplogScrollPanel.TabIndex = 4;
@@ -125,6 +113,17 @@ namespace VentileClient
             this.CoverUpSliderPanel.ShadowDecoration.Parent = this.CoverUpSliderPanel;
             this.CoverUpSliderPanel.Size = new System.Drawing.Size(18, 280);
             this.CoverUpSliderPanel.TabIndex = 5;
+            // 
+            // HelpLog
+            // 
+            this.HelpLog.AutoSize = true;
+            this.HelpLog.BackColor = System.Drawing.Color.Transparent;
+            this.HelpLog.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HelpLog.ForeColor = System.Drawing.Color.Silver;
+            this.HelpLog.Location = new System.Drawing.Point(0, 0);
+            this.HelpLog.Name = "HelpLog";
+            this.HelpLog.Size = new System.Drawing.Size(0, 20);
+            this.HelpLog.TabIndex = 2;
             // 
             // HelpPrompt
             // 
@@ -153,12 +152,12 @@ namespace VentileClient
 
         #endregion
         private System.Windows.Forms.Label Title;
-        private System.Windows.Forms.Label HelpLog;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
         public System.Windows.Forms.Timer fadeIn;
         public System.Windows.Forms.Timer fadeOut;
         private Guna.UI2.WinForms.Guna2Button CloseButton;
         private Guna.UI2.WinForms.Guna2Panel HelplogScrollPanel;
         private Guna.UI2.WinForms.Guna2Panel CoverUpSliderPanel;
+        private System.Windows.Forms.Label HelpLog;
     }
 }

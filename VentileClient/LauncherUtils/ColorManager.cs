@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Guna.UI2.WinForms;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 using VentileClient.Utils;
-using Guna.UI2.WinForms;
-using System.IO;
-using System.Drawing.Imaging;
-using System;
 
 namespace VentileClient.LauncherUtils
 {
@@ -117,6 +117,9 @@ namespace VentileClient.LauncherUtils
             MAIN.DefaultDLLSelector.RenderStyle.SelectionForeColor = foreColor;
             MAIN.DefaultDLLSelector.RenderStyle.BorderColor = outlineColor;
 
+            MAIN.closeButton.ForeColor = fadedColor;
+            MAIN.minimizeButton.ForeColor = fadedColor;
+
             //Home Button
             MAIN.homeButton.ForeColor = foreColor;
             if (backColor.R + 15 < 255)
@@ -194,6 +197,8 @@ namespace VentileClient.LauncherUtils
                 MAIN.versionButton.Animated = false;
                 MAIN.settingsButton.Animated = false;
                 MAIN.aboutButton.Animated = false;
+                MAIN.closeButton.Animated = false;
+                MAIN.minimizeButton.Animated = false;
             }
             else
             {
@@ -202,6 +207,8 @@ namespace VentileClient.LauncherUtils
                 MAIN.versionButton.Animated = true;
                 MAIN.settingsButton.Animated = true;
                 MAIN.aboutButton.Animated = true;
+                MAIN.closeButton.Animated = true;
+                MAIN.minimizeButton.Animated = true;
             }
 
             MAIN.Refresh();
@@ -211,6 +218,7 @@ namespace VentileClient.LauncherUtils
         {
             // Make the color variable smaller
             Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
+            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
             Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
             Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
 
@@ -226,7 +234,23 @@ namespace VentileClient.LauncherUtils
             MAIN.selectDll.BorderColor = outlineColor;
             MAIN.inject.BorderColor = outlineColor;
 
+            MAIN.SelectDLLTooltip.BackColor = backColor2;
+            MAIN.SelectDLLTooltip.BorderColor = outlineColor;
+            MAIN.SelectDLLTooltip.ForeColor = foreColor;
+
+            if (MAIN.configCS.PerformanceMode)
+            {
+                MAIN.SelectDLLTooltip.UseAnimation = false;
+                MAIN.SelectDLLTooltip.UseFading = false;
+            }
+            else
+            {
+                MAIN.SelectDLLTooltip.UseAnimation = true;
+                MAIN.SelectDLLTooltip.UseFading = true;
+            }
+
             MAIN.homeTab.BackColor = backColor;
+
 
             MAIN.Refresh();
         }
@@ -437,7 +461,6 @@ namespace VentileClient.LauncherUtils
 
         public static void Version()
         {
-
             // Make the color variable smaller
             Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
             Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
@@ -451,12 +474,15 @@ namespace VentileClient.LauncherUtils
             MAIN.versionsPanel.BackColor = backColor;
 
 
+            bool perf = MAIN.configCS.PerformanceMode;
+
             foreach (Control b in buttons)
             {
                 var button = b as Guna2Button;
                 button.ForeColor = foreColor;
                 button.FillColor = backColor2;
                 button.CheckedState.FillColor = accentColor;
+                button.Animated = !perf;
             }
 
             foreach (Control p in progressBars)
@@ -510,6 +536,7 @@ namespace VentileClient.LauncherUtils
             MAIN.Launcher.BackColor = backColor;
             MAIN.Appearance.BackColor = backColor;
             MAIN.Extras.BackColor = backColor;
+            MAIN.PackProfiles.BackColor = backColor;
 
             // Launcher \\
             MAIN.windowStateLabel.BackColor = backColor;
@@ -685,6 +712,8 @@ namespace VentileClient.LauncherUtils
                 MAIN.toastsToggle.AutoRoundedCorners = true;
                 MAIN.toastsSelector.AutoRoundedCorners = true;
                 MAIN.performanceModeToggle.AutoRoundedCorners = true;
+                MAIN.packProfileButtonOpen.AutoRoundedCorners = true;
+                MAIN.exitPackProfilesButton.AutoRoundedCorners = true;
             }
             else
             {
@@ -709,6 +738,8 @@ namespace VentileClient.LauncherUtils
                 MAIN.toastsToggle.AutoRoundedCorners = false;
                 MAIN.toastsSelector.AutoRoundedCorners = false;
                 MAIN.performanceModeToggle.AutoRoundedCorners = false;
+                MAIN.exitPackProfilesButton.AutoRoundedCorners = false;
+                MAIN.packProfileButtonOpen.AutoRoundedCorners = false;
             }
 
             //Performance Mode
@@ -734,6 +765,8 @@ namespace VentileClient.LauncherUtils
                 MAIN.toastsToggle.Animated = false;
                 MAIN.toastsSelector.Animated = false;
                 MAIN.performanceModeToggle.Animated = false;
+                MAIN.packProfileButtonOpen.Animated = false;
+                MAIN.exitPackProfilesButton.Animated = false;
 
             }
             else
@@ -758,6 +791,9 @@ namespace VentileClient.LauncherUtils
                 MAIN.toastsToggle.Animated = true;
                 MAIN.toastsSelector.Animated = true;
                 MAIN.performanceModeToggle.Animated = true;
+                MAIN.packProfileButtonOpen.Animated = true;
+                MAIN.exitPackProfilesButton.Animated = true;
+
             }
 
             //Presets
@@ -798,6 +834,9 @@ namespace VentileClient.LauncherUtils
             MAIN.performanceModeTitle.BackColor = backColor;
             MAIN.performanceModeTitle.ForeColor = foreColor;
 
+            MAIN.packProfilesTitle.BackColor = backColor;
+            MAIN.packProfilesTitle.ForeColor = foreColor;
+
             MAIN.roundedTitle.BackColor = backColor;
             MAIN.roundedTitle.ForeColor = foreColor;
 
@@ -823,6 +862,14 @@ namespace VentileClient.LauncherUtils
             MAIN.performanceModeToggle.CheckedState.FillColor = accentColor;
             MAIN.performanceModeToggle.ForeColor = foreColor;
             MAIN.performanceModeToggle.FillColor = backColor2;
+
+            MAIN.packProfileButtonOpen.CheckedState.FillColor = accentColor;
+            MAIN.packProfileButtonOpen.ForeColor = foreColor;
+            MAIN.packProfileButtonOpen.FillColor = backColor2;
+
+            MAIN.exitPackProfilesButton.CheckedState.FillColor = accentColor;
+            MAIN.exitPackProfilesButton.ForeColor = foreColor;
+            MAIN.exitPackProfilesButton.FillColor = backColor2;
 
             MAIN.settingsTab.BackColor = backColor;
 
@@ -853,7 +900,7 @@ namespace VentileClient.LauncherUtils
             MAIN.discord.BackColor = backColor;
 
             MAIN.helpButton.ForeColor = foreColor;
-            MAIN.helpButton.BackColor = backColor;
+            MAIN.helpButton.FillColor = backColor;
 
             MAIN.cosmeticsVLabel.BackColor = backColor;
             MAIN.cosmeticsVLabel.ForeColor = fadedColor;

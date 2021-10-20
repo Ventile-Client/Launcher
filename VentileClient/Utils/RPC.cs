@@ -1,6 +1,5 @@
 ﻿using DiscordRPC;
 using System;
-using System.IO;
 using System.Threading;
 using VentileClient.JSON_Template_Classes;
 

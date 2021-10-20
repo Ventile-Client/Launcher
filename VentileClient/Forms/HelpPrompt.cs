@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using VentileClient.JSON_Template_Classes;
 
@@ -22,13 +21,14 @@ namespace VentileClient
             HelpLog.ForeColor = ColorTranslator.FromHtml(themeCS.Faded);
             HelplogScrollPanel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
             CoverUpSliderPanel.BackColor = ColorTranslator.FromHtml(themeCS.Background);
+            CloseButton.ForeColor = ColorTranslator.FromHtml(themeCS.Foreground);
 
             for (int i = 0; i < helpParam.Count; i++)
             {
                 HelpLog.Text += helpParam[i] + "\n";
             }
             HelpLog.Text += "\n";
-            
+
 
             //Sizing
             Size size = TextRenderer.MeasureText(HelpLog.Text, HelpLog.Font);

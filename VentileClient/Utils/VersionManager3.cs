@@ -14,7 +14,7 @@ namespace VentileClient.Utils
         static string MINECRAFT_NAME = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
         public static async Task ReRegisterPackage(string version, string gameDirectory, Guna2Button sndr)
         {
-            await Task.Run(()=>
+            await Task.Run(() =>
             {
                 foreach (Package package in new PackageManager().FindPackages(MINECRAFT_NAME))
                 {

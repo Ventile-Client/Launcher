@@ -1,13 +1,6 @@
-﻿using Guna.UI2.WinForms;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using VentileClient.JSON_Template_Classes;
 using VentileClient.LauncherUtils;
 
 namespace VentileClient.Utils
@@ -56,7 +49,7 @@ namespace VentileClient.Utils
 
         public static async void ReCheckInternet()
         {
-            bool internet = InternetGetConnectedState(out int _, 0);;
+            bool internet = InternetGetConnectedState(out int _, 0); ;
             PREVIOUS_INTERNET_STATE.Add(internet);
             PREVIOUS_INTERNET_STATE.RemoveAt(PREVIOUS_INTERNET_STATE.Count - 3);
             if (internet && !PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])

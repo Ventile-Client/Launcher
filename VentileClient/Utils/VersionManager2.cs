@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows.Forms;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Management.Core;
 using Windows.Management.Deployment;
-using Windows.System;
 
 namespace VentileClient.Utils
 {
@@ -70,10 +64,12 @@ namespace VentileClient.Utils
         private async Task DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t)
         {
             TaskCompletionSource<int> src = new TaskCompletionSource<int>();
-            t.Progress += (v, p) => {
+            t.Progress += (v, p) =>
+            {
                 Debug.WriteLine("Deployment progress: " + p.state + " " + p.percentage + "%");
             };
-            t.Completed += (v, p) => {
+            t.Completed += (v, p) =>
+            {
                 if (p == AsyncStatus.Error)
                 {
                     Debug.WriteLine("Deployment failed: " + v.GetResults().ErrorText);

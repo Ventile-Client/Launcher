@@ -1,43 +1,48 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using VentileClient.JSON_Template_Classes;
 using System.Threading.Tasks;
-
+using VentileClient.JSON_Template_Classes;
 
 namespace VentileClient.Utils
 {
     public static class ConfigManager
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
+
+        // Configs
+        private static void SetDefaultConfig()
+        {
+            MAIN.configCS = new ConfigTemplate()
+            {
+                WindowState = "hide",
+                AutoInject = true,
+                RichPresence = true,
+                RpcText = "No Rich Presence",
+                RpcButton = false,
+                RpcButtonText = "No Button Text",
+                RpcButtonLink = "https://none",
+                CustomDLL = true,
+                DefaultDLL = null,
+                Persona = true,
+                PersonaLoc = null,
+                InjectDelay = 0,
+                Toasts = true,
+                ToastsLoc = "topRight",
+                RoundedButtons = true,
+                BackgroundImage = false,
+                BackgroundImageLoc = null,
+                DefaultProfile = "Default"
+            };
+        }
+
         public static void ReadConfig(string path)
         {
             try
             {
                 if (!File.Exists(path))
                 {
-                    MAIN.configCS = new ConfigTemplate()
-                    {
-                        WindowState = "hide",
-                        AutoInject = true,
-                        RichPresence = true,
-                        RpcText = "No Rich Presence",
-                        RpcButton = false,
-                        RpcButtonText = "No Button Text",
-                        RpcButtonLink = "https://none",
-                        CustomDLL = true,
-                        DefaultDLL = null,
-                        Persona = true,
-                        PersonaLoc = null,
-                        InjectDelay = 0,
-                        Toasts = true,
-                        ToastsLoc = "topRight",
-                        RoundedButtons = true,
-                        BackgroundImage = false,
-                        BackgroundImageLoc = null,
-                        DefaultProfile = "Default"
-                    };
-
+                    SetDefaultConfig();
                     WriteConfig(path);
                     return;
                 }
@@ -60,6 +65,8 @@ namespace VentileClient.Utils
                 {
                     ConfigTemplate temp = MAIN.configCS;
 
+                    if (temp == null) SetDefaultConfig();
+
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
                     MAIN.cLogger.Log("Successfully wrote to " + Path.GetFileName(path));
@@ -72,23 +79,29 @@ namespace VentileClient.Utils
             });
         }
 
+
+        // Themes
+        private static void SetDefaultTheme()
+        {
+            MAIN.themeCS = new ThemeTemplate()
+            {
+                Theme = "dark",
+                Background = "#141414",
+                SecondBackground = "#282828",
+                Foreground = "#FFFFFF",
+                Accent = "#4169FF",
+                Outline = "#050505",
+                Faded = "#C0C0C0"
+            };
+        }
+
         public static void ReadTheme(string path)
         {
             try
             {
                 if (!File.Exists(path))
                 {
-                    MAIN.themeCS = new ThemeTemplate()
-                    {
-                        Theme = "dark",
-                        Background = "#141414",
-                        SecondBackground = "#282828",
-                        Foreground = "#FFFFFF",
-                        Accent = "#4169FF",
-                        Outline = "#050505",
-                        Faded = "#C0C0C0"
-                    };
-
+                    SetDefaultTheme();
                     WriteTheme(path);
                     return;
                 }
@@ -111,6 +124,8 @@ namespace VentileClient.Utils
                 {
                     ThemeTemplate temp = MAIN.themeCS;
 
+                    if (temp == null) SetDefaultTheme();
+
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
                     MAIN.cLogger.Log("Successfully wrote to: " + Path.GetFileName(path));
@@ -123,11 +138,80 @@ namespace VentileClient.Utils
             });
         }
 
+
+        // Cosmetics
+        private static void SetDefaultCosmetics()
+        {
+            MAIN.cosmeticsCS = new CosmeticsTemplate()
+            {
+                cBlack = false,
+                cWhite = false,
+                cPink = false,
+                cBlue = false,
+                cYellow = false,
+                cRick = false,
+                mBlack = false,
+                mWhite = false,
+                mPink = false,
+                mBlue = false,
+                mYellow = false,
+                mRick = false,
+                aGlowing = false,
+                aSlide = false,
+                oWavy = false,
+                oKagune = false
+            };
+        }
+
+        public static void ReadCosmetics(string path)
+        {
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    SetDefaultCosmetics();
+                    WriteCosmetics(path);
+                    return;
+                }
+                string temp = File.ReadAllText(path);
+                MAIN.cosmeticsCS = JsonConvert.DeserializeObject<CosmeticsTemplate>(temp);
+                MAIN.cLogger.Log("Successfully read: " + Path.GetFileName(path));
+            }
+            catch (Exception ex)
+            {
+                Notif.Toast("Error", "There was an error :(");
+                MAIN.cLogger.Log(ex);
+            }
+        }
+
+        public static async void WriteCosmetics(string path)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    CosmeticsTemplate temp = MAIN.cosmeticsCS;
+
+                    if (temp == null) SetDefaultCosmetics();
+
+                    string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
+                    File.WriteAllText(path, json);
+                    MAIN.cLogger.Log("Successfully wrote to: " + Path.GetFileName(path));
+                }
+                catch (Exception ex)
+                {
+                    Notif.Toast("Error", "There was an error  :(");
+                    MAIN.cLogger.Log(ex);
+                }
+            });
+        }
+
+        // Preset Colors
         public static void GetPresetColors(string directory)
         {
             try
             {
-                for (int i = 1; i < 10; i++)
+                for (int i = 1; i <= 8; i++)
                 {
                     string a = $@"preset{i}Theme.json";
 
@@ -212,66 +296,6 @@ namespace VentileClient.Utils
                 MAIN.cLogger.Log(ex);
             }
 
-        }
-
-        public static void ReadCosmetics(string path)
-        {
-            try
-            {
-                if (!File.Exists(path))
-                {
-                    MAIN.cosmeticsCS = new CosmeticsTemplate()
-                    {
-                        cBlack = false,
-                        cWhite = false,
-                        cPink = false,
-                        cBlue = false,
-                        cYellow = false,
-                        cRick = false,
-                        mBlack = false,
-                        mWhite = false,
-                        mPink = false,
-                        mBlue = false,
-                        mYellow = false,
-                        mRick = false,
-                        aGlowing = false,
-                        aSlide = false,
-                        oWavy = false,
-                        oKagune = false
-                    };
-
-                    WriteCosmetics(path);
-                    return;
-                }
-                string temp = File.ReadAllText(path);
-                MAIN.cosmeticsCS = JsonConvert.DeserializeObject<CosmeticsTemplate>(temp);
-                MAIN.cLogger.Log("Successfully read: " + Path.GetFileName(path));
-            }
-            catch (Exception ex)
-            {
-                Notif.Toast("Error", "There was an error :(");
-                MAIN.cLogger.Log(ex);
-            }
-        }
-
-        public static async void WriteCosmetics(string path)
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    CosmeticsTemplate temp = MAIN.cosmeticsCS;
-
-                    string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
-                    File.WriteAllText(path, json);
-                    MAIN.cLogger.Log("Successfully wrote to: " + Path.GetFileName(path));
-                }
-                catch (Exception ex)
-                {
-                    Notif.Toast("Error", "There was an error  :(");
-                    MAIN.cLogger.Log(ex);
-                }
-            });
         }
     }
 }

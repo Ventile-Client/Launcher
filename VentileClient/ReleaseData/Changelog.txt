@@ -1,9 +1,14 @@
 ﻿Version 4.2.0 Changelog:
  - Added:
     Help Button
-    Profiles
+    Pack Profiles
+    Hiding the launcher by right clicking the minmize button
+    Error handling for cosmetics when buttons are spammed
 
  - Removed:
 
  - Fixes:
     Version Switcher
+    Themes
+    Hiding/Showing Launcher
+    Resource packs don't reset every time launcher is used

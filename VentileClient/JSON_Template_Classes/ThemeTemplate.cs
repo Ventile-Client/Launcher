@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VentileClient.JSON_Template_Classes
+﻿namespace VentileClient.JSON_Template_Classes
 {
     public class ThemeTemplate
     {

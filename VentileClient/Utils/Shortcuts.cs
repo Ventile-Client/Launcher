@@ -18,6 +18,7 @@ namespace VentileClient.Utils
                 throw new ArgumentNullException("ShortcutPath");
             if (String.IsNullOrEmpty(ShortcutName))
                 throw new ArgumentNullException("ShortcutName");
+
             PowerShell.Create()
                 .AddScript("New-Item -ItemType Junction -Path \"" + Path.Combine(ShortcutPath + ShortcutName) + "\" -Target \"" + GotoPath + "\"")
                 .Invoke();

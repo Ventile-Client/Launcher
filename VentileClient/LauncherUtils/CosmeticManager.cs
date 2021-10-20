@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 
@@ -14,90 +12,91 @@ namespace VentileClient.LauncherUtils
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
         static string MC_RESOURCE = MAIN.minecraftResourcePacks;
+        static string GLOBAL_RESOURCE_PACKS = Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json");
 
-        public static List<CosmeticsObject> Packs()
+        public static List<Cosmetic> Packs()
         {
-            if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json")))
+            if (!File.Exists(GLOBAL_RESOURCE_PACKS))
             {
                 Notif.Toast("Pack Error", "Looks like your com.mojang folder isnt avaliable!");
-                return new List<CosmeticsObject>();
+                return new List<Cosmetic>();
             }
 
-            string json = File.ReadAllText(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"));
+            string json = File.ReadAllText(GLOBAL_RESOURCE_PACKS);
 
-            return JsonConvert.DeserializeObject<List<CosmeticsObject>>(json);
+            return JsonConvert.DeserializeObject<List<Cosmetic>>(json);
         }
 
         public static bool IsEnabled(string id)
         {
-            if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"))) return false;
+            if (!File.Exists(GLOBAL_RESOURCE_PACKS)) return false;
 
-            string json = File.ReadAllText(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"));
-
-            List<CosmeticsObject> jsonObject = JsonConvert.DeserializeObject<List<CosmeticsObject>>(json);
-
-            bool enabled = false;
+            List<Cosmetic> jsonObject = Packs();
 
             for (int i = 0; i < jsonObject.Count; i++)
             {
-                if (jsonObject[i].Pack_id == id)
+                if (jsonObject[i].pack_id == id)
                 {
-                    enabled = true;
+                    return true;
                 }
             }
 
-            return enabled;
+            return false;
         }
 
-        public static void Add(string id)
+        public static void Add(Pack pack)
         {
-            if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"))) return;
+            if (!File.Exists(GLOBAL_RESOURCE_PACKS)) return;
+
+            string id = PACK_INFO.ElementAt((int)pack).Key;
 
             if (!IsEnabled(id))
             {
-                List<CosmeticsObject> packs = Packs();
+                List<Cosmetic> packs = Packs();
                 if (packs.Count < 1) return;
 
                 if (id == PACK_INFO.ElementAt(16).Key)
                 {
-                    packs.Insert(0, new CosmeticsObject()
+                    packs.Insert(0, new Cosmetic()
                     {
-                        Pack_id = id,
-                        Version = new int[] { 6, 0, 0 }
+                        pack_id = id,
+                        version = new int[] { 6, 0, 0 }
                     });
                 }
                 else
                 {
-                    packs.Insert(0, new CosmeticsObject()
+                    packs.Insert(0, new Cosmetic()
                     {
-                        Pack_id = id,
-                        Version = PACK_INFO[id]
+                        pack_id = id,
+                        version = PACK_INFO[id]
                     });
                 }
 
 
-                File.WriteAllText(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"), JsonConvert.SerializeObject(packs, Formatting.Indented));
+                File.WriteAllText(GLOBAL_RESOURCE_PACKS, JsonConvert.SerializeObject(packs, Formatting.Indented));
             }
         }
 
-        public static void Remove(string id)
+        public static void Remove(Pack pack)
         {
-            if (!File.Exists(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"))) return;
+            if (!File.Exists(GLOBAL_RESOURCE_PACKS)) return;
+
+            string id = PACK_INFO.ElementAt((int)pack).Key;
 
             if (IsEnabled(id))
             {
-                List<CosmeticsObject> packs = Packs();
+                List<Cosmetic> packs = Packs();
                 if (packs.Count < 1) return;
 
                 for (int i = 0; i < packs.Count; i++)
                 {
-                    if (packs[i].Pack_id == id)
+                    if (packs[i].pack_id == id)
                     {
                         packs.RemoveAt(i);
                     }
                 }
 
-                File.WriteAllText(Path.Combine(MC_RESOURCE, @"..", @"minecraftpe\global_resource_packs.json"), JsonConvert.SerializeObject(packs, Formatting.Indented));
+                File.WriteAllText(GLOBAL_RESOURCE_PACKS, JsonConvert.SerializeObject(packs, Formatting.Indented));
             }
         }
 
@@ -125,5 +124,30 @@ namespace VentileClient.LauncherUtils
 
             { "b6039dbe-c5f1-4544-afdb-dd4b9ed7d19e", new int[]{1, 0, 0 } } // Cosmetic Mixer
         };
+
+        public enum Pack
+        {
+            BlackCape = 0,
+            WhiteCape = 1,
+            PinkCape = 2,
+            BlueCape = 3,
+            YellowCape = 4,
+            RickCape = 5,
+
+            BlackMask = 6,
+            WhiteMask = 7,
+            PinkMask = 8,
+            BlueMask = 9,
+            YellowMask = 10,
+            RickMask = 11,
+
+            GlowingCape = 12,
+            SlidingCape = 13,
+
+            WavyOverlay = 14,
+            Kagune = 15,
+
+            CosmeticMixer = 16,
+        }
     }
 }

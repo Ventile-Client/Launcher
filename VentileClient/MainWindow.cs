@@ -1,27 +1,19 @@
-﻿using System;
+﻿using Guna.UI2.WinForms;
+using Newtonsoft.Json;
+using Octokit;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-
-using Octokit;
-
 using System.IO;
-using Newtonsoft.Json;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using Guna.UI2.WinForms;
-
 using VentileClient.JSON_Template_Classes;
-using VentileClient.Utils;
 using VentileClient.LauncherUtils;
+using VentileClient.Utils;
 using WK.Libraries.BetterFolderBrowserNS;
-using VentileClient.Forms;
-using System.Management.Automation;
-using System.Threading;
 
 namespace VentileClient
 {
@@ -87,6 +79,7 @@ namespace VentileClient
         public int allowClose = 0;
         public int allowSelectVersion = 0;
         public bool backedUp = false;
+        public bool versionsRetrieved = false;
 
         #endregion
 
@@ -94,13 +87,13 @@ namespace VentileClient
 
         public bool importing;
         public List<string> savingProfile = new List<string>();
+        public bool savingRoamingState = false;
 
         #endregion
 
         #endregion
 
         public static MainWindow INSTANCE;
-
         public MainWindow()
         {
             //Only allow app to open once is in Program.cs
@@ -116,12 +109,12 @@ namespace VentileClient
             link_settings.downloadRepo = tmpSettings.downloadRepo;
             File.Delete(@"C:\temp\VentileClient\link_settings.json");
 
-            InitializeComponent();
-
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
 
             //Only needed when I reach api limit, to use my own token
             if (link_settings.githubToken != null) github.Credentials = new Credentials(link_settings.githubToken);
+
+            InitializeComponent();
 
             INSTANCE = this;
 
@@ -164,7 +157,6 @@ namespace VentileClient
 
         private async void MainWindow_Load(object sender, EventArgs e)
         {
-
             ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
 
             if (!Directory.Exists(minecraftResourcePacks))
@@ -204,7 +196,6 @@ namespace VentileClient
             Opacity += 0.04;
         }
 
-        private bool _hidden = false;
         private bool _inGameTest = false;
         private void internetCheck_Tick(object sender, EventArgs e)
         {
@@ -231,55 +222,61 @@ namespace VentileClient
             this.Activate();
         }
 
+        List<bool> _previousMCOpenState = new List<bool>() { true, true };
         private void tick_Tick(object sender, EventArgs e)
         {
-            if (configCS.WindowState == "hide" && Process.GetProcessesByName("Minecraft.Windows").Length > 0 && !_hidden)
-            {
-                this.Hide();
-                TrayIcon.Visible = true;
-                _hidden = true;
-                Notif.Toast("Launcher", "Minimized to tray!");
-            }
+            bool minecraftOpen = Process.GetProcessesByName("Minecraft.Windows").Length > 0;
+            _previousMCOpenState.Add(minecraftOpen);
+            _previousMCOpenState.RemoveAt(_previousMCOpenState.Count - 3);
 
-            if (configCS.WindowState == "hide" && !(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _hidden)
-            {
-                TrayIcon.Visible = false;
-                this.Show();
-                this.Activate();
-                _hidden = false;
-            }
+            bool prevMinecraftOpen = _previousMCOpenState[_previousMCOpenState.Count - 2];
 
-            if (configCS.WindowState == "minimize" && Process.GetProcessesByName("Minecraft.Windows").Length > 0 && !_hidden)
+            if (minecraftOpen && !prevMinecraftOpen) // Means Minecraft Was Opened
             {
-                this.WindowState = FormWindowState.Minimized;
-                _hidden = true;
-                Notif.Toast("Launcher", "Minimized!");
-            }
+                if (configCS.WindowState == "hide") // Minimizes Launcher to Tray
+                {
+                    this.Hide();
+                    TrayIcon.Visible = true;
+                    Notif.Toast("Launcher", "Minimized to tray!");
+                }
 
-            if (configCS.WindowState == "minimize" && !(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _hidden)
-            {
-                _hidden = false;
-            }
+                if (configCS.WindowState == "minimize") // Minimizes launcher to taskbar
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                    Notif.Toast("Launcher", "Minimized!");
+                }
 
-            if (configCS.WindowState == "close" && Process.GetProcessesByName("Minecraft.Windows").Length > 0)
-            {
-                ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
-                ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-                RPC.Disable();
-                Task.Delay(100);
-                fadeOut.Start();
-            }
+                if (configCS.WindowState == "close") // Closes Launcher
+                {
+                    ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
+                    ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+                    RPC.Disable();
+                    Task.Delay(100);
+                    fadeOut.Start();
+                }
 
-            //RPC
-            if (Process.GetProcessesByName("Minecraft.Windows").Length > 0 && !_inGameTest)
-            {
-                _inGameTest = true;
-                RPC.ChangeState("In the Game!");
+                //RPC
+                if (!_inGameTest)
+                {
+                    _inGameTest = true;
+                    RPC.ChangeState("In the Game!");
+                }
             }
-            else if (!(Process.GetProcessesByName("Minecraft.Windows").Length > 0) && _inGameTest)
+            else if (!minecraftOpen && prevMinecraftOpen) // Means Minecraft Was Closed
             {
-                _inGameTest = false;
-                RPC.Idling();
+                if (configCS.WindowState == "hide") // Minimizes Launcher to Tray
+                {
+                    TrayIcon.Visible = false;
+                    this.Show();
+                    this.Activate();
+                }
+
+                // RPC
+                if (_inGameTest)
+                {
+                    _inGameTest = false;
+                    RPC.Idling();
+                }
             }
         }
 
@@ -550,8 +547,15 @@ namespace VentileClient
             }
         }
 
-        private void minimizeButton_Click(object sender, EventArgs e)
+        private void minimizeButton_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.Hide();
+                TrayIcon.Visible = true;
+                Notif.Toast("Launcher", "Minimized to tray!");
+                return;
+            }
             this.WindowState = FormWindowState.Minimized;
         }
 
@@ -562,7 +566,7 @@ namespace VentileClient
         #region Home
         public Guna2Panel versionsPanel = new Guna2Panel();
 
-        private void launchMc_Click(object sender, EventArgs e)
+        private async void launchMc_Click(object sender, EventArgs e)
         {
             try
             {
@@ -576,12 +580,12 @@ namespace VentileClient
             }
             if (configCS.AutoInject)
             {
-                Task.Delay(configCS.InjectDelay * 1000); // Delay injection by amount of milliseconds
+                await Task.Delay(configCS.InjectDelay * 1000); // Delay injection by amount of milliseconds
                 if (Process.GetProcessesByName("Minecraft.Windows").Length > 0)
                 {
                     if (configCS.CustomDLL)
                     {
-                        if (configCS.DefaultDLL.Length > 0)
+                        if (configCS.DefaultDLL?.Length > 0)
                             InjectionManager.InjectDLL(configCS.DefaultDLL);
                         else
                             Notif.Toast("DLL", "Not injecting, no file specified");
@@ -610,6 +614,8 @@ namespace VentileClient
             {
                 configCS.DefaultDLL = @FileIn.FileName;
                 Notif.Toast("DLL", "Your DLL is selected!");
+                SelectDLLTooltip.SetToolTip(selectDll, configCS.DefaultDLL);
+
                 if (!configCS.CustomDLL)
                 {
                     Notif.Toast("DLL", "Enable Custom DLL to use your selected DLL!");
@@ -645,26 +651,27 @@ namespace VentileClient
 
         #endregion
 
-        #region Cosmetics   
+        #region Cosmetics
 
         #region Capes
         private async void cBlack_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
                 cBlack.Checked = true;
                 cosmeticsCS.cBlack = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(0).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.BlackCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), minecraftResourcePacks, "BlackVentileCape.zip");
-
             }
             else
             {
@@ -674,19 +681,22 @@ namespace VentileClient
 
         private async void cWhite_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
                 cWhite.Checked = true;
                 cosmeticsCS.cWhite = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(1).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.WhiteCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileCape.zip"), minecraftResourcePacks, "WhiteVentileCape.zip");
 
             }
@@ -698,19 +708,22 @@ namespace VentileClient
 
         private async void cPink_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
                 cPink.Checked = true;
                 cosmeticsCS.cPink = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(2).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.PinkCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileCape.zip"), minecraftResourcePacks, "PinkVentileCape.zip");
 
             }
@@ -722,19 +735,22 @@ namespace VentileClient
 
         private async void cBlue_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
                 cBlue.Checked = true;
                 cosmeticsCS.cBlue = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(3).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.BlueCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileCape.zip"), minecraftResourcePacks, "BlueVentileCape.zip");
 
             }
@@ -746,19 +762,22 @@ namespace VentileClient
 
         private async void cYellow_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
+
                 cYellow.Checked = true;
                 cosmeticsCS.cYellow = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(4).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.Pack.YellowCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileCape.zip"), minecraftResourcePacks, "YellowVentileCape.zip");
 
             }
@@ -770,19 +789,22 @@ namespace VentileClient
 
         private async void cRick_Click(object sender, EventArgs e)
         {
-            resetCapes();
-            resetAnimated();
             if (internet)
             {
+                resetCapes();
+                resetAnimated();
                 cRick.Checked = true;
                 cosmeticsCS.cRick = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(5).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.RickCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileCape.zip"), minecraftResourcePacks, "RickVentileCape.zip");
 
             }
@@ -792,8 +814,10 @@ namespace VentileClient
             }
         }
 
-        private void resetCapes()
+        private async void resetCapes()
         {
+            if (!internet) return;
+
             cosmeticsCS.cBlack = false;
             cosmeticsCS.cWhite = false;
             cosmeticsCS.cPink = false;
@@ -808,41 +832,14 @@ namespace VentileClient
             cYellow.Checked = false;
             cRick.Checked = false;
 
-            if (internet)
-            {
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(0).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(1).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(2).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(3).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(4).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(5).Key);
+            CosmeticManager.Remove(CosmeticManager.Pack.BlackCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.WhiteCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.PinkCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.BlueCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.YellowCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.RickCape);
 
-
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"BlackVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"BlackVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"WhiteVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"WhiteVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"PinkVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"PinkVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"BlueVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"BlueVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"YellowVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"YellowVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"RickVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"RickVentileCape.zip"));
-                }
-            }
+            await deleteCosmetics(new string[] { "BlackVentileCape.zip", "WhiteVentileCape.zip", "PinkVentileCape.zip", "BlueVentileCape.zip", "YellowVentileCape.zip", "RickVentileCape.zip" });
         }
         #endregion
 
@@ -850,18 +847,21 @@ namespace VentileClient
 
         private async void mBlack_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mBlack.Checked = true;
                 cosmeticsCS.mBlack = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(6).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.BlackMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileMask.zip"), minecraftResourcePacks, "BlackVentileMask.zip");
 
             }
@@ -873,18 +873,21 @@ namespace VentileClient
 
         private async void mWhite_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mWhite.Checked = true;
                 cosmeticsCS.mWhite = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(7).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.WhiteMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WhiteVentileMask.zip"), minecraftResourcePacks, "WhiteVentileMask.zip");
 
             }
@@ -896,18 +899,21 @@ namespace VentileClient
 
         private async void mPink_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mPink.Checked = true;
                 cosmeticsCS.mPink = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(8).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.PinkMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "PinkVentileMask.zip"), minecraftResourcePacks, "PinkVentileMask.zip");
 
             }
@@ -919,18 +925,21 @@ namespace VentileClient
 
         private async void mBlue_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mBlue.Checked = true;
                 cosmeticsCS.mBlue = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(9).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.BlueMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlueVentileMask.zip"), minecraftResourcePacks, "BlueVentileMask.zip");
 
             }
@@ -942,18 +951,21 @@ namespace VentileClient
 
         private async void mYellow_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mYellow.Checked = true;
                 cosmeticsCS.mYellow = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(10).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.YellowMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "YellowVentileMask.zip"), minecraftResourcePacks, "YellowVentileMask.zip");
 
             }
@@ -965,18 +977,21 @@ namespace VentileClient
 
         private async void mRick_Click(object sender, EventArgs e)
         {
-            resetMasks();
             if (internet)
             {
+                resetMasks();
                 mRick.Checked = true;
                 cosmeticsCS.mRick = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(11).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.RickMask);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
                 //Auto Download
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "RickVentileMask.zip"), minecraftResourcePacks, "RickVentileMask.zip");
 
             }
@@ -986,8 +1001,36 @@ namespace VentileClient
             }
         }
 
-        private void resetMasks()
+        private async Task deleteCosmetics(string[] FileNames)
         {
+            await Task.Run(async () =>
+            {
+                foreach (string fileName in FileNames)
+                {
+                    try
+                    {
+                        if (File.Exists(Path.Combine(minecraftResourcePacks, fileName)))
+                        {
+                            File.Delete(Path.Combine(minecraftResourcePacks, fileName));
+                            Debug.WriteLine("Deleted: " + fileName);
+                        }
+                    }
+                    catch
+                    {
+                        await Task.Delay(5);
+                        await deleteCosmetics(new string[] { fileName });
+                        Debug.WriteLine("Trying to delete: " + fileName);
+                    }
+                }
+                return Task.CompletedTask;
+            });
+        }
+
+        private async void resetMasks()
+        {
+            if (!internet) return;
+
+
             mBlack.Checked = false;
             mWhite.Checked = false;
             mPink.Checked = false;
@@ -995,43 +1038,16 @@ namespace VentileClient
             mYellow.Checked = false;
             mRick.Checked = false;
 
-            if (internet)
-            {
-
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(6).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(7).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(8).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(9).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(10).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(11).Key);
 
 
-                //Delete
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"BlackVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"BlackVentileMask.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"WhiteVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"WhiteVentileMask.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"PinkVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"PinkVentileMask.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"BlueVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"BlueVentileMask.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"YellowVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"YellowVentileMask.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"RickVentileMask.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"RickVentileMask.zip"));
-                }
-            }
+            CosmeticManager.Remove(CosmeticManager.Pack.BlackMask);
+            CosmeticManager.Remove(CosmeticManager.Pack.WhiteMask);
+            CosmeticManager.Remove(CosmeticManager.Pack.PinkMask);
+            CosmeticManager.Remove(CosmeticManager.Pack.BlueMask);
+            CosmeticManager.Remove(CosmeticManager.Pack.YellowMask);
+            CosmeticManager.Remove(CosmeticManager.Pack.RickMask);
+
+            await deleteCosmetics(new string[] { "BlackVentileMask.zip", "WhiteVentileMask.zip", "PinkVentileMask.zip", "BlueVentileMask.zip", "YellowVentileMask.zip", "RickVentileMask.zip" });
         }
 
         #endregion
@@ -1040,19 +1056,24 @@ namespace VentileClient
 
         private async void aGlowing_Click(object sender, EventArgs e)
         {
-            resetAnimated();
-            resetCapes();
             if (internet)
             {
+                resetAnimated();
+                resetCapes();
+
                 aGlowing.Checked = true;
                 cosmeticsCS.aGlowing = true;
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(12).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+
+                CosmeticManager.Add(CosmeticManager.Pack.GlowingCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), minecraftResourcePacks, "GlowingVentileCape.zip");
+
             }
             else
             {
@@ -1062,20 +1083,24 @@ namespace VentileClient
 
         private async void aSlide_Click(object sender, EventArgs e)
         {
-            resetAnimated();
-            resetCapes();
             if (internet)
             {
+                resetAnimated();
+                resetCapes();
+
                 aSlide.Checked = true;
                 cosmeticsCS.aGlowing = true;
 
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(13).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.Pack.SlidingCape);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), minecraftResourcePacks, "SlidingVentileCape.zip");
+
             }
             else
             {
@@ -1083,31 +1108,24 @@ namespace VentileClient
             }
         }
 
-        private void resetAnimated()
+        private async void resetAnimated()
         {
+            if (!internet) return;
+
             aGlowing.Checked = false;
             aSlide.Checked = false;
 
             cosmeticsCS.aGlowing = false;
             cosmeticsCS.aSlide = false;
 
-            CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(12).Key);
-            CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(13).Key);
 
+            CosmeticManager.Remove(CosmeticManager.Pack.GlowingCape);
+            CosmeticManager.Remove(CosmeticManager.Pack.SlidingCape);
 
-            if (internet)
-            {
-                //Extras
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"GlowingVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"GlowingVentileCape.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"SlidingVentileCape.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"SlidingVentileCape.zip"));
-                }
-            }
+            await deleteCosmetics(new string[] { "GlowingVentileCape.zip", "SlidingVentileCape.zip" });
+
         }
+
 
         #endregion
 
@@ -1115,19 +1133,21 @@ namespace VentileClient
 
         private async void oWavy_Click(object sender, EventArgs e)
         {
-            resetOthers();
             if (internet)
             {
                 oWavy.Checked = true;
                 cosmeticsCS.oWavy = true;
 
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(14).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.Pack.WavyOverlay);
+
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
+
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), minecraftResourcePacks, "WavyVentile.zip");
+
             }
             else
             {
@@ -1142,9 +1162,9 @@ namespace VentileClient
                 oKagune.Checked = true;
                 cosmeticsCS.oKagune = true;
 
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(15).Key);
-                CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(16).Key);
-                CosmeticManager.Add(CosmeticManager.PACK_INFO.ElementAt(16).Key);
+                CosmeticManager.Add(CosmeticManager.Pack.Kagune);
+                CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
+                CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
                 ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
 
@@ -1156,30 +1176,21 @@ namespace VentileClient
             }
         }
 
-        private void resetOthers()
+        private async void resetOthers()
         {
+            if (!internet) return;
+
             oWavy.Checked = false;
             oKagune.Checked = false;
 
             cosmeticsCS.oWavy = false;
             cosmeticsCS.oKagune = false;
 
-            CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(11).Key);
-            CosmeticManager.Remove(CosmeticManager.PACK_INFO.ElementAt(15).Key);
+            CosmeticManager.Remove(CosmeticManager.Pack.WavyOverlay);
+            CosmeticManager.Remove(CosmeticManager.Pack.Kagune);
 
+            await deleteCosmetics(new string[] { "WavyVentile.zip", "KaguneVentile.zip" });
 
-            if (internet)
-            {
-                //Extras
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"WavyVentile.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"WavyVentile.zip"));
-                }
-                if (File.Exists(Path.Combine(minecraftResourcePacks, @"KaguneVentile.zip")))
-                {
-                    File.Delete(Path.Combine(minecraftResourcePacks, @"KaguneVentile.zip"));
-                }
-            }
         }
 
         #endregion
@@ -1574,7 +1585,7 @@ namespace VentileClient
                 //Properties.Colors.Default.accentColor3 = 255;
                 themeCS.Foreground = ColorTranslator.ToHtml(Color.FromArgb(0, 0, 0));
                 themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(170, 170, 170));
-                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(163, 163, 163));
+                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(123, 123, 123));
 
                 logo.Image = Properties.Resources.transparent_logo_black;
 
@@ -2266,6 +2277,16 @@ namespace VentileClient
             ColorManager.Global();
         }
 
+        private void packProfileButtonOpen_Click(object sender, EventArgs e)
+        {
+            settingsPagesTabControl.SelectedTab = PackProfiles;
+        }
+
+        private void exitPackProfilesButton_Click(object sender, EventArgs e)
+        {
+            settingsPagesTabControl.SelectedTab = Extras;
+        }
+
         #endregion
 
         #endregion
@@ -2292,17 +2313,19 @@ namespace VentileClient
 
         private void helpButton_Click(object sender, EventArgs e)
         {
-            /*new HelpForm2(themeCS, ventile_settings.help).Show();
-            return;*/
             // New changelog window
             if ((HelpPrompt)System.Windows.Forms.Application.OpenForms["HelpPrompt"] != null) return;
             _currentHelp = new HelpPrompt(themeCS, ventile_settings.help);
             _currentHelp.Show();
         }
 
+
+
         #endregion
 
         #endregion
+
+        
     }
 
     #region Small Classes
@@ -2349,4 +2372,45 @@ namespace VentileClient
     }
 
     #endregion
+}
+
+public static class TaskEx
+{
+    /// <summary>
+    /// Blocks while condition is true or timeout occurs.
+    /// </summary>
+    /// <param name="condition">The condition that will perpetuate the block.</param>
+    /// <param name="frequency">The frequency at which the condition will be check, in milliseconds.</param>
+    /// <param name="timeout">Timeout in milliseconds.</param>
+    /// <exception cref="TimeoutException"></exception>
+    /// <returns></returns>
+    public static async Task WaitWhile(Func<bool> condition, int frequency = 25, int timeout = -1)
+    {
+        var waitTask = Task.Run(async () =>
+        {
+            while (condition()) await Task.Delay(frequency);
+        });
+
+        if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
+            throw new TimeoutException();
+    }
+
+    /// <summary>
+    /// Blocks until condition is true or timeout occurs.
+    /// </summary>
+    /// <param name="condition">The break condition.</param>
+    /// <param name="frequency">The frequency at which the condition will be checked.</param>
+    /// <param name="timeout">The timeout in milliseconds.</param>
+    /// <returns></returns>
+    public static async Task WaitUntil(Func<bool> condition, int frequency = 25, int timeout = -1)
+    {
+        var waitTask = Task.Run(async () =>
+        {
+            while (!condition()) await Task.Delay(frequency);
+        });
+
+        if (waitTask != await Task.WhenAny(waitTask,
+                Task.Delay(timeout)))
+            throw new TimeoutException();
+    }
 }

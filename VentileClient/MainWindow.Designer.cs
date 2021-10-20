@@ -26,7 +26,7 @@ namespace VentileClient
         public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Guna.UI2.AnimatorNS.Animation animation2 = new Guna.UI2.AnimatorNS.Animation();
+            Guna.UI2.AnimatorNS.Animation animation3 = new Guna.UI2.AnimatorNS.Animation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dragBar = new Guna.UI2.WinForms.Guna2Panel();
             this.minimizeButton = new Guna.UI2.WinForms.Guna2Button();
@@ -153,6 +153,8 @@ namespace VentileClient
             this.backgroundColorLabel = new System.Windows.Forms.Label();
             this.themeTitle = new System.Windows.Forms.Label();
             this.Extras = new System.Windows.Forms.TabPage();
+            this.packProfileButtonOpen = new Guna.UI2.WinForms.Guna2Button();
+            this.packProfilesTitle = new System.Windows.Forms.Label();
             this.performanceModeToggle = new Guna.UI2.WinForms.Guna2Button();
             this.performanceModeTitle = new System.Windows.Forms.Label();
             this.toastsSelector = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -163,6 +165,8 @@ namespace VentileClient
             this.toastsToggle = new Guna.UI2.WinForms.Guna2Button();
             this.AppearanceButton2 = new Guna.UI2.WinForms.Guna2Button();
             this.toastsTitle = new System.Windows.Forms.Label();
+            this.PackProfiles = new System.Windows.Forms.TabPage();
+            this.exitPackProfilesButton = new Guna.UI2.WinForms.Guna2Button();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.helpButton = new Guna.UI2.WinForms.Guna2Button();
             this.changeLogLink = new System.Windows.Forms.LinkLabel();
@@ -187,6 +191,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages = new Guna.UI2.WinForms.Guna2Transition();
             this.internetCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
+            this.SelectDLLTooltip = new Guna.UI2.WinForms.Guna2HtmlToolTip();
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
@@ -206,6 +211,7 @@ namespace VentileClient
             this.Appearance.SuspendLayout();
             this.presets.SuspendLayout();
             this.Extras.SuspendLayout();
+            this.PackProfiles.SuspendLayout();
             this.aboutTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discord)).BeginInit();
@@ -251,7 +257,7 @@ namespace VentileClient
             this.minimizeButton.Text = "-";
             this.minimizeButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.minimizeButton.UseTransparentBackground = true;
-            this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
+            this.minimizeButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.minimizeButton_MouseClick);
             // 
             // closeButton
             // 
@@ -1350,6 +1356,7 @@ namespace VentileClient
             this.settingsPagesTabControl.Controls.Add(this.Launcher);
             this.settingsPagesTabControl.Controls.Add(this.Appearance);
             this.settingsPagesTabControl.Controls.Add(this.Extras);
+            this.settingsPagesTabControl.Controls.Add(this.PackProfiles);
             this.FadeEffectBetweenPages.SetDecoration(this.settingsPagesTabControl, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsPagesTabControl.ItemSize = new System.Drawing.Size(180, 40);
             this.settingsPagesTabControl.Location = new System.Drawing.Point(0, 85);
@@ -2527,6 +2534,8 @@ namespace VentileClient
             // Extras
             // 
             this.Extras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Extras.Controls.Add(this.packProfileButtonOpen);
+            this.Extras.Controls.Add(this.packProfilesTitle);
             this.Extras.Controls.Add(this.performanceModeToggle);
             this.Extras.Controls.Add(this.performanceModeTitle);
             this.Extras.Controls.Add(this.toastsSelector);
@@ -2545,6 +2554,44 @@ namespace VentileClient
             this.Extras.TabIndex = 2;
             this.Extras.Text = "Extras";
             // 
+            // packProfileButtonOpen
+            // 
+            this.packProfileButtonOpen.Animated = true;
+            this.packProfileButtonOpen.AutoRoundedCorners = true;
+            this.packProfileButtonOpen.BackColor = System.Drawing.Color.Transparent;
+            this.packProfileButtonOpen.BorderRadius = 13;
+            this.packProfileButtonOpen.CheckedState.Parent = this.packProfileButtonOpen;
+            this.packProfileButtonOpen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.packProfileButtonOpen.CustomImages.Parent = this.packProfileButtonOpen;
+            this.FadeEffectBetweenPages.SetDecoration(this.packProfileButtonOpen, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.packProfileButtonOpen.DisabledState.Parent = this.packProfileButtonOpen;
+            this.packProfileButtonOpen.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.packProfileButtonOpen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.packProfileButtonOpen.ForeColor = System.Drawing.Color.White;
+            this.packProfileButtonOpen.HoverState.Parent = this.packProfileButtonOpen;
+            this.packProfileButtonOpen.Location = new System.Drawing.Point(393, 226);
+            this.packProfileButtonOpen.Name = "packProfileButtonOpen";
+            this.packProfileButtonOpen.ShadowDecoration.Parent = this.packProfileButtonOpen;
+            this.packProfileButtonOpen.Size = new System.Drawing.Size(141, 29);
+            this.packProfileButtonOpen.TabIndex = 89;
+            this.packProfileButtonOpen.TabStop = false;
+            this.packProfileButtonOpen.Text = "Open";
+            this.packProfileButtonOpen.Click += new System.EventHandler(this.packProfileButtonOpen_Click);
+            // 
+            // packProfilesTitle
+            // 
+            this.packProfilesTitle.AutoSize = true;
+            this.packProfilesTitle.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.packProfilesTitle, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.packProfilesTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.packProfilesTitle.ForeColor = System.Drawing.Color.White;
+            this.packProfilesTitle.Location = new System.Drawing.Point(400, 188);
+            this.packProfilesTitle.Name = "packProfilesTitle";
+            this.packProfilesTitle.Size = new System.Drawing.Size(126, 25);
+            this.packProfilesTitle.TabIndex = 88;
+            this.packProfilesTitle.Text = "Pack Profiles";
+            this.packProfilesTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // performanceModeToggle
             // 
             this.performanceModeToggle.Animated = true;
@@ -2560,7 +2607,7 @@ namespace VentileClient
             this.performanceModeToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.performanceModeToggle.ForeColor = System.Drawing.Color.White;
             this.performanceModeToggle.HoverState.Parent = this.performanceModeToggle;
-            this.performanceModeToggle.Location = new System.Drawing.Point(247, 213);
+            this.performanceModeToggle.Location = new System.Drawing.Point(80, 226);
             this.performanceModeToggle.Name = "performanceModeToggle";
             this.performanceModeToggle.ShadowDecoration.Parent = this.performanceModeToggle;
             this.performanceModeToggle.Size = new System.Drawing.Size(141, 29);
@@ -2576,7 +2623,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.performanceModeTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.performanceModeTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.performanceModeTitle.ForeColor = System.Drawing.Color.White;
-            this.performanceModeTitle.Location = new System.Drawing.Point(228, 175);
+            this.performanceModeTitle.Location = new System.Drawing.Point(61, 188);
             this.performanceModeTitle.Name = "performanceModeTitle";
             this.performanceModeTitle.Size = new System.Drawing.Size(183, 25);
             this.performanceModeTitle.TabIndex = 86;
@@ -2750,6 +2797,42 @@ namespace VentileClient
             this.toastsTitle.TabIndex = 78;
             this.toastsTitle.Text = "Toasts";
             this.toastsTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PackProfiles
+            // 
+            this.PackProfiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.PackProfiles.Controls.Add(this.exitPackProfilesButton);
+            this.FadeEffectBetweenPages.SetDecoration(this.PackProfiles, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.PackProfiles.Location = new System.Drawing.Point(5, 4);
+            this.PackProfiles.Margin = new System.Windows.Forms.Padding(0);
+            this.PackProfiles.Name = "PackProfiles";
+            this.PackProfiles.Size = new System.Drawing.Size(635, 374);
+            this.PackProfiles.TabIndex = 3;
+            this.PackProfiles.Text = "Pack Profiles";
+            // 
+            // exitPackProfilesButton
+            // 
+            this.exitPackProfilesButton.Animated = true;
+            this.exitPackProfilesButton.AutoRoundedCorners = true;
+            this.exitPackProfilesButton.BackColor = System.Drawing.Color.Transparent;
+            this.exitPackProfilesButton.BorderRadius = 13;
+            this.exitPackProfilesButton.CheckedState.Parent = this.exitPackProfilesButton;
+            this.exitPackProfilesButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exitPackProfilesButton.CustomImages.Parent = this.exitPackProfilesButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.exitPackProfilesButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.exitPackProfilesButton.DisabledState.Parent = this.exitPackProfilesButton;
+            this.exitPackProfilesButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.exitPackProfilesButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.exitPackProfilesButton.ForeColor = System.Drawing.Color.White;
+            this.exitPackProfilesButton.HoverState.Parent = this.exitPackProfilesButton;
+            this.exitPackProfilesButton.Location = new System.Drawing.Point(6, 336);
+            this.exitPackProfilesButton.Name = "exitPackProfilesButton";
+            this.exitPackProfilesButton.ShadowDecoration.Parent = this.exitPackProfilesButton;
+            this.exitPackProfilesButton.Size = new System.Drawing.Size(86, 29);
+            this.exitPackProfilesButton.TabIndex = 90;
+            this.exitPackProfilesButton.TabStop = false;
+            this.exitPackProfilesButton.Text = "Go Back";
+            this.exitPackProfilesButton.Click += new System.EventHandler(this.exitPackProfilesButton_Click);
             // 
             // aboutTab
             // 
@@ -3058,22 +3141,22 @@ namespace VentileClient
             // 
             this.FadeEffectBetweenPages.AnimationType = Guna.UI2.AnimatorNS.AnimationType.Transparent;
             this.FadeEffectBetweenPages.Cursor = null;
-            animation2.AnimateOnlyDifferences = true;
-            animation2.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.BlindCoeff")));
-            animation2.LeafCoeff = 0F;
-            animation2.MaxTime = 1F;
-            animation2.MinTime = 0F;
-            animation2.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.MosaicCoeff")));
-            animation2.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation2.MosaicShift")));
-            animation2.MosaicSize = 0;
-            animation2.Padding = new System.Windows.Forms.Padding(0);
-            animation2.RotateCoeff = 0F;
-            animation2.RotateLimit = 0F;
-            animation2.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.ScaleCoeff")));
-            animation2.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.SlideCoeff")));
-            animation2.TimeCoeff = 0F;
-            animation2.TransparencyCoeff = 1F;
-            this.FadeEffectBetweenPages.DefaultAnimation = animation2;
+            animation3.AnimateOnlyDifferences = true;
+            animation3.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.BlindCoeff")));
+            animation3.LeafCoeff = 0F;
+            animation3.MaxTime = 1F;
+            animation3.MinTime = 0F;
+            animation3.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.MosaicCoeff")));
+            animation3.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation3.MosaicShift")));
+            animation3.MosaicSize = 0;
+            animation3.Padding = new System.Windows.Forms.Padding(0);
+            animation3.RotateCoeff = 0F;
+            animation3.RotateLimit = 0F;
+            animation3.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.ScaleCoeff")));
+            animation3.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.SlideCoeff")));
+            animation3.TimeCoeff = 0F;
+            animation3.TransparencyCoeff = 1F;
+            this.FadeEffectBetweenPages.DefaultAnimation = animation3;
             this.FadeEffectBetweenPages.Interval = 1;
             this.FadeEffectBetweenPages.MaxAnimationTime = 500;
             this.FadeEffectBetweenPages.TimeStep = 0.04F;
@@ -3083,6 +3166,11 @@ namespace VentileClient
             this.internetCheckTimer.Enabled = true;
             this.internetCheckTimer.Interval = 10;
             this.internetCheckTimer.Tick += new System.EventHandler(this.internetCheck_Tick);
+            // 
+            // SelectDLLTooltip
+            // 
+            this.SelectDLLTooltip.AllowLinksHandling = true;
+            this.SelectDLLTooltip.MaximumSize = new System.Drawing.Size(0, 0);
             // 
             // MainWindow
             // 
@@ -3128,6 +3216,7 @@ namespace VentileClient
             this.presets.ResumeLayout(false);
             this.Extras.ResumeLayout(false);
             this.Extras.PerformLayout();
+            this.PackProfiles.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).EndInit();
@@ -3301,6 +3390,11 @@ namespace VentileClient
         private System.ComponentModel.IContainer components;
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
         public Guna.UI2.WinForms.Guna2Button helpButton;
+        public Guna.UI2.WinForms.Guna2HtmlToolTip SelectDLLTooltip;
+        public Guna.UI2.WinForms.Guna2Button packProfileButtonOpen;
+        public System.Windows.Forms.Label packProfilesTitle;
+        public System.Windows.Forms.TabPage PackProfiles;
+        public Guna.UI2.WinForms.Guna2Button exitPackProfilesButton;
     }
 }
 

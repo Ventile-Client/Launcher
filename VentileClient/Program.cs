@@ -37,7 +37,7 @@ namespace VentileClient
             Process[] proc = Process.GetProcessesByName(procName);
             if (proc.Length > 1) // 1 because of the current process
             {
-                MessageBox.Show("Launcher is already open!");
+                MessageBox.Show("It seems like the launcher is already open!\nMaybe check your tray?", "Already Open");
                 BringProcessToFront(proc[0]);
                 return;
             }

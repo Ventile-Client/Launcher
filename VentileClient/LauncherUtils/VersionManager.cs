@@ -8,14 +8,14 @@ using System.Management.Automation;
 using System.Net;
 using System.Threading.Tasks;
 using VentileClient.Utils;
-using Windows.Management.Core;
 
 namespace VentileClient.LauncherUtils
 {
     public static class VersionManager
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
-        static string MINECRAFT_NAME = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
+
+
         public static async Task ReRegisterPackage(string version, string gameDir, Guna2Button sndr)
         {
             await Task.Run(async () =>
@@ -23,93 +23,70 @@ namespace VentileClient.LauncherUtils
                 try
                 {
                     await MCDataManager.SaveProfile("Default");
-                    MAIN.vLogger.Log("Checking Installation Location Of Minecraft");
-                    PowerShell.Create()
-                        .AddScript(@"Get-AppxPackage Microsoft.MinecraftUWP >> C:\temp\VentileClient\mcInfo.txt")
-                        .Invoke();
-                    foreach (var line in File.ReadAllLines(@"C:\temp\VentileClient\mcInfo.txt"))
+                    if ((await MCDataManager.MCInstallLoc()).StartsWith(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP")) //Means mc was installed from microsoft store
                     {
-                        if (line.StartsWith("InstallLocation"))
-                        {
-                            string[] args = line.Split(' ');
-                            for (int i = 0; i < args.Length; i++)
-                            {
-                                args[i] = args[i].Trim();
-                            }
-                        MAIN.vLogger.Log(args[2]);
-                            if (!(gameDir == (args[2] ?? "none")))
-                            {
-                                await UninstallMC();
-                            }
-                        }
+                        await UninstallMC();
                     }
-                    File.Delete(@"C:\temp\VentileClient\mcInfo.txt");
                     MAIN.vLogger.Log("Registering Package: " + gameDir);
                     string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
                     if (File.Exists(manifestPath))
                     {
                         PowerShell.Create()
-                            .AddScript("Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"" + manifestPath + "\"")
+                            .AddScript($"Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"{manifestPath}\"")
                             .Invoke();
-                        Notif.Toast("Version Manager", $"Switched Version: {version}");
+                        Notif.Toast("Version Manager", $"Switched To Version: {version}");
                         MAIN.vLogger.Log($"Registered Package: {gameDir}");
-                        await RestoreMCData();
+                        await MCDataManager.RestoreMCData();
+                        MAIN.allowSelectVersion--;
+                        MAIN.allowClose--;
+                        sndr.Invoke(new Action(() =>
+                        {
+                            sndr.Enabled = true;
+                        }));
                     }
                     else
                     {
                         Notif.Toast("Version Manager", "There was an error switching the version!");
-                        MAIN.vLogger.Log("AppxManifest.xml didn't exist! | " + manifestPath, LogLevel.Error);
+                        MAIN.vLogger.Log($"AppxManifest.xml didn't exist! | {manifestPath}", LogLevel.Error);
+                        MAIN.allowSelectVersion--;
+                        MAIN.allowClose--;
+                        sndr.Invoke(new Action(() =>
+                        {
+                            sndr.Enabled = true;
+                        }));
                     }
                 }
                 catch (Exception err)
                 {
                     Notif.Toast("Version Manager", "There was an error switching the version!");
                     MAIN.vLogger.Log(err);
+                    MAIN.allowSelectVersion--;
+                    MAIN.allowClose--;
+                    sndr.Invoke(new Action(() =>
+                    {
+                        sndr.Enabled = true;
+                    }));
                 }
-                MAIN.allowSelectVersion--;
-                MAIN.allowClose--;
-                sndr.Enabled = true;
             });
         }
 
         public static async Task UninstallMC()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
+                    await MCDataManager.BackupRoamingState();
                     MAIN.vLogger.Log("Uninstalling Minecraft");
                     PowerShell.Create()
                         .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Remove-AppxPackage")
                         .Invoke();
                     MAIN.vLogger.Log($"Uninstalled Minecraft");
-
                 }
                 catch (Exception err)
                 {
                     MAIN.vLogger.Log(err);
                 }
-                return Task.CompletedTask;
-            });
-        }
-
-        private static async Task RestoreMCData()
-        {
-            await Task.Run(() =>
-            {
-                var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
-
-                if (!Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles\", MAIN.configCS.DefaultProfile ?? "Default")))
-                {
-                    Notif.Toast("MC Data", $"Sorry, I couldn't find the \"{MAIN.configCS.DefaultProfile ?? "Default"}\" profile!");
-                    return;
-                }
-
-                Directory.CreateDirectory(Path.Combine(data.LocalFolder.Path, "games"));
-
-                MAIN.vLogger.Log($"Creating Shortcut To Profile: {(MAIN.configCS.DefaultProfile ?? "Default")} in: {data.LocalFolder.Path}");
-                Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\"), "com.mojang");
-                MAIN.vLogger.Log($"Created Shortcut!");
             });
         }
 
