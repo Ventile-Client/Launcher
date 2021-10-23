@@ -5,11 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VentileClient.Classes;
 using VentileClient.JSON_Template_Classes;
 using VentileClient.LauncherUtils;
 using VentileClient.Utils;
@@ -315,6 +318,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = homeTab;
+            this.Refresh();
             RPC.Idling();
 
             if (!configCS.PerformanceMode)
@@ -323,6 +327,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
 
             homeButton.Checked = true;
             cosmeticsButton.Checked = false;
@@ -355,6 +360,7 @@ namespace VentileClient
 
             if (!internet) contentView.SelectedTab = versionsTab;
             else contentView.SelectedTab = cosmeticsTab;
+            this.Refresh();
 
             RPC.ChangeState("Choosing Cosmetics...");
 
@@ -364,6 +370,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
 
             homeButton.Checked = false;
             cosmeticsButton.Checked = true;
@@ -395,6 +402,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = versionsTab;
+            this.Refresh();
             RPC.ChangeState("Choosing a version...");
 
             if (!configCS.PerformanceMode)
@@ -403,6 +411,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
 
             homeButton.Checked = false;
             cosmeticsButton.Checked = false;
@@ -435,6 +444,7 @@ namespace VentileClient
 
             contentView.SelectedTab = settingsTab;
             settingsPagesTabControl.SelectedTab = Launcher;
+            this.Refresh();
             RPC.ChangeState("Configuring Settings...");
 
             if (!configCS.PerformanceMode)
@@ -443,6 +453,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
 
             homeButton.Checked = false;
             cosmeticsButton.Checked = false;
@@ -450,6 +461,7 @@ namespace VentileClient
             settingsButton.Checked = true;
             aboutButton.Checked = false;
 
+            DataManager.GetProfiles();
         }
 
         private void aboutButton_Click(object sender, EventArgs e)
@@ -475,6 +487,7 @@ namespace VentileClient
             }
 
             contentView.SelectedTab = aboutTab;
+            this.Refresh();
             RPC.Idling();
 
             if (!configCS.PerformanceMode)
@@ -483,6 +496,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
 
             homeButton.Checked = false;
             cosmeticsButton.Checked = false;
@@ -1031,14 +1045,19 @@ namespace VentileClient
             if (!internet) return;
 
 
+            cosmeticsCS.mBlack = false;
+            cosmeticsCS.mWhite = false;
+            cosmeticsCS.mPink = false;
+            cosmeticsCS.mBlue = false;
+            cosmeticsCS.mYellow = false;
+            cosmeticsCS.mRick = false;
+
             mBlack.Checked = false;
             mWhite.Checked = false;
             mPink.Checked = false;
             mBlue.Checked = false;
             mYellow.Checked = false;
             mRick.Checked = false;
-
-
 
             CosmeticManager.Remove(CosmeticManager.Pack.BlackMask);
             CosmeticManager.Remove(CosmeticManager.Pack.WhiteMask);
@@ -1226,6 +1245,7 @@ namespace VentileClient
             }
 
             settingsPagesTabControl.SelectedTab = Appearance;
+            this.Refresh();
 
             if (!configCS.PerformanceMode)
             {
@@ -1233,6 +1253,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
         }
 
         private void hideWindow_Click(object sender, EventArgs e)
@@ -1519,6 +1540,7 @@ namespace VentileClient
             }
 
             settingsPagesTabControl.SelectedTab = Launcher;
+            this.Refresh();
 
             if (!configCS.PerformanceMode)
             {
@@ -1526,6 +1548,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
         }
 
         private void ExtrasButton_Click(object sender, EventArgs e)
@@ -1545,6 +1568,7 @@ namespace VentileClient
             }
 
             settingsPagesTabControl.SelectedTab = Extras;
+            this.Refresh();
 
             if (!configCS.PerformanceMode)
             {
@@ -1552,6 +1576,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
         }
 
         private void theme_Click(object sender, EventArgs e)
@@ -2209,6 +2234,7 @@ namespace VentileClient
             }
 
             settingsPagesTabControl.SelectedTab = Appearance;
+            this.Refresh();
 
             if (!configCS.PerformanceMode)
             {
@@ -2216,6 +2242,7 @@ namespace VentileClient
                 FadeEffectBetweenPages.HideSync(p);
                 this.Controls.Remove(p);
             }
+            this.Refresh();
         }
 
         private void toastsToggle_Click(object sender, EventArgs e)
@@ -2279,12 +2306,58 @@ namespace VentileClient
 
         private void packProfileButtonOpen_Click(object sender, EventArgs e)
         {
+            var p = new Guna2Panel();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
+                p.Size = new Size(settingsTab.Width, settingsPagesTabControl.Height);
+                p.Location = new Point(165, 110);
+                this.Controls.Add(p);
+                p.BringToFront();
+                sidebar.BringToFront();
+                /*p.Visible = false;
+                FadeEffectBetweenPages.ShowSync(p);*/
+            }
+
             settingsPagesTabControl.SelectedTab = PackProfiles;
+            this.Refresh();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.Visible = true;
+                FadeEffectBetweenPages.HideSync(p);
+                this.Controls.Remove(p);
+            }
+            this.Refresh();
         }
 
         private void exitPackProfilesButton_Click(object sender, EventArgs e)
         {
+            var p = new Guna2Panel();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
+                p.Size = new Size(settingsTab.Width, settingsPagesTabControl.Height);
+                p.Location = new Point(165, 110);
+                this.Controls.Add(p);
+                p.BringToFront();
+                sidebar.BringToFront();
+                /*p.Visible = false;
+                FadeEffectBetweenPages.ShowSync(p);*/
+            }
+
             settingsPagesTabControl.SelectedTab = Extras;
+            this.Refresh();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.Visible = true;
+                FadeEffectBetweenPages.HideSync(p);
+                this.Controls.Remove(p);
+            }
+            this.Refresh();
         }
 
         #endregion
@@ -2321,11 +2394,115 @@ namespace VentileClient
 
 
 
-        #endregion
 
         #endregion
 
-        
+        #endregion
+
+        private void guna2VScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            packProfilesList.AutoScrollPosition = new Point(0, guna2VScrollBar1.Value);
+        }
+
+        private async void saveProfileButton_Click(object s, EventArgs e)
+        {
+            if (profileNameTextbox.Text == string.Empty || profileNameTextbox.Text == null) return;
+            //await MCDataManager.SaveProfile(profileNameTextbox.Text);
+            Guna2Button sender = (Guna2Button)s;
+            ProfileInfo info = sender.Tag as ProfileInfo; // Gets information about the selected profile | If null, it means wants to create a new profile
+
+            if (info == null) // Create new profile
+            {
+                deleteProfileButton.Enabled = true;
+                loadProfileButton.Enabled = true;
+                Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles\" + profileNameTextbox.Text);
+                DataManager.AddProfile(new DirectoryInfo(@"C:\temp\VentileClient\Profiles\" + profileNameTextbox.Text));
+            } else // Update existing profile
+            {
+                DataManager.UpdateProfile(info.Name, NewName: profileNameTextbox.Text);
+            }
+        }
+
+        private void deleteProfileButton_Click(object s, EventArgs e)
+        {
+            Guna2Button sender = (Guna2Button)s;
+
+            deleteProfileButton.Enabled = false;
+            loadProfileButton.Enabled = false;
+
+            DataManager.RemoveProfile(((ProfileInfo)sender.Tag).Name);
+        }
+
+        private void loadProfileButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void profileIconPictureBox_Click(object s, EventArgs e)
+        {
+            Guna2PictureBox sender = (Guna2PictureBox)s; 
+            ProfileInfo info = (ProfileInfo)sender.Tag;
+
+            if (info == null) return;
+
+            var customImg = new OpenFileDialog()
+            {
+                Title = "Profile Image",
+                Filter = "Image Files (*.bmp;*.jpg;*.jpeg;*.png)|*.BMP;*.JPG;*.JPEG;*.PNG"
+            };
+
+
+            if (customImg.ShowDialog() == DialogResult.OK)
+            {
+                info.Image = new Bitmap(customImg.FileName);
+
+                using (Bitmap btmp = (Bitmap)info.Image.Clone())
+                {
+                    btmp.Save(Path.Combine(info.FullDirPath, "profileLogo.png"), ImageFormat.Png);
+                }
+
+                DataManager.UpdateProfile(info.Name, info.Image);
+            }
+            else
+            {
+                Notif.Toast("Error", "There was an error selecting image.");
+            }
+        }
+
+        private void packProfilesList_Click(object sender, EventArgs e) // Clicking the background deselects as well
+        {
+            foreach (Control profileBtn in packProfilesList.Controls)
+            {
+                if (profileBtn.GetType() == typeof(Guna2Button))
+                    ((Guna2Button)profileBtn).Checked = false;
+            }
+
+            deleteProfileButton.Enabled = false;
+            loadProfileButton.Enabled = false;
+
+            profileIconPictureBox.Tag = null;
+            profileNameTextbox.Tag = null;
+            saveProfileButton.Tag = null;
+            saveProfileButton.Tag = null;
+            deleteProfileButton.Tag = null;
+
+            profileNameLabel.Text = "Profile Name";
+            profileNameTextbox.Text = null;
+            profileIconPictureBox.Image = null;
+        }
+
+        private void profileNameTextbox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Delete && !Char.IsControl(e.KeyChar) && !char.IsSeparator(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsDigit(e.KeyChar)) // Only allows backspace, space, letters and numbers (no `~!@#$%^&*()-=_+1234567890[]\{}|;':",./<>?)
+                e.Handled = true;
+
+            if (packProfilesList.Controls?.Count > 1) // One because of title
+            {
+                Guna2Button ctrlInf = packProfilesList.Controls[1] as Guna2Button;
+                Size size = TextRenderer.MeasureText(profileNameTextbox.Text, ctrlInf.Font);
+                if (size.Width > ctrlInf.Width - (ctrlInf.ImageSize.Width + (ctrlInf.Margin.Right * 3)) && e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Delete && !Char.IsControl(e.KeyChar)) e.Handled = true;
+            }
+        }
     }
 
     #region Small Classes

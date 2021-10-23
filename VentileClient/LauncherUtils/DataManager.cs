@@ -2,11 +2,15 @@
 using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VentileClient.Classes;
 using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
@@ -225,7 +229,6 @@ namespace VentileClient.LauncherUtils
 
             try
             {
-
                 if (File.Exists(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip")))
                 {
                     File.Delete(Path.Combine(MC_RESOURCE, @"CosmeticMixer.zip"));
@@ -735,6 +738,271 @@ namespace VentileClient.LauncherUtils
                     MAIN.DefaultDLLSelector.Items.Add(item);
                 }
             }
+        }
+
+        public static void UpdateProfile(string Name, Image NewImage = null, string NewName = null)
+        {
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name == Name)
+                {
+                    ProfileInfo info = MAIN.packProfilesList.Controls[i].Tag as ProfileInfo;
+
+                    if (NewImage != null)
+                        info.Image = NewImage;
+
+                    if (NewName != null)
+                    {
+                        string newPath = @"C:\temp\VentileClient\Profiles\" + NewName;
+                        if (!Directory.Exists(newPath))
+                            Directory.Move(@"C:\temp\VentileClient\Profiles\" + info.Name, newPath);
+
+                        info.Name = NewName;
+
+                    }
+
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Tag = info;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Text = info.Name;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Image = info.Image;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Name = info.Name;
+
+                    MAIN.profileIconPictureBox.Tag = info;
+                    MAIN.profileNameTextbox.Tag = info;
+                    MAIN.saveProfileButton.Tag = info;
+                    MAIN.saveProfileButton.Tag = info;
+                    MAIN.deleteProfileButton.Tag = info;
+
+                    MAIN.profileNameLabel.Text = info.Name;
+                    MAIN.profileNameTextbox.Text = info.Name;
+                    MAIN.profileIconPictureBox.Image = info.Image;
+                    return;
+                }
+            }
+        }
+
+        public static async void RemoveProfile(string name)
+        {
+
+            MAIN.profileIconPictureBox.Tag = null;
+            MAIN.profileNameTextbox.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.deleteProfileButton.Tag = null;
+
+            MAIN.profileNameLabel.Text = "Profile Name";
+            MAIN.profileNameTextbox.Text = null;
+            MAIN.profileIconPictureBox.Image = null;
+
+
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name == name)
+                {
+                    MAIN.packProfilesList.Controls.RemoveAt(i);
+                    break;
+                }
+            }
+
+            await Task.Run(() =>
+            {
+                if (Directory.Exists(@"C:\temp\VentileClient\Profiles\" + name)) Directory.Delete(@"C:\temp\VentileClient\Profiles\" + name, true);
+
+            });
+        }
+        public static void AddProfile(DirectoryInfo dir)
+        {
+            // Make the color variable smaller
+            Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
+            Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
+            Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
+            Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
+            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
+            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
+
+            ProfileInfo info = new ProfileInfo() { Name = dir.Name, FullDirPath = dir.FullName };
+
+            if (!File.Exists(Path.Combine(dir.FullName, "profileLogo.png")))
+            {
+                using (Bitmap btmp = new Bitmap(Properties.Resources.GrassBlock))
+                {
+                    MemoryStream m = new MemoryStream();
+                    btmp.Save(m, ImageFormat.Png);
+                    info.Image = Image.FromStream(m);
+
+                }
+
+                using (Bitmap btmp = (Bitmap)info.Image.Clone())
+                {
+                    btmp.Save(Path.Combine(dir.FullName, "profileLogo.png"), ImageFormat.Png);
+                }
+            }
+            else
+            {
+                using (Bitmap btmp = new Bitmap(Path.Combine(dir.FullName, "profileLogo.png")))
+                {
+                    MemoryStream m = new MemoryStream();
+                    btmp.Save(m, ImageFormat.Png);
+                    info.Image = Image.FromStream(m);
+
+                }
+            }
+
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name == dir.Name) return;
+            }
+
+            var newButton = new Guna2Button()
+            {
+                Name = info.Name,
+                Animated = true,
+                ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton,
+
+                FillColor = Color.FromArgb(((backColor.R + 10 < 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 < 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 < 255) ? backColor.B + 10 : backColor.B - 10)),
+                Font = new Font("Segoe UI", 11.25f, FontStyle.Bold),
+
+                ForeColor = foreColor,
+                Image = info.Image,
+                ImageAlign = HorizontalAlignment.Right,
+                ImageSize = new Size(20, 20),
+
+                Margin = new Padding(10, 3, 10, 3),
+                Size = new Size(263, 36),
+
+                TabStop = false,
+                Checked = true,
+
+                Tag = info,
+
+                Text = info.Name,
+                TextAlign = HorizontalAlignment.Left,
+                UseTransparentBackground = true
+            };
+
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name != dir.Name) ((Guna2Button)MAIN.packProfilesList.Controls[i]).Checked = false;
+            }
+
+            newButton.Click += OnProfileSelect;
+
+            MAIN.packProfilesList.Controls.Add(newButton);
+
+            MAIN.profileIconPictureBox.Tag = info;
+            MAIN.profileNameTextbox.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.deleteProfileButton.Tag = info;
+
+            MAIN.profileNameLabel.Text = info.Name;
+            MAIN.profileNameTextbox.Text = info.Name;
+            MAIN.profileIconPictureBox.Image = info.Image;
+        }
+
+        public static void GetProfiles()
+        {
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                MAIN.packProfilesList.Controls.RemoveAt(i);
+                i--;
+            }
+
+            DirectoryInfo dirs = new DirectoryInfo(@"C:\temp\VentileClient\Profiles");
+
+            foreach (DirectoryInfo dir in dirs.GetDirectories())
+            {
+                AddProfile(dir);
+            }
+
+            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
+            {
+                if (profileBtn.GetType() == typeof(Guna2Button))
+                    ((Guna2Button)profileBtn).Checked = false;
+            }
+
+            MAIN.deleteProfileButton.Enabled = false;
+            MAIN.loadProfileButton.Enabled = false;
+
+            MAIN.profileIconPictureBox.Tag = null;
+            MAIN.profileNameTextbox.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.deleteProfileButton.Tag = null;
+
+            MAIN.profileNameLabel.Text = "Profile Name";
+            MAIN.profileNameTextbox.Text = null;
+            MAIN.profileIconPictureBox.Image = null;
+
+            updateMaxScroll();
+        }
+
+        private static void updateMaxScroll()
+        {
+            var prevScrollAmount = MAIN.packProfilesList.AutoScrollPosition;
+            var tempControl = new System.Windows.Forms.Label() { };
+
+            MAIN.packProfilesList.Controls.Add(tempControl);
+
+            MAIN.packProfilesList.ScrollControlIntoView(tempControl);
+            MAIN.guna2VScrollBar1.Maximum = MAIN.packProfilesList.VerticalScroll.Value + 10;
+
+            MAIN.packProfilesList.Controls.Remove(tempControl);
+            MAIN.packProfilesList.AutoScrollPosition = prevScrollAmount;
+        }
+
+        private static void OnProfileSelect(object s, EventArgs e)
+        {
+            Guna2Button sender = (Guna2Button)s;
+
+            if (!sender.Checked) // Profile was de-selected
+            {
+                MAIN.deleteProfileButton.Enabled = false;
+                MAIN.loadProfileButton.Enabled = false;
+
+                MAIN.profileIconPictureBox.Tag = null;
+                MAIN.profileNameTextbox.Tag = null;
+                MAIN.saveProfileButton.Tag = null;
+                MAIN.saveProfileButton.Tag = null;
+                MAIN.deleteProfileButton.Tag = null;
+
+                MAIN.profileNameLabel.Text = "Profile Name";
+                MAIN.profileNameTextbox.Text = null;
+                MAIN.profileIconPictureBox.Image = null;
+                return;
+            }
+
+            // Profile was selected
+
+            MAIN.deleteProfileButton.Enabled = true;
+            MAIN.loadProfileButton.Enabled = true;
+
+            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
+            {
+                if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
+                    ((Guna2Button)profileBtn).Checked = false;
+            }
+
+            ProfileInfo info = (ProfileInfo)sender.Tag;
+
+            MAIN.profileIconPictureBox.Tag = info;
+            MAIN.profileNameTextbox.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.deleteProfileButton.Tag = info;
+
+            MAIN.profileNameLabel.Text = info.Name;
+            MAIN.profileNameTextbox.Text = info.Name;
+            MAIN.profileIconPictureBox.Image = info.Image;
         }
 
         public static async Task GetMCVersions(bool force)

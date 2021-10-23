@@ -75,7 +75,7 @@ namespace TextFormatterBecusLazy
             string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
 
 
-            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, "DiscordChangelog.txt"))) //path
+            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, ".DiscordChangelog.txt"))) //path
             {
                 for (int i = 0; i < changelogLines.Length; i++)
                 {
@@ -102,7 +102,7 @@ namespace TextFormatterBecusLazy
             string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
 
 
-            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, "GithubChangelog.txt"))) //path
+            using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, ".GithubChangelog.txt"))) //path
             {
                 for (int i = 0; i < changelogLines.Length; i++)
                 {

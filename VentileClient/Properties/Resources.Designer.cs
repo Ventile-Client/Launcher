@@ -81,12 +81,20 @@ namespace VentileClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ventile Launcher 
+        ///   Looks up a localized string similar to Version 4.2.0 Changelog:
         /// - Added:
+        ///    Help Button
+        ///    Pack Profiles
+        ///    Hiding the launcher by right clicking the minmize button
+        ///    Error handling for cosmetics when buttons are spammed
         ///
         /// - Removed:
         ///
-        /// - Fixes:.
+        /// - Fixes:
+        ///    Version Switcher
+        ///    Themes
+        ///    Hiding/Showing Launcher
+        ///    Resource packs don&apos;t reset every time launcher is used.
         /// </summary>
         internal static string Changelog {
             get {
@@ -95,7 +103,35 @@ namespace VentileClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GrassBlock {
+            get {
+                object obj = ResourceManager.GetObject("GrassBlock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General
+        ///    &gt; Close Button (X)
+        ///        - Closes the application and saves your config and theme
+        ///
+        ///    &gt; Minimize Button (-)
+        ///        + Click: Minimizes launcher to your taskbar
+        ///        + Right Click: Hides the launcher to your tray
+        ///
+        ///
+        ///Home
+        ///  &gt; Launch Minecraft
+        ///      - Opens Minecraft Bedrock, and automically injects your dll 
+        ///          (If Auto Inject is enabled)
+        ///
+        ///  &gt; Select DLL
+        ///      - Opens a file prompt, which is where you choose your custom dll 
+        ///          (Custom DLL must be enabled)
+        ///
+        ///  &gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Help {
             get {

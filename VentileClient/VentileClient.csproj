@@ -122,6 +122,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ProfileInfo.cs" />
     <Compile Include="Forms\HelpPrompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,11 +135,11 @@
     <Compile Include="Forms\ChangelogPrompt.Designer.cs">
       <DependentUpon>ChangelogPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="JSON_Template_Classes\ConfigTemplate.cs" />
-    <Compile Include="JSON_Template_Classes\Cosmetic.cs" />
-    <Compile Include="JSON_Template_Classes\CosmeticsTemplate.cs" />
-    <Compile Include="JSON_Template_Classes\PresetColorsTemplate.cs" />
-    <Compile Include="JSON_Template_Classes\ThemeTemplate.cs" />
+    <Compile Include="Classes\ConfigTemplate.cs" />
+    <Compile Include="Classes\Cosmetic.cs" />
+    <Compile Include="Classes\CosmeticsTemplate.cs" />
+    <Compile Include="Classes\PresetColorsTemplate.cs" />
+    <Compile Include="Classes\ThemeTemplate.cs" />
     <Compile Include="LauncherUtils\ColorManager.cs" />
     <Compile Include="LauncherUtils\CosmeticManager.cs" />
     <Compile Include="LauncherUtils\DataManager.cs" />
@@ -180,8 +181,6 @@
     <Compile Include="Forms\UpdatePrompt.Designer.cs">
       <DependentUpon>UpdatePrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\VersionManager2.cs" />
-    <Compile Include="Utils\VersionManager3.cs" />
     <EmbeddedResource Include="Forms\HelpPrompt.resx">
       <DependentUpon>HelpPrompt.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,6 +212,7 @@
     <Content Include="ReleaseData\Changelog.txt" />
     <Content Include="Personal\WorkOn.txt" />
     <Content Include="ReleaseData\Help.txt" />
+    <None Include="Resources\GrassBlock.png" />
     <None Include="packages.config" />
     <None Include="ReleaseData\Config.json" />
     <None Include="ReleaseData\Cosmetics.json" />
@@ -250,7 +250,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName)==Release (
-  rmdir /s /q $(TargetDir)
+  rmdir /s /q $(TargetDir) 
 )</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
@@ -262,6 +262,7 @@ if $(ConfigurationName) == Release (
 echo -------------------------------------------------------------
 echo ^|^ IF BUILDING TO PUBLISH, SWITCH TO RELEASE MODE
 echo -------------------------------------------------------------
-)</PostBuildEvent>
+)
+exit 0</PostBuildEvent>
   </PropertyGroup>
 </Project>

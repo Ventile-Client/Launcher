@@ -532,6 +532,7 @@ namespace VentileClient.LauncherUtils
             Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
             Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
             Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
+            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
 
             MAIN.Launcher.BackColor = backColor;
             MAIN.Appearance.BackColor = backColor;
@@ -609,6 +610,7 @@ namespace VentileClient.LauncherUtils
             MAIN.AppearanceButton.FillColor = backColor2;
 
             // Appearance \\
+
             //Sliders
             MAIN.backgroundBrightnessSlider.BackColor = backColor;
             MAIN.accentRedSlider.BackColor = backColor;
@@ -673,6 +675,7 @@ namespace VentileClient.LauncherUtils
             MAIN.accentRT.BackColor = backColor;
             MAIN.accentGT.BackColor = backColor;
             MAIN.accentBT.BackColor = backColor;
+            MAIN.outlineOT.BackColor = backColor;
             MAIN.buttonBuT.BackColor = backColor;
             MAIN.foreBT.BackColor = backColor;
 
@@ -680,6 +683,7 @@ namespace VentileClient.LauncherUtils
             MAIN.accentRT.ForeColor = foreColor;
             MAIN.accentGT.ForeColor = foreColor;
             MAIN.accentBT.ForeColor = foreColor;
+            MAIN.outlineOT.ForeColor = foreColor;
             MAIN.buttonBuT.ForeColor = foreColor;
             MAIN.foreBT.ForeColor = foreColor;
 
@@ -870,6 +874,42 @@ namespace VentileClient.LauncherUtils
             MAIN.exitPackProfilesButton.CheckedState.FillColor = accentColor;
             MAIN.exitPackProfilesButton.ForeColor = foreColor;
             MAIN.exitPackProfilesButton.FillColor = backColor2;
+
+            MAIN.loadProfileButton.CheckedState.FillColor = accentColor;
+            MAIN.loadProfileButton.ForeColor = foreColor;
+            MAIN.loadProfileButton.FillColor = backColor2;
+
+            MAIN.deleteProfileButton.CheckedState.FillColor = accentColor;
+            MAIN.deleteProfileButton.ForeColor = foreColor;
+            MAIN.deleteProfileButton.FillColor = backColor2;
+
+            MAIN.saveProfileButton.CheckedState.FillColor = accentColor;
+            MAIN.saveProfileButton.ForeColor = foreColor;
+            MAIN.saveProfileButton.FillColor = backColor2;
+
+            MAIN.guna2VScrollBar1.ThumbColor = backColor2;
+            MAIN.packProfilesList.BackColor = backColor2;
+
+            MAIN.profileNameLabel.ForeColor = foreColor;
+            MAIN.profileListLabel.ForeColor = foreColor;
+
+            MAIN.profileIconPictureBox.FillColor = backColor2;
+
+            MAIN.profileNameTextbox.BorderColor = backColor2;
+            MAIN.profileNameTextbox.PlaceholderForeColor = fadedColor;
+
+            MAIN.profileNameTextbox.ForeColor = Color.FromArgb(((foreColor.R + 55 < 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 < 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 < 255) ? foreColor.B + 55 : foreColor.B - 55)); ;
+            MAIN.profileNameTextbox.FillColor = Color.FromArgb(((backColor.R + 40 < 255) ? backColor.R + 40 : backColor.R - 40), ((backColor.G + 40 < 255) ? backColor.G + 40 : backColor.G - 40), ((backColor.B + 40 < 255) ? backColor.B + 40 : backColor.B - 40));
+
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                ((Guna2Button)MAIN.packProfilesList.Controls[i]).FillColor = Color.FromArgb(((backColor.R + 10 < 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 < 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 < 255) ? backColor.B + 10 : backColor.B - 10));
+                ((Guna2Button)MAIN.packProfilesList.Controls[i]).ForeColor = foreColor;
+
+                return;
+            }
 
             MAIN.settingsTab.BackColor = backColor;
 

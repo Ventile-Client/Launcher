@@ -26,7 +26,7 @@ namespace VentileClient
         public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Guna.UI2.AnimatorNS.Animation animation3 = new Guna.UI2.AnimatorNS.Animation();
+            Guna.UI2.AnimatorNS.Animation animation2 = new Guna.UI2.AnimatorNS.Animation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.dragBar = new Guna.UI2.WinForms.Guna2Panel();
             this.minimizeButton = new Guna.UI2.WinForms.Guna2Button();
@@ -166,7 +166,16 @@ namespace VentileClient
             this.AppearanceButton2 = new Guna.UI2.WinForms.Guna2Button();
             this.toastsTitle = new System.Windows.Forms.Label();
             this.PackProfiles = new System.Windows.Forms.TabPage();
+            this.guna2VScrollBar1 = new Guna.UI2.WinForms.Guna2VScrollBar();
+            this.profileNameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.saveProfileButton = new Guna.UI2.WinForms.Guna2Button();
+            this.deleteProfileButton = new Guna.UI2.WinForms.Guna2Button();
+            this.loadProfileButton = new Guna.UI2.WinForms.Guna2Button();
+            this.profileIconPictureBox = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.packProfilesList = new System.Windows.Forms.FlowLayoutPanel();
+            this.profileListLabel = new System.Windows.Forms.Label();
             this.exitPackProfilesButton = new Guna.UI2.WinForms.Guna2Button();
+            this.profileNameLabel = new System.Windows.Forms.Label();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.helpButton = new Guna.UI2.WinForms.Guna2Button();
             this.changeLogLink = new System.Windows.Forms.LinkLabel();
@@ -212,6 +221,8 @@ namespace VentileClient
             this.presets.SuspendLayout();
             this.Extras.SuspendLayout();
             this.PackProfiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.profileIconPictureBox)).BeginInit();
+            this.packProfilesList.SuspendLayout();
             this.aboutTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discord)).BeginInit();
@@ -2569,7 +2580,7 @@ namespace VentileClient
             this.packProfileButtonOpen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.packProfileButtonOpen.ForeColor = System.Drawing.Color.White;
             this.packProfileButtonOpen.HoverState.Parent = this.packProfileButtonOpen;
-            this.packProfileButtonOpen.Location = new System.Drawing.Point(393, 226);
+            this.packProfileButtonOpen.Location = new System.Drawing.Point(367, 239);
             this.packProfileButtonOpen.Name = "packProfileButtonOpen";
             this.packProfileButtonOpen.ShadowDecoration.Parent = this.packProfileButtonOpen;
             this.packProfileButtonOpen.Size = new System.Drawing.Size(141, 29);
@@ -2585,7 +2596,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.packProfilesTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.packProfilesTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.packProfilesTitle.ForeColor = System.Drawing.Color.White;
-            this.packProfilesTitle.Location = new System.Drawing.Point(400, 188);
+            this.packProfilesTitle.Location = new System.Drawing.Point(374, 201);
             this.packProfilesTitle.Name = "packProfilesTitle";
             this.packProfilesTitle.Size = new System.Drawing.Size(126, 25);
             this.packProfilesTitle.TabIndex = 88;
@@ -2607,7 +2618,7 @@ namespace VentileClient
             this.performanceModeToggle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.performanceModeToggle.ForeColor = System.Drawing.Color.White;
             this.performanceModeToggle.HoverState.Parent = this.performanceModeToggle;
-            this.performanceModeToggle.Location = new System.Drawing.Point(80, 226);
+            this.performanceModeToggle.Location = new System.Drawing.Point(107, 239);
             this.performanceModeToggle.Name = "performanceModeToggle";
             this.performanceModeToggle.ShadowDecoration.Parent = this.performanceModeToggle;
             this.performanceModeToggle.Size = new System.Drawing.Size(141, 29);
@@ -2623,7 +2634,7 @@ namespace VentileClient
             this.FadeEffectBetweenPages.SetDecoration(this.performanceModeTitle, Guna.UI2.AnimatorNS.DecorationType.None);
             this.performanceModeTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.performanceModeTitle.ForeColor = System.Drawing.Color.White;
-            this.performanceModeTitle.Location = new System.Drawing.Point(61, 188);
+            this.performanceModeTitle.Location = new System.Drawing.Point(88, 201);
             this.performanceModeTitle.Name = "performanceModeTitle";
             this.performanceModeTitle.Size = new System.Drawing.Size(183, 25);
             this.performanceModeTitle.TabIndex = 86;
@@ -2801,7 +2812,15 @@ namespace VentileClient
             // PackProfiles
             // 
             this.PackProfiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.PackProfiles.Controls.Add(this.guna2VScrollBar1);
+            this.PackProfiles.Controls.Add(this.profileNameTextbox);
+            this.PackProfiles.Controls.Add(this.saveProfileButton);
+            this.PackProfiles.Controls.Add(this.deleteProfileButton);
+            this.PackProfiles.Controls.Add(this.loadProfileButton);
+            this.PackProfiles.Controls.Add(this.profileIconPictureBox);
+            this.PackProfiles.Controls.Add(this.packProfilesList);
             this.PackProfiles.Controls.Add(this.exitPackProfilesButton);
+            this.PackProfiles.Controls.Add(this.profileNameLabel);
             this.FadeEffectBetweenPages.SetDecoration(this.PackProfiles, Guna.UI2.AnimatorNS.DecorationType.None);
             this.PackProfiles.Location = new System.Drawing.Point(5, 4);
             this.PackProfiles.Margin = new System.Windows.Forms.Padding(0);
@@ -2809,6 +2828,187 @@ namespace VentileClient
             this.PackProfiles.Size = new System.Drawing.Size(635, 374);
             this.PackProfiles.TabIndex = 3;
             this.PackProfiles.Text = "Pack Profiles";
+            // 
+            // guna2VScrollBar1
+            // 
+            this.guna2VScrollBar1.AutoRoundedCorners = true;
+            this.guna2VScrollBar1.BorderRadius = 7;
+            this.guna2VScrollBar1.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.FadeEffectBetweenPages.SetDecoration(this.guna2VScrollBar1, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.guna2VScrollBar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.guna2VScrollBar1.HoverState.Parent = null;
+            this.guna2VScrollBar1.InUpdate = false;
+            this.guna2VScrollBar1.LargeChange = 30;
+            this.guna2VScrollBar1.Location = new System.Drawing.Point(612, 13);
+            this.guna2VScrollBar1.Maximum = 32;
+            this.guna2VScrollBar1.Name = "guna2VScrollBar1";
+            this.guna2VScrollBar1.PressedState.Parent = this.guna2VScrollBar1;
+            this.guna2VScrollBar1.ScrollbarSize = 17;
+            this.guna2VScrollBar1.Size = new System.Drawing.Size(17, 340);
+            this.guna2VScrollBar1.SmallChange = 5;
+            this.guna2VScrollBar1.TabIndex = 22;
+            this.guna2VScrollBar1.TabStop = false;
+            this.guna2VScrollBar1.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.guna2VScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.guna2VScrollBar1_Scroll);
+            // 
+            // profileNameTextbox
+            // 
+            this.profileNameTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.profileNameTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.profileNameTextbox.BorderThickness = 2;
+            this.profileNameTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.profileNameTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.profileNameTextbox.DefaultText = "";
+            this.profileNameTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.profileNameTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.profileNameTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.profileNameTextbox.DisabledState.Parent = this.profileNameTextbox;
+            this.profileNameTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.profileNameTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.profileNameTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.profileNameTextbox.FocusedState.Parent = this.profileNameTextbox;
+            this.profileNameTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.profileNameTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.profileNameTextbox.HoverState.Parent = this.profileNameTextbox;
+            this.profileNameTextbox.Location = new System.Drawing.Point(133, 274);
+            this.profileNameTextbox.Name = "profileNameTextbox";
+            this.profileNameTextbox.PasswordChar = '\0';
+            this.profileNameTextbox.PlaceholderText = "Profile Name";
+            this.profileNameTextbox.SelectedText = "";
+            this.profileNameTextbox.ShadowDecoration.Parent = this.profileNameTextbox;
+            this.profileNameTextbox.Size = new System.Drawing.Size(139, 25);
+            this.profileNameTextbox.TabIndex = 97;
+            this.profileNameTextbox.TabStop = false;
+            this.profileNameTextbox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.profileNameTextbox_KeyPress);
+            // 
+            // saveProfileButton
+            // 
+            this.saveProfileButton.Animated = true;
+            this.saveProfileButton.BackColor = System.Drawing.Color.Transparent;
+            this.saveProfileButton.CheckedState.Parent = this.saveProfileButton;
+            this.saveProfileButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saveProfileButton.CustomImages.Parent = this.saveProfileButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.saveProfileButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.saveProfileButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.saveProfileButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.saveProfileButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.saveProfileButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.saveProfileButton.DisabledState.Parent = this.saveProfileButton;
+            this.saveProfileButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.saveProfileButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.saveProfileButton.ForeColor = System.Drawing.Color.White;
+            this.saveProfileButton.HoverState.Parent = this.saveProfileButton;
+            this.saveProfileButton.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.saveProfileButton.Location = new System.Drawing.Point(53, 274);
+            this.saveProfileButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.saveProfileButton.Name = "saveProfileButton";
+            this.saveProfileButton.ShadowDecoration.Parent = this.saveProfileButton;
+            this.saveProfileButton.Size = new System.Drawing.Size(71, 25);
+            this.saveProfileButton.TabIndex = 96;
+            this.saveProfileButton.TabStop = false;
+            this.saveProfileButton.Text = "Save";
+            this.saveProfileButton.UseTransparentBackground = true;
+            this.saveProfileButton.Click += new System.EventHandler(this.saveProfileButton_Click);
+            // 
+            // deleteProfileButton
+            // 
+            this.deleteProfileButton.Animated = true;
+            this.deleteProfileButton.BackColor = System.Drawing.Color.Transparent;
+            this.deleteProfileButton.CheckedState.Parent = this.deleteProfileButton;
+            this.deleteProfileButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deleteProfileButton.CustomImages.Parent = this.deleteProfileButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.deleteProfileButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.deleteProfileButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.deleteProfileButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.deleteProfileButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.deleteProfileButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.deleteProfileButton.DisabledState.Parent = this.deleteProfileButton;
+            this.deleteProfileButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.deleteProfileButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.deleteProfileButton.ForeColor = System.Drawing.Color.White;
+            this.deleteProfileButton.HoverState.Parent = this.deleteProfileButton;
+            this.deleteProfileButton.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deleteProfileButton.Location = new System.Drawing.Point(167, 243);
+            this.deleteProfileButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.deleteProfileButton.Name = "deleteProfileButton";
+            this.deleteProfileButton.ShadowDecoration.Parent = this.deleteProfileButton;
+            this.deleteProfileButton.Size = new System.Drawing.Size(105, 25);
+            this.deleteProfileButton.TabIndex = 95;
+            this.deleteProfileButton.TabStop = false;
+            this.deleteProfileButton.Text = "Delete";
+            this.deleteProfileButton.UseTransparentBackground = true;
+            this.deleteProfileButton.Click += new System.EventHandler(this.deleteProfileButton_Click);
+            // 
+            // loadProfileButton
+            // 
+            this.loadProfileButton.Animated = true;
+            this.loadProfileButton.BackColor = System.Drawing.Color.Transparent;
+            this.loadProfileButton.CheckedState.Parent = this.loadProfileButton;
+            this.loadProfileButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.loadProfileButton.CustomImages.Parent = this.loadProfileButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.loadProfileButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.loadProfileButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.loadProfileButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.loadProfileButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.loadProfileButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.loadProfileButton.DisabledState.Parent = this.loadProfileButton;
+            this.loadProfileButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.loadProfileButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.loadProfileButton.ForeColor = System.Drawing.Color.White;
+            this.loadProfileButton.HoverState.Parent = this.loadProfileButton;
+            this.loadProfileButton.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.loadProfileButton.Location = new System.Drawing.Point(53, 243);
+            this.loadProfileButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.loadProfileButton.Name = "loadProfileButton";
+            this.loadProfileButton.ShadowDecoration.Parent = this.loadProfileButton;
+            this.loadProfileButton.Size = new System.Drawing.Size(105, 25);
+            this.loadProfileButton.TabIndex = 94;
+            this.loadProfileButton.TabStop = false;
+            this.loadProfileButton.Text = "Load";
+            this.loadProfileButton.UseTransparentBackground = true;
+            this.loadProfileButton.Click += new System.EventHandler(this.loadProfileButton_Click);
+            // 
+            // profileIconPictureBox
+            // 
+            this.profileIconPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.profileIconPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FadeEffectBetweenPages.SetDecoration(this.profileIconPictureBox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.profileIconPictureBox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.profileIconPictureBox.ImageRotate = 0F;
+            this.profileIconPictureBox.Location = new System.Drawing.Point(92, 91);
+            this.profileIconPictureBox.Name = "profileIconPictureBox";
+            this.profileIconPictureBox.ShadowDecoration.Parent = this.profileIconPictureBox;
+            this.profileIconPictureBox.Size = new System.Drawing.Size(140, 140);
+            this.profileIconPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.profileIconPictureBox.TabIndex = 93;
+            this.profileIconPictureBox.TabStop = false;
+            this.profileIconPictureBox.UseTransparentBackground = true;
+            this.profileIconPictureBox.Click += new System.EventHandler(this.profileIconPictureBox_Click);
+            // 
+            // packProfilesList
+            // 
+            this.packProfilesList.AutoScroll = true;
+            this.packProfilesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.packProfilesList.Controls.Add(this.profileListLabel);
+            this.FadeEffectBetweenPages.SetDecoration(this.packProfilesList, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.packProfilesList.Location = new System.Drawing.Point(329, 13);
+            this.packProfilesList.Name = "packProfilesList";
+            this.packProfilesList.Size = new System.Drawing.Size(300, 340);
+            this.packProfilesList.TabIndex = 92;
+            this.packProfilesList.Click += new System.EventHandler(this.packProfilesList_Click);
+            // 
+            // profileListLabel
+            // 
+            this.profileListLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.profileListLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.profileListLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profileListLabel.ForeColor = System.Drawing.Color.White;
+            this.profileListLabel.Location = new System.Drawing.Point(3, 0);
+            this.profileListLabel.Name = "profileListLabel";
+            this.profileListLabel.Size = new System.Drawing.Size(269, 42);
+            this.profileListLabel.TabIndex = 13;
+            this.profileListLabel.Text = "Profiles";
+            this.profileListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // exitPackProfilesButton
             // 
@@ -2833,6 +3033,19 @@ namespace VentileClient
             this.exitPackProfilesButton.TabStop = false;
             this.exitPackProfilesButton.Text = "Go Back";
             this.exitPackProfilesButton.Click += new System.EventHandler(this.exitPackProfilesButton_Click);
+            // 
+            // profileNameLabel
+            // 
+            this.profileNameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.profileNameLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.profileNameLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profileNameLabel.ForeColor = System.Drawing.Color.White;
+            this.profileNameLabel.Location = new System.Drawing.Point(29, 44);
+            this.profileNameLabel.Name = "profileNameLabel";
+            this.profileNameLabel.Size = new System.Drawing.Size(269, 42);
+            this.profileNameLabel.TabIndex = 16;
+            this.profileNameLabel.Text = "Profile Name";
+            this.profileNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // aboutTab
             // 
@@ -3141,22 +3354,22 @@ namespace VentileClient
             // 
             this.FadeEffectBetweenPages.AnimationType = Guna.UI2.AnimatorNS.AnimationType.Transparent;
             this.FadeEffectBetweenPages.Cursor = null;
-            animation3.AnimateOnlyDifferences = true;
-            animation3.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.BlindCoeff")));
-            animation3.LeafCoeff = 0F;
-            animation3.MaxTime = 1F;
-            animation3.MinTime = 0F;
-            animation3.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.MosaicCoeff")));
-            animation3.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation3.MosaicShift")));
-            animation3.MosaicSize = 0;
-            animation3.Padding = new System.Windows.Forms.Padding(0);
-            animation3.RotateCoeff = 0F;
-            animation3.RotateLimit = 0F;
-            animation3.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.ScaleCoeff")));
-            animation3.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation3.SlideCoeff")));
-            animation3.TimeCoeff = 0F;
-            animation3.TransparencyCoeff = 1F;
-            this.FadeEffectBetweenPages.DefaultAnimation = animation3;
+            animation2.AnimateOnlyDifferences = true;
+            animation2.BlindCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.BlindCoeff")));
+            animation2.LeafCoeff = 0F;
+            animation2.MaxTime = 1F;
+            animation2.MinTime = 0F;
+            animation2.MosaicCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.MosaicCoeff")));
+            animation2.MosaicShift = ((System.Drawing.PointF)(resources.GetObject("animation2.MosaicShift")));
+            animation2.MosaicSize = 0;
+            animation2.Padding = new System.Windows.Forms.Padding(0);
+            animation2.RotateCoeff = 0F;
+            animation2.RotateLimit = 0F;
+            animation2.ScaleCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.ScaleCoeff")));
+            animation2.SlideCoeff = ((System.Drawing.PointF)(resources.GetObject("animation2.SlideCoeff")));
+            animation2.TimeCoeff = 0F;
+            animation2.TransparencyCoeff = 1F;
+            this.FadeEffectBetweenPages.DefaultAnimation = animation2;
             this.FadeEffectBetweenPages.Interval = 1;
             this.FadeEffectBetweenPages.MaxAnimationTime = 500;
             this.FadeEffectBetweenPages.TimeStep = 0.04F;
@@ -3217,6 +3430,8 @@ namespace VentileClient
             this.Extras.ResumeLayout(false);
             this.Extras.PerformLayout();
             this.PackProfiles.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.profileIconPictureBox)).EndInit();
+            this.packProfilesList.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).EndInit();
@@ -3395,6 +3610,15 @@ namespace VentileClient
         public System.Windows.Forms.Label packProfilesTitle;
         public System.Windows.Forms.TabPage PackProfiles;
         public Guna.UI2.WinForms.Guna2Button exitPackProfilesButton;
+        public Guna.UI2.WinForms.Guna2VScrollBar guna2VScrollBar1;
+        public Guna.UI2.WinForms.Guna2TextBox profileNameTextbox;
+        public Guna.UI2.WinForms.Guna2Button saveProfileButton;
+        public Guna.UI2.WinForms.Guna2Button deleteProfileButton;
+        public Guna.UI2.WinForms.Guna2Button loadProfileButton;
+        public System.Windows.Forms.Label profileNameLabel;
+        public Guna.UI2.WinForms.Guna2PictureBox profileIconPictureBox;
+        public System.Windows.Forms.FlowLayoutPanel packProfilesList;
+        public System.Windows.Forms.Label profileListLabel;
     }
 }
 
