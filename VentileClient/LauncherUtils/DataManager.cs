@@ -2,12 +2,9 @@
 using Octokit;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.Classes;
@@ -272,6 +269,41 @@ namespace VentileClient.LauncherUtils
 
             MAIN.versionsPanel.AutoScroll = true;
 
+            //Displays a tab that says you don't have internet
+            if (!MAIN.internet || !internetParam)
+            {
+                var lbl = new System.Windows.Forms.Label()
+                {
+                    AutoSize = true,
+                    Text = "No Internet...",
+                    Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
+                    Location = new Point(5, TOP_OFFSET),
+                    ForeColor = foreColor
+                };
+
+                var noInternet = new System.Windows.Forms.Label()
+                {
+                    AutoSize = true,
+                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to access the internet\n - You don't have an internet connection\n - If a reason isn't listed here, ask for help or contact the devs!",
+                    Font = new Font("Segoe UI", 14.25f),
+                    Location = new Point(9, SPACING + TOP_OFFSET * 2),
+                    ForeColor = foreColor
+                };
+
+                MAIN.versionsPanel.Controls.Add(lbl);
+                lbl.BringToFront();
+
+                MAIN.versionsPanel.Controls.Add(noInternet);
+                noInternet.BringToFront();
+
+                MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
+
+                if (MAIN.cosmeticsButton.Checked)
+                    MAIN.contentView.SelectedTab = MAIN.versionsTab;
+
+                return;
+            }
+
             //Displays a tab that says you dont have access to the github
             if (!MAIN.versionsRetrieved)
             {
@@ -287,7 +319,7 @@ namespace VentileClient.LauncherUtils
                 var noGithub = new System.Windows.Forms.Label()
                 {
                     AutoSize = true,
-                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to acess the internet\n - You don't have an internet connection\n - You ran out of Github requests\n - If a reason isn't listed here, ask for help or contact the devs!",
+                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to access the internet\n - You don't have an internet connection\n - You ran out of Github requests\n - If a reason isn't listed here, ask for help or contact the devs!",
                     Font = new Font("Segoe UI", 14.25f),
                     Location = new Point(9, SPACING + TOP_OFFSET * 2),
                     ForeColor = foreColor
@@ -304,37 +336,6 @@ namespace VentileClient.LauncherUtils
                 return;
             }
 
-            //Displays a tab that says you don't have internet
-            if (!MAIN.internet || !internetParam)
-            {
-                var lbl = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Text = "No Internet...",
-                    Font = new Font("Segoe UI", 20.25f, FontStyle.Bold),
-                    Location = new Point(5, TOP_OFFSET),
-                    ForeColor = foreColor
-                };
-
-                var noInternet = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Text = "Cannot retrieve data!\n - A firewall isn't allowing the launcher to acess the internet\n - You don't have an internet connection\n - If a reason isn't listed here, ask for help or contact the devs!",
-                    Font = new Font("Segoe UI", 14.25f),
-                    Location = new Point(9, SPACING + TOP_OFFSET * 2),
-                    ForeColor = foreColor
-                };
-
-                MAIN.versionsPanel.Controls.Add(lbl);
-                lbl.BringToFront();
-
-                MAIN.versionsPanel.Controls.Add(noInternet);
-                noInternet.BringToFront();
-
-                MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
-                MAIN.contentView.SelectedTab = MAIN.versionsTab;
-                return;
-            }
 
             // Title Of Panel
             var label = new System.Windows.Forms.Label()
@@ -807,12 +808,9 @@ namespace VentileClient.LauncherUtils
                 }
             }
 
-            await Task.Run(() =>
-            {
-                if (Directory.Exists(@"C:\temp\VentileClient\Profiles\" + name)) Directory.Delete(@"C:\temp\VentileClient\Profiles\" + name, true);
-
-            });
+            await MCDataManager.DeleteProfile(name);
         }
+
         public static void AddProfile(DirectoryInfo dir)
         {
             // Make the color variable smaller
@@ -879,6 +877,7 @@ namespace VentileClient.LauncherUtils
                 Checked = true,
 
                 Tag = info,
+                Cursor = Cursors.Hand,
 
                 Text = info.Name,
                 TextAlign = HorizontalAlignment.Left,
@@ -894,17 +893,21 @@ namespace VentileClient.LauncherUtils
 
             newButton.Click += OnProfileSelect;
 
-            MAIN.packProfilesList.Controls.Add(newButton);
+            MAIN.Invoke(new Action(() =>
+            {
 
-            MAIN.profileIconPictureBox.Tag = info;
-            MAIN.profileNameTextbox.Tag = info;
-            MAIN.saveProfileButton.Tag = info;
-            MAIN.saveProfileButton.Tag = info;
-            MAIN.deleteProfileButton.Tag = info;
+                MAIN.packProfilesList.Controls.Add(newButton);
 
-            MAIN.profileNameLabel.Text = info.Name;
-            MAIN.profileNameTextbox.Text = info.Name;
-            MAIN.profileIconPictureBox.Image = info.Image;
+                MAIN.profileIconPictureBox.Tag = info;
+                MAIN.profileNameTextbox.Tag = info;
+                MAIN.saveProfileButton.Tag = info;
+                MAIN.saveProfileButton.Tag = info;
+                MAIN.deleteProfileButton.Tag = info;
+
+                MAIN.profileNameLabel.Text = info.Name;
+                MAIN.profileNameTextbox.Text = info.Name;
+                MAIN.profileIconPictureBox.Image = info.Image;
+            }));
         }
 
         public static void GetProfiles()
@@ -920,9 +923,7 @@ namespace VentileClient.LauncherUtils
             DirectoryInfo dirs = new DirectoryInfo(@"C:\temp\VentileClient\Profiles");
 
             foreach (DirectoryInfo dir in dirs.GetDirectories())
-            {
                 AddProfile(dir);
-            }
 
             foreach (Control profileBtn in MAIN.packProfilesList.Controls)
             {
@@ -964,6 +965,7 @@ namespace VentileClient.LauncherUtils
         {
             Guna2Button sender = (Guna2Button)s;
 
+
             if (!sender.Checked) // Profile was de-selected
             {
                 MAIN.deleteProfileButton.Enabled = false;
@@ -982,17 +984,16 @@ namespace VentileClient.LauncherUtils
             }
 
             // Profile was selected
+            ProfileInfo info = (ProfileInfo)sender.Tag;
 
-            MAIN.deleteProfileButton.Enabled = true;
-            MAIN.loadProfileButton.Enabled = true;
+            MAIN.deleteProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
+            MAIN.loadProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
 
             foreach (Control profileBtn in MAIN.packProfilesList.Controls)
             {
                 if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
                     ((Guna2Button)profileBtn).Checked = false;
             }
-
-            ProfileInfo info = (ProfileInfo)sender.Tag;
 
             MAIN.profileIconPictureBox.Tag = info;
             MAIN.profileNameTextbox.Tag = info;

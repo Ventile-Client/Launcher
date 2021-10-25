@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Management.Automation;
 using System.Threading.Tasks;
+using VentileClient.LauncherUtils;
 using Windows.Management.Core;
 
 namespace VentileClient.Utils
@@ -16,7 +17,6 @@ namespace VentileClient.Utils
 
         public static async Task SaveProfile(string ProfileName)
         {
-            if (!Directory.Exists(MAIN.minecraftResourcePacks)) return;
             if (MAIN.savingProfile.Contains(ProfileName))
             {
                 Notif.Toast("Profile Manager", "Already Saving Data to profile: " + ProfileName);
@@ -24,7 +24,7 @@ namespace VentileClient.Utils
                 return;
             }
 
-            string sourceDirName = Path.Combine(MAIN.minecraftResourcePacks, "..");
+            string sourceDirName = Path.Combine(MAIN.gamesFolder, "com.mojang");
             string destDirName = @"C:\temp\VentileClient\Profiles\" + ProfileName;
 
             if (!Directory.Exists(sourceDirName))
@@ -40,8 +40,10 @@ namespace VentileClient.Utils
                 return;
             }
 
+            Notif.Toast("Profile Manager", "Saving Data to Profile: " + ProfileName);
             MAIN.vLogger.Log("Saving current Minecraft data to profile: " + ProfileName);
             MAIN.savingProfile.Add(ProfileName);
+
 
             try
             {
@@ -53,16 +55,21 @@ namespace VentileClient.Utils
                     Directory.CreateDirectory(destDirName);
 
                     FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+                    File.Delete(Path.Combine(destDirName, "profileLogo.png"));
+                    DataManager.AddProfile(new DirectoryInfo(destDirName));
 
-                    Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
-                    MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
-                    MAIN.savingProfile.Remove(ProfileName);
                 });
+
+                Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
+                MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
             }
             catch (Exception err)
             {
                 Notif.Toast("Profile Manager", $"Sorry, there was an error saving to profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log(err);
+            }
+            finally
+            {
                 MAIN.savingProfile.Remove(ProfileName);
             }
         }
@@ -75,11 +82,12 @@ namespace VentileClient.Utils
                 MAIN.vLogger.Log("Already Deleting profile: " + ProfileName);
                 return;
             }
+
             MAIN.vLogger.Log("Deleting profile: " + ProfileName);
             MAIN.savingProfile.Add(ProfileName);
 
-            string shortcutPath = Path.Combine(MAIN.minecraftResourcePacks, @"..\..");
-            string profilePath = $@"C:\temp\VentileClient\Versions\Profiles\{ProfileName}";
+            string shortcutPath = Path.Combine(MAIN.gamesFolder);
+            string profilePath = $@"C:\temp\VentileClient\Profiles\{ProfileName}";
 
             if (!Directory.Exists(profilePath))
             {
@@ -92,12 +100,13 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
+                    //Shortcuts.DeleteHard(shortcutPath, "com.mojang");
                     Directory.Delete(profilePath, true);
-                    Shortcuts.DeleteHard(shortcutPath, "com.mojang");
-
-                    Notif.Toast("Profile Manager", $"Deleted Profile: \"{ProfileName}\"");
-                    MAIN.vLogger.Log($"Deleted Profile: {ProfileName}");
                 });
+                DataManager.RemoveProfile(ProfileName);
+
+                Notif.Toast("Profile Manager", $"Deleted Profile: \"{ProfileName}\"");
+                MAIN.vLogger.Log($"Deleted Profile: {ProfileName}");
             }
             catch (Exception err)
             {
@@ -107,7 +116,6 @@ namespace VentileClient.Utils
             finally
             {
                 MAIN.savingProfile.Remove(ProfileName);
-
             }
         }
 
@@ -119,12 +127,14 @@ namespace VentileClient.Utils
                 MAIN.vLogger.Log("Already Importing!");
                 return;
             }
+
             MAIN.vLogger.Log("Starting importing Minecraft data!");
             MAIN.configCS.DefaultProfile = ProfileName;
             MAIN.importing = true;
 
-            string shortcutPath = Path.Combine(MAIN.minecraftResourcePacks, @"..\..");
-            string gotoPath = $@"C:\temp\VentileClient\Versions\Profiles\{ProfileName}";
+
+            string shortcutPath = MAIN.gamesFolder;
+            string gotoPath = $@"C:\temp\VentileClient\Profiles\{ProfileName}";
 
             if (!Directory.Exists(gotoPath))
             {
@@ -137,17 +147,15 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
-                    Shortcuts.UpdateHard(gotoPath, shortcutPath, "com.mojang");
-
-                    Notif.Toast("Profile Manager", $"Loaded Profile: \"{ProfileName}\"");
-                    MAIN.vLogger.Log("Imported Minecraft data!");
+                    Shortcuts.CreateHard(gotoPath, shortcutPath, "com.mojang");
                 });
+                Notif.Toast("Profile Manager", $"Loaded Profile: \"{ProfileName}\"");
+                MAIN.vLogger.Log("Imported Minecraft data!");
             }
             catch (Exception err)
             {
                 Notif.Toast("Profile Manager", $"Sorry, there was an error loading profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log(err);
-
             }
             finally
             {

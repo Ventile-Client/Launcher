@@ -9,7 +9,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.Classes;
@@ -99,18 +98,26 @@ namespace VentileClient
         public static MainWindow INSTANCE;
         public MainWindow()
         {
+            INSTANCE = this;
+
             //Only allow app to open once is in Program.cs
 
+            // Check for internet
+            internet = InternetManager.InternetCheck();
+
             //Get Link settings
-            DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.json");
-            string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.json");
-            LinkSettings tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
-            link_settings.discordInvite = tmpSettings.discordInvite;
-            link_settings.websiteLink = tmpSettings.websiteLink;
-            link_settings.repoOwner = tmpSettings.repoOwner;
-            link_settings.versionsRepo = tmpSettings.versionsRepo;
-            link_settings.downloadRepo = tmpSettings.downloadRepo;
-            File.Delete(@"C:\temp\VentileClient\link_settings.json");
+            if (internet)
+            {
+                DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.json");
+                string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.json");
+                LinkSettings tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
+                link_settings.discordInvite = tmpSettings.discordInvite;
+                link_settings.websiteLink = tmpSettings.websiteLink;
+                link_settings.repoOwner = tmpSettings.repoOwner;
+                link_settings.versionsRepo = tmpSettings.versionsRepo;
+                link_settings.downloadRepo = tmpSettings.downloadRepo;
+                File.Delete(@"C:\temp\VentileClient\link_settings.json");
+            }
 
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
 
@@ -119,7 +126,6 @@ namespace VentileClient
 
             InitializeComponent();
 
-            INSTANCE = this;
 
             // Round the form window
             this.FormBorderStyle = FormBorderStyle.None;
@@ -131,8 +137,6 @@ namespace VentileClient
             // Set the version's text
             version.Text = $"{(ventile_settings.isBeta ? "Beta " : "")}{ventile_settings.launcherVersion}";
 
-            // Check for internet
-            internet = InternetManager.InternetCheck();
 
             // Check for update
             if (!internet)
@@ -152,6 +156,7 @@ namespace VentileClient
         public bool internet;
 
         public string minecraftResourcePacks = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\resource_packs");
+        public string gamesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\");
         private ChangelogPrompt _currentChangelog;
         private HelpPrompt _currentHelp;
 
@@ -162,10 +167,8 @@ namespace VentileClient
         {
             ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
 
-            if (!Directory.Exists(minecraftResourcePacks))
-            {
-                Notif.Toast("Resource Pack", "I couldn't find your resource packs, maybe start minecraft?");
-            }
+            if (!Directory.Exists(Path.Combine(gamesFolder, "com.mojang")))
+                Notif.Toast("MC Data", "I couldn't find your com.mojang, maybe start minecraft?");
 
             ConfigManager.ReadCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
             ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
@@ -360,6 +363,7 @@ namespace VentileClient
 
             if (!internet) contentView.SelectedTab = versionsTab;
             else contentView.SelectedTab = cosmeticsTab;
+
             this.Refresh();
 
             RPC.ChangeState("Choosing Cosmetics...");
@@ -2406,8 +2410,8 @@ namespace VentileClient
 
         private async void saveProfileButton_Click(object s, EventArgs e)
         {
-            if (profileNameTextbox.Text == string.Empty || profileNameTextbox.Text == null) return;
-            //await MCDataManager.SaveProfile(profileNameTextbox.Text);
+            string profileName = profileNameTextbox.Text.Trim();
+            if (profileName == string.Empty || profileName == null) return;
             Guna2Button sender = (Guna2Button)s;
             ProfileInfo info = sender.Tag as ProfileInfo; // Gets information about the selected profile | If null, it means wants to create a new profile
 
@@ -2415,35 +2419,54 @@ namespace VentileClient
             {
                 deleteProfileButton.Enabled = true;
                 loadProfileButton.Enabled = true;
-                Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles\" + profileNameTextbox.Text);
-                DataManager.AddProfile(new DirectoryInfo(@"C:\temp\VentileClient\Profiles\" + profileNameTextbox.Text));
-            } else // Update existing profile
+                await MCDataManager.SaveProfile(profileName);
+            }
+            else // Update existing profile
             {
-                DataManager.UpdateProfile(info.Name, NewName: profileNameTextbox.Text);
+                DataManager.UpdateProfile(info.Name, NewName: profileName);
             }
         }
 
-        private void deleteProfileButton_Click(object s, EventArgs e)
+        private async void deleteProfileButton_Click(object s, EventArgs e)
         {
             Guna2Button sender = (Guna2Button)s;
 
             deleteProfileButton.Enabled = false;
             loadProfileButton.Enabled = false;
 
-            DataManager.RemoveProfile(((ProfileInfo)sender.Tag).Name);
+            ProfileInfo info = sender.Tag as ProfileInfo;
+
+            await MCDataManager.DeleteProfile(info.Name);
         }
 
-        private void loadProfileButton_Click(object sender, EventArgs e)
+        private async void loadProfileButton_Click(object sender, EventArgs e)
         {
-
+            await MCDataManager.ImportProfile(profileNameTextbox.Text);
         }
 
-        private void profileIconPictureBox_Click(object s, EventArgs e)
+        private void profileIconPictureBox_MouseClick(object s, MouseEventArgs e)
         {
-            Guna2PictureBox sender = (Guna2PictureBox)s; 
+
+            Guna2PictureBox sender = (Guna2PictureBox)s;
             ProfileInfo info = (ProfileInfo)sender.Tag;
 
             if (info == null) return;
+
+            if (e.Button == MouseButtons.Right)
+            {
+
+                info.Image = new Bitmap(Properties.Resources.GrassBlock);
+
+                using (Bitmap btmp = (Bitmap)info.Image.Clone())
+                {
+                    btmp.Save(Path.Combine(info.FullDirPath, "profileLogo.png"), ImageFormat.Png);
+                }
+
+
+                DataManager.UpdateProfile(info.Name, info.Image);
+                return;
+
+            }
 
             var customImg = new OpenFileDialog()
             {
@@ -2503,6 +2526,8 @@ namespace VentileClient
                 if (size.Width > ctrlInf.Width - (ctrlInf.ImageSize.Width + (ctrlInf.Margin.Right * 3)) && e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Delete && !Char.IsControl(e.KeyChar)) e.Handled = true;
             }
         }
+
+
     }
 
     #region Small Classes

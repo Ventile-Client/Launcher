@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
 using VentileClient.LauncherUtils;
@@ -49,10 +50,11 @@ namespace VentileClient.Utils
 
         public static async void ReCheckInternet()
         {
-            bool internet = InternetGetConnectedState(out int _, 0); ;
-            PREVIOUS_INTERNET_STATE.Add(internet);
+            MAIN.internet = InternetGetConnectedState(out int _, 0);
+
+            PREVIOUS_INTERNET_STATE.Add(MAIN.internet);
             PREVIOUS_INTERNET_STATE.RemoveAt(PREVIOUS_INTERNET_STATE.Count - 3);
-            if (internet && !PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
+            if (MAIN.internet && !PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
             {
                 if (MAIN.cosmeticsButton.Checked) MAIN.contentView.SelectedTab = MAIN.cosmeticsTab;
 
@@ -61,7 +63,7 @@ namespace VentileClient.Utils
                 await DataManager.GetMCVersions(false);
                 DataManager.Version(true);
             }
-            else if (!internet && PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
+            else if (!MAIN.internet && PREVIOUS_INTERNET_STATE[PREVIOUS_INTERNET_STATE.Count - 2])
             {
                 Notif.Toast("Internet", "You don't have an active wifi connection!");
                 DataManager.Version(false);

@@ -105,6 +105,29 @@ Settings
         > Performance Mode:
             - Enables/Disables animations and transitions
 
+    ~ Pack Profiles
+        > Image: 
+            - Manage the image of the profile
+               + Click: Brings a dialog to choose an image from your computer
+               + Right Click: Resets the image to the default one
+
+        > Load:
+            - Loads the selected profile on the right
+
+        > Delete:
+            - Loads the selected profile on the right
+
+        > Save:
+            - Updates and saves current com.mojang
+                + No Selected Profile On Right: Creates a new profile based on the Profile Name (Textbox) 
+                + Selected Profile On Right: Renames a profile based on the Profile Name (Textbox)
+
+        > Profile Name (Textbox):
+            - Changes the name of the profile selected on the right, or if none selected, creates a new one
+
+        > Profile List:
+            - List of buttons with corresponding names and profile images
+
 About
     - Information about the launcher and the team
 

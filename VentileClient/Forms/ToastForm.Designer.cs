@@ -63,7 +63,7 @@ namespace VentileClient
             this.timer1.Interval = 1;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // Toast
+            // ToastForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -71,10 +71,11 @@ namespace VentileClient
             this.Controls.Add(this.title);
             this.Controls.Add(this.message);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Toast";
+            this.Name = "ToastForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Toast";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Toast_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
