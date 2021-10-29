@@ -8,7 +8,7 @@
         bool _richPresence;
         string _rpcText;
         bool _rpcButton;
-        string _rpcButtonText;
+        string _RPCButtonLinkTextbox;
         string _rpcButtonLink;
         bool _customDLL;
         string _defaultDLL;
@@ -88,14 +88,14 @@
         {
             get
             {
-                if (string.IsNullOrEmpty(_rpcButtonText))
-                    _rpcButtonText = "Hide";
+                if (string.IsNullOrEmpty(_RPCButtonLinkTextbox))
+                    _RPCButtonLinkTextbox = "Hide";
 
-                return _rpcButtonText;
+                return _RPCButtonLinkTextbox;
             }
             set
             {
-                _rpcButtonText = value;
+                _RPCButtonLinkTextbox = value;
             }
         }
         public string RpcButtonLink

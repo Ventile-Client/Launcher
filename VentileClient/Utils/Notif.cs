@@ -14,12 +14,14 @@ namespace VentileClient.Utils
         {
             var toast = new ToastForm();
             toast.ShowToast(Title, Message, Config, MainWindow.INSTANCE.themeCS);
+
         }
 
         public static void Toast(string Title, string Message, ConfigTemplate Config, ThemeTemplate Theme)
         {
             var toast = new ToastForm();
             toast.ShowToast(Title, Message, Config, Theme);
+
         }
     }
 }

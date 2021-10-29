@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Management.Automation;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using VentileClient.LauncherUtils;
 using Windows.Management.Core;
 
@@ -15,8 +16,11 @@ namespace VentileClient.Utils
         static string MINECRAFT_NAME = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
 
-        public static async Task SaveProfile(string ProfileName)
+        public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool ignorePopup = false)
         {
+
+            Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
+
             if (MAIN.savingProfile.Contains(ProfileName))
             {
                 Notif.Toast("Profile Manager", "Already Saving Data to profile: " + ProfileName);
@@ -26,6 +30,36 @@ namespace VentileClient.Utils
 
             string sourceDirName = Path.Combine(MAIN.gamesFolder, "com.mojang");
             string destDirName = @"C:\temp\VentileClient\Profiles\" + ProfileName;
+
+            if (Directory.Exists(destDirName) && isOverwrite)
+            {
+                MAIN.vLogger.Log("Directory existed: " + sourceDirName);
+                DialogResult result = DialogResult.Yes;
+                if (!ignorePopup)
+                    result = MessageBox.Show("Are you sure you want to overwrite the profile: \"" + ProfileName + "\"?", "Overwrite " + ProfileName, MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        MAIN.vLogger.Log("Overwriting profile: " + ProfileName);
+
+                        Directory.Delete(destDirName, true);
+
+                        Directory.CreateDirectory(destDirName);
+
+                        FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+
+                        if (File.Exists(Path.Combine(destDirName, "profileLogo.png")))
+                            File.Delete(Path.Combine(destDirName, "profileLogo.png"));
+
+                        DataManager.UpdateProfile(ProfileName, NewImage: Properties.Resources.GrassBlock);
+                    });
+                } else
+                {
+                    MAIN.vLogger.Log("Canceled Overwrite for profile: " + ProfileName);
+                }
+                return;
+            }
 
             if (!Directory.Exists(sourceDirName))
             {
@@ -49,15 +83,14 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
-                    if (Directory.Exists(destDirName))
-                        Directory.Delete(destDirName, true);
-
                     Directory.CreateDirectory(destDirName);
 
                     FileSystem.CopyDirectory(sourceDirName, destDirName, true);
-                    File.Delete(Path.Combine(destDirName, "profileLogo.png"));
-                    DataManager.AddProfile(new DirectoryInfo(destDirName));
 
+                    if (File.Exists(Path.Combine(destDirName, "profileLogo.png")))
+                        File.Delete(Path.Combine(destDirName, "profileLogo.png"));
+
+                    DataManager.AddProfile(new DirectoryInfo(destDirName));
                 });
 
                 Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");

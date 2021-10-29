@@ -84,14 +84,12 @@ namespace VentileClient
             this.settingsTabLabel = new System.Windows.Forms.Label();
             this.settingsPagesTabControl = new Guna.UI2.WinForms.Guna2TabControl();
             this.Launcher = new System.Windows.Forms.TabPage();
+            this.RPCTextbox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.RPCButtonLinkTextbox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.RPCButtonTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             this.injectDelayLabel = new System.Windows.Forms.Label();
             this.injectDelay = new Guna.UI2.WinForms.Guna2NumericUpDown();
-            this.rpcButtonTextLabel = new System.Windows.Forms.Label();
-            this.rpcLine = new System.Windows.Forms.MaskedTextBox();
             this.buttonForRpc = new Guna.UI2.WinForms.Guna2Button();
-            this.rpcButtonLinkLabel = new System.Windows.Forms.Label();
-            this.rpcButtonText = new System.Windows.Forms.MaskedTextBox();
-            this.rpcButtonLink = new System.Windows.Forms.MaskedTextBox();
             this.windowStateLabel = new System.Windows.Forms.Label();
             this.hideWindow = new Guna.UI2.WinForms.Guna2Button();
             this.minWindow = new Guna.UI2.WinForms.Guna2Button();
@@ -265,8 +263,9 @@ namespace VentileClient
             this.minimizeButton.ShadowDecoration.Parent = this.minimizeButton;
             this.minimizeButton.Size = new System.Drawing.Size(35, 38);
             this.minimizeButton.TabIndex = 1;
+            this.minimizeButton.TabStop = false;
             this.minimizeButton.Text = "-";
-            this.minimizeButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.minimizeButton.TextFormatNoPrefix = true;
             this.minimizeButton.UseTransparentBackground = true;
             this.minimizeButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.minimizeButton_MouseClick);
             // 
@@ -292,6 +291,7 @@ namespace VentileClient
             this.closeButton.ShadowDecoration.Parent = this.closeButton;
             this.closeButton.Size = new System.Drawing.Size(35, 35);
             this.closeButton.TabIndex = 0;
+            this.closeButton.TabStop = false;
             this.closeButton.Text = "X";
             this.closeButton.UseTransparentBackground = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
@@ -372,6 +372,7 @@ namespace VentileClient
             // 
             this.homeButton.Animated = true;
             this.homeButton.BackColor = System.Drawing.Color.Transparent;
+            this.homeButton.Checked = true;
             this.homeButton.CheckedState.Parent = this.homeButton;
             this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.homeButton.CustomImages.Parent = this.homeButton;
@@ -1400,14 +1401,12 @@ namespace VentileClient
             // Launcher
             // 
             this.Launcher.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Launcher.Controls.Add(this.RPCTextbox);
+            this.Launcher.Controls.Add(this.RPCButtonLinkTextbox);
+            this.Launcher.Controls.Add(this.RPCButtonTextbox);
             this.Launcher.Controls.Add(this.injectDelayLabel);
             this.Launcher.Controls.Add(this.injectDelay);
-            this.Launcher.Controls.Add(this.rpcButtonTextLabel);
-            this.Launcher.Controls.Add(this.rpcLine);
             this.Launcher.Controls.Add(this.buttonForRpc);
-            this.Launcher.Controls.Add(this.rpcButtonLinkLabel);
-            this.Launcher.Controls.Add(this.rpcButtonText);
-            this.Launcher.Controls.Add(this.rpcButtonLink);
             this.Launcher.Controls.Add(this.windowStateLabel);
             this.Launcher.Controls.Add(this.hideWindow);
             this.Launcher.Controls.Add(this.minWindow);
@@ -1429,6 +1428,95 @@ namespace VentileClient
             this.Launcher.Size = new System.Drawing.Size(635, 374);
             this.Launcher.TabIndex = 0;
             this.Launcher.Text = "Launcher";
+            // 
+            // RPCTextbox
+            // 
+            this.RPCTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.RPCTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.RPCTextbox.BorderThickness = 2;
+            this.RPCTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.RPCTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.RPCTextbox.DefaultText = "";
+            this.RPCTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.RPCTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.RPCTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCTextbox.DisabledState.Parent = this.RPCTextbox;
+            this.RPCTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RPCTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCTextbox.FocusedState.Parent = this.RPCTextbox;
+            this.RPCTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.RPCTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCTextbox.HoverState.Parent = this.RPCTextbox;
+            this.RPCTextbox.Location = new System.Drawing.Point(247, 104);
+            this.RPCTextbox.MaxLength = 32;
+            this.RPCTextbox.Name = "RPCTextbox";
+            this.RPCTextbox.PasswordChar = '\0';
+            this.RPCTextbox.PlaceholderText = "RPC Text";
+            this.RPCTextbox.SelectedText = "";
+            this.RPCTextbox.ShadowDecoration.Parent = this.RPCTextbox;
+            this.RPCTextbox.Size = new System.Drawing.Size(136, 25);
+            this.RPCTextbox.TabIndex = 104;
+            this.RPCTextbox.TextChanged += new System.EventHandler(this.RPCTextbox_TextChanged);
+            // 
+            // RPCButtonLinkTextbox
+            // 
+            this.RPCButtonLinkTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.RPCButtonLinkTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.RPCButtonLinkTextbox.BorderThickness = 2;
+            this.RPCButtonLinkTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.RPCButtonLinkTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.RPCButtonLinkTextbox.DefaultText = "";
+            this.RPCButtonLinkTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.RPCButtonLinkTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.RPCButtonLinkTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCButtonLinkTextbox.DisabledState.Parent = this.RPCButtonLinkTextbox;
+            this.RPCButtonLinkTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCButtonLinkTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RPCButtonLinkTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCButtonLinkTextbox.FocusedState.Parent = this.RPCButtonLinkTextbox;
+            this.RPCButtonLinkTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.RPCButtonLinkTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCButtonLinkTextbox.HoverState.Parent = this.RPCButtonLinkTextbox;
+            this.RPCButtonLinkTextbox.Location = new System.Drawing.Point(247, 193);
+            this.RPCButtonLinkTextbox.Name = "RPCButtonLinkTextbox";
+            this.RPCButtonLinkTextbox.PasswordChar = '\0';
+            this.RPCButtonLinkTextbox.PlaceholderText = "Button Link";
+            this.RPCButtonLinkTextbox.SelectedText = "";
+            this.RPCButtonLinkTextbox.ShadowDecoration.Parent = this.RPCButtonLinkTextbox;
+            this.RPCButtonLinkTextbox.Size = new System.Drawing.Size(136, 25);
+            this.RPCButtonLinkTextbox.TabIndex = 103;
+            this.RPCButtonLinkTextbox.TextChanged += new System.EventHandler(this.RPCButtonLinkTextbox_TextChanged);
+            // 
+            // RPCButtonTextbox
+            // 
+            this.RPCButtonTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.RPCButtonTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.RPCButtonTextbox.BorderThickness = 2;
+            this.RPCButtonTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.RPCButtonTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.RPCButtonTextbox.DefaultText = "";
+            this.RPCButtonTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.RPCButtonTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.RPCButtonTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCButtonTextbox.DisabledState.Parent = this.RPCButtonTextbox;
+            this.RPCButtonTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.RPCButtonTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RPCButtonTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCButtonTextbox.FocusedState.Parent = this.RPCButtonTextbox;
+            this.RPCButtonTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.RPCButtonTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.RPCButtonTextbox.HoverState.Parent = this.RPCButtonTextbox;
+            this.RPCButtonTextbox.Location = new System.Drawing.Point(247, 164);
+            this.RPCButtonTextbox.MaxLength = 32;
+            this.RPCButtonTextbox.Name = "RPCButtonTextbox";
+            this.RPCButtonTextbox.PasswordChar = '\0';
+            this.RPCButtonTextbox.PlaceholderText = "Button Text";
+            this.RPCButtonTextbox.SelectedText = "";
+            this.RPCButtonTextbox.ShadowDecoration.Parent = this.RPCButtonTextbox;
+            this.RPCButtonTextbox.Size = new System.Drawing.Size(136, 25);
+            this.RPCButtonTextbox.TabIndex = 102;
+            this.RPCButtonTextbox.TextChanged += new System.EventHandler(this.RPCButtonTextbox_TextChanged);
             // 
             // injectDelayLabel
             // 
@@ -1476,31 +1564,6 @@ namespace VentileClient
             0});
             this.injectDelay.ValueChanged += new System.EventHandler(this.injectDelay_ValueChanged);
             // 
-            // rpcButtonTextLabel
-            // 
-            this.rpcButtonTextLabel.AutoSize = true;
-            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonTextLabel, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.rpcButtonTextLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rpcButtonTextLabel.ForeColor = System.Drawing.Color.White;
-            this.rpcButtonTextLabel.Location = new System.Drawing.Point(241, 152);
-            this.rpcButtonTextLabel.Name = "rpcButtonTextLabel";
-            this.rpcButtonTextLabel.Size = new System.Drawing.Size(37, 20);
-            this.rpcButtonTextLabel.TabIndex = 98;
-            this.rpcButtonTextLabel.Text = "Text";
-            // 
-            // rpcLine
-            // 
-            this.rpcLine.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FadeEffectBetweenPages.SetDecoration(this.rpcLine, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.rpcLine.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rpcLine.HidePromptOnLeave = true;
-            this.rpcLine.Location = new System.Drawing.Point(245, 103);
-            this.rpcLine.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.rpcLine.Name = "rpcLine";
-            this.rpcLine.Size = new System.Drawing.Size(143, 18);
-            this.rpcLine.TabIndex = 80;
-            this.rpcLine.TextChanged += new System.EventHandler(this.rpcLine_TextChanged);
-            // 
             // buttonForRpc
             // 
             this.buttonForRpc.Animated = true;
@@ -1516,7 +1579,7 @@ namespace VentileClient
             this.buttonForRpc.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.buttonForRpc.ForeColor = System.Drawing.Color.White;
             this.buttonForRpc.HoverState.Parent = this.buttonForRpc;
-            this.buttonForRpc.Location = new System.Drawing.Point(268, 127);
+            this.buttonForRpc.Location = new System.Drawing.Point(268, 137);
             this.buttonForRpc.Name = "buttonForRpc";
             this.buttonForRpc.ShadowDecoration.Parent = this.buttonForRpc;
             this.buttonForRpc.Size = new System.Drawing.Size(98, 19);
@@ -1525,44 +1588,6 @@ namespace VentileClient
             this.buttonForRpc.Text = "Button";
             this.buttonForRpc.UseTransparentBackground = true;
             this.buttonForRpc.Click += new System.EventHandler(this.buttonForRpc_Click);
-            // 
-            // rpcButtonLinkLabel
-            // 
-            this.rpcButtonLinkLabel.AutoSize = true;
-            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLinkLabel, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.rpcButtonLinkLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rpcButtonLinkLabel.ForeColor = System.Drawing.Color.White;
-            this.rpcButtonLinkLabel.Location = new System.Drawing.Point(241, 176);
-            this.rpcButtonLinkLabel.Name = "rpcButtonLinkLabel";
-            this.rpcButtonLinkLabel.Size = new System.Drawing.Size(37, 20);
-            this.rpcButtonLinkLabel.TabIndex = 97;
-            this.rpcButtonLinkLabel.Text = "Link";
-            // 
-            // rpcButtonText
-            // 
-            this.rpcButtonText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonText, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.rpcButtonText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rpcButtonText.HidePromptOnLeave = true;
-            this.rpcButtonText.Location = new System.Drawing.Point(285, 152);
-            this.rpcButtonText.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.rpcButtonText.Name = "rpcButtonText";
-            this.rpcButtonText.Size = new System.Drawing.Size(103, 18);
-            this.rpcButtonText.TabIndex = 81;
-            this.rpcButtonText.TextChanged += new System.EventHandler(this.rpcButtonText_TextChanged);
-            // 
-            // rpcButtonLink
-            // 
-            this.rpcButtonLink.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FadeEffectBetweenPages.SetDecoration(this.rpcButtonLink, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.rpcButtonLink.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rpcButtonLink.HidePromptOnLeave = true;
-            this.rpcButtonLink.Location = new System.Drawing.Point(285, 176);
-            this.rpcButtonLink.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.rpcButtonLink.Name = "rpcButtonLink";
-            this.rpcButtonLink.Size = new System.Drawing.Size(103, 18);
-            this.rpcButtonLink.TabIndex = 82;
-            this.rpcButtonLink.TextChanged += new System.EventHandler(this.rpcButtonLink_TextChanged);
             // 
             // windowStateLabel
             // 
@@ -3550,12 +3575,7 @@ namespace VentileClient
         public System.Windows.Forms.Label themeTitle;
         public System.Windows.Forms.Label foreColorLabel;
         public System.Windows.Forms.Label buttonColorLabel;
-        public System.Windows.Forms.Label rpcButtonTextLabel;
-        public System.Windows.Forms.MaskedTextBox rpcLine;
         public Guna.UI2.WinForms.Guna2Button buttonForRpc;
-        public System.Windows.Forms.Label rpcButtonLinkLabel;
-        public System.Windows.Forms.MaskedTextBox rpcButtonText;
-        public System.Windows.Forms.MaskedTextBox rpcButtonLink;
         public System.Windows.Forms.Label windowStateLabel;
         public Guna.UI2.WinForms.Guna2Button hideWindow;
         public Guna.UI2.WinForms.Guna2Button minWindow;
@@ -3619,6 +3639,9 @@ namespace VentileClient
         public Guna.UI2.WinForms.Guna2PictureBox profileIconPictureBox;
         public System.Windows.Forms.FlowLayoutPanel packProfilesList;
         public System.Windows.Forms.Label profileListLabel;
+        public Guna.UI2.WinForms.Guna2TextBox RPCTextbox;
+        public Guna.UI2.WinForms.Guna2TextBox RPCButtonLinkTextbox;
+        public Guna.UI2.WinForms.Guna2TextBox RPCButtonTextbox;
     }
 }
 

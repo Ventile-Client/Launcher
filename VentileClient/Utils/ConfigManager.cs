@@ -11,30 +11,6 @@ namespace VentileClient.Utils
         static MainWindow MAIN = MainWindow.INSTANCE;
 
         // Configs
-        private static void SetDefaultConfig()
-        {
-            MAIN.configCS = new ConfigTemplate()
-            {
-                WindowState = "hide",
-                AutoInject = true,
-                RichPresence = true,
-                RpcText = "No Rich Presence",
-                RpcButton = false,
-                RpcButtonText = "No Button Text",
-                RpcButtonLink = "https://none",
-                CustomDLL = true,
-                DefaultDLL = null,
-                Persona = true,
-                PersonaLoc = null,
-                InjectDelay = 0,
-                Toasts = true,
-                ToastsLoc = "topRight",
-                RoundedButtons = true,
-                BackgroundImage = false,
-                BackgroundImageLoc = null,
-                DefaultProfile = "Default"
-            };
-        }
 
         public static void ReadConfig(string path)
         {
@@ -42,7 +18,8 @@ namespace VentileClient.Utils
             {
                 if (!File.Exists(path))
                 {
-                    SetDefaultConfig();
+                    MAIN.configCS = new ConfigTemplate();
+
                     WriteConfig(path);
                     return;
                 }
@@ -65,7 +42,7 @@ namespace VentileClient.Utils
                 {
                     ConfigTemplate temp = MAIN.configCS;
 
-                    if (temp == null) SetDefaultConfig();
+                    if (temp == null) MAIN.configCS = new ConfigTemplate();
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);
@@ -81,19 +58,6 @@ namespace VentileClient.Utils
 
 
         // Themes
-        private static void SetDefaultTheme()
-        {
-            MAIN.themeCS = new ThemeTemplate()
-            {
-                Theme = "dark",
-                Background = "#141414",
-                SecondBackground = "#282828",
-                Foreground = "#FFFFFF",
-                Accent = "#4169FF",
-                Outline = "#050505",
-                Faded = "#C0C0C0"
-            };
-        }
 
         public static void ReadTheme(string path)
         {
@@ -101,7 +65,7 @@ namespace VentileClient.Utils
             {
                 if (!File.Exists(path))
                 {
-                    SetDefaultTheme();
+                    MAIN.themeCS = new ThemeTemplate();
                     WriteTheme(path);
                     return;
                 }
@@ -124,7 +88,8 @@ namespace VentileClient.Utils
                 {
                     ThemeTemplate temp = MAIN.themeCS;
 
-                    if (temp == null) SetDefaultTheme();
+                    if (temp == null)
+                        MAIN.themeCS = new ThemeTemplate();
 
                     string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                     File.WriteAllText(path, json);

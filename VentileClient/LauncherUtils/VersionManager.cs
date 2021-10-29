@@ -22,7 +22,7 @@ namespace VentileClient.LauncherUtils
             {
                 try
                 {
-                    await MCDataManager.SaveProfile("Default");
+                    await MCDataManager.SaveProfile("Default", true, true);
                     if ((await MCDataManager.MCInstallLoc()).StartsWith(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP")) //Means mc was installed from microsoft store
                     {
                         await UninstallMC();
@@ -34,9 +34,9 @@ namespace VentileClient.LauncherUtils
                         PowerShell.Create()
                             .AddScript($"Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"{manifestPath}\"")
                             .Invoke();
-                        Notif.Toast("Version Manager", $"Switched To Version: {version}");
                         MAIN.vLogger.Log($"Registered Package: {gameDir}");
                         await MCDataManager.RestoreMCData();
+                        Notif.Toast("Version Manager", $"Switched To Version: {version}");
                         MAIN.allowSelectVersion--;
                         MAIN.allowClose--;
                         sndr.Invoke(new Action(() =>

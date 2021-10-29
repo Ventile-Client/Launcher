@@ -2,12 +2,14 @@
 using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.Classes;
+using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
@@ -332,7 +334,6 @@ namespace VentileClient.LauncherUtils
                 noGithub.BringToFront();
 
                 MAIN.versionsTab.Controls.Add(MAIN.versionsPanel);
-                MAIN.contentView.SelectedTab = MAIN.versionsTab;
                 return;
             }
 
@@ -384,13 +385,13 @@ namespace VentileClient.LauncherUtils
                     ProgressColor2 = Color.FromArgb
                     (
                     accentColor.R - MAIN.progressBarGradientOffset > 0 ? accentColor.R - MAIN.progressBarGradientOffset :
-                    accentColor.R + MAIN.progressBarGradientOffset < 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
+                    accentColor.R + MAIN.progressBarGradientOffset <= 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
 
                     accentColor.R - MAIN.progressBarGradientOffset > 0 ? accentColor.R - MAIN.progressBarGradientOffset :
-                    accentColor.R + MAIN.progressBarGradientOffset < 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
+                    accentColor.R + MAIN.progressBarGradientOffset <= 255 ? accentColor.R + MAIN.progressBarGradientOffset : accentColor.R,
 
                     accentColor.B - MAIN.progressBarGradientOffset > 0 ? accentColor.B - MAIN.progressBarGradientOffset :
-                    accentColor.B + MAIN.progressBarGradientOffset < 255 ? accentColor.B + MAIN.progressBarGradientOffset : accentColor.B
+                    accentColor.B + MAIN.progressBarGradientOffset <= 255 ? accentColor.B + MAIN.progressBarGradientOffset : accentColor.B
                     ),
 
                     Location = new Point(versionName.Location.X + 15, versionName.Location.Y + SPACING),
@@ -516,35 +517,31 @@ namespace VentileClient.LauncherUtils
             {
                 MAIN.RpcToggle.Checked = true;
                 MAIN.RpcToggle.Text = "On";
-                MAIN.rpcLine.Text = MAIN.configCS.RpcText;
-                MAIN.rpcLine.Visible = true;
+                MAIN.RPCTextbox.Text = MAIN.configCS.RpcText;
+                MAIN.RPCTextbox.Visible = true;
             }
             else
             {
                 MAIN.RpcToggle.Checked = false;
                 MAIN.RpcToggle.Text = "Off";
-                MAIN.rpcLine.Visible = false;
+                MAIN.RPCTextbox.Visible = false;
             }
 
             if (MAIN.configCS.RpcButton)
             {
                 MAIN.buttonForRpc.Checked = true;
                 MAIN.buttonForRpc.Visible = true;
-                MAIN.rpcButtonText.Visible = true;
-                MAIN.rpcButtonLink.Visible = true;
-                MAIN.rpcButtonTextLabel.Visible = true;
-                MAIN.rpcButtonLinkLabel.Visible = true;
+                MAIN.RPCButtonLinkTextbox.Visible = true;
+                MAIN.RPCButtonLinkTextbox.Visible = true;
 
-                MAIN.rpcButtonLink.Text = MAIN.configCS.RpcButtonLink;
-                MAIN.rpcButtonText.Text = MAIN.configCS.RpcButtonText;
+                MAIN.RPCButtonTextbox.Text = MAIN.configCS.RpcButtonText;
+                MAIN.RPCButtonLinkTextbox.Text = MAIN.configCS.RpcButtonLink;
             }
             else
             {
                 MAIN.buttonForRpc.Visible = false;
-                MAIN.rpcButtonText.Visible = false;
-                MAIN.rpcButtonLink.Visible = false;
-                MAIN.rpcButtonTextLabel.Visible = false;
-                MAIN.rpcButtonLinkLabel.Visible = false;
+                MAIN.RPCButtonLinkTextbox.Visible = false;
+                MAIN.RPCButtonLinkTextbox.Visible = false;
             }
 
             //Dev DLL
@@ -583,14 +580,10 @@ namespace VentileClient.LauncherUtils
             }
 
             //Theme
-            if (MAIN.themeCS.Theme == "dark")
-            {
+            if (MAIN.themeCS.Theme == ThemeTemplate.theme.Dark)
                 MAIN.theme.Text = "Dark";
-            }
             else
-            {
                 MAIN.theme.Text = "Light";
-            }
 
             //Background Iamge
             if (MAIN.configCS.BackgroundImage)
@@ -862,7 +855,7 @@ namespace VentileClient.LauncherUtils
                 Animated = true,
                 ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton,
 
-                FillColor = Color.FromArgb(((backColor.R + 10 < 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 < 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 < 255) ? backColor.B + 10 : backColor.B - 10)),
+                FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10)),
                 Font = new Font("Segoe UI", 11.25f, FontStyle.Bold),
 
                 ForeColor = foreColor,
@@ -874,7 +867,6 @@ namespace VentileClient.LauncherUtils
                 Size = new Size(263, 36),
 
                 TabStop = false,
-                Checked = true,
 
                 Tag = info,
                 Cursor = Cursors.Hand,
@@ -895,7 +887,6 @@ namespace VentileClient.LauncherUtils
 
             MAIN.Invoke(new Action(() =>
             {
-
                 MAIN.packProfilesList.Controls.Add(newButton);
 
                 MAIN.profileIconPictureBox.Tag = info;
@@ -912,6 +903,7 @@ namespace VentileClient.LauncherUtils
 
         public static void GetProfiles()
         {
+            Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
             for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
             {
                 if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
@@ -924,12 +916,6 @@ namespace VentileClient.LauncherUtils
 
             foreach (DirectoryInfo dir in dirs.GetDirectories())
                 AddProfile(dir);
-
-            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
-            {
-                if (profileBtn.GetType() == typeof(Guna2Button))
-                    ((Guna2Button)profileBtn).Checked = false;
-            }
 
             MAIN.deleteProfileButton.Enabled = false;
             MAIN.loadProfileButton.Enabled = false;
@@ -965,7 +951,6 @@ namespace VentileClient.LauncherUtils
         {
             Guna2Button sender = (Guna2Button)s;
 
-
             if (!sender.Checked) // Profile was de-selected
             {
                 MAIN.deleteProfileButton.Enabled = false;
@@ -982,6 +967,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.profileIconPictureBox.Image = null;
                 return;
             }
+
 
             // Profile was selected
             ProfileInfo info = (ProfileInfo)sender.Tag;

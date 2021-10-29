@@ -70,7 +70,28 @@ namespace VentileClient
 
         public ConfigTemplate configCS = new ConfigTemplate();
         public CosmeticsTemplate cosmeticsCS = new CosmeticsTemplate();
+
         public ThemeTemplate themeCS = new ThemeTemplate();
+        /*public readonly ThemeTemplate darkTheme = new ThemeTemplate()
+        {
+            Background = ColorTranslator.ToHtml(Color.FromArgb(20, 20, 20)),
+            SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(40, 40, 40)),
+            Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255)),
+            Faded = ColorTranslator.ToHtml(Color.FromArgb(192, 192, 192)),
+            Foreground = ColorTranslator.ToHtml(Color.FromArgb(255, 255, 255)),
+            Outline = ColorTranslator.ToHtml(Color.FromArgb(30, 30, 30))
+        };
+
+        public readonly ThemeTemplate lightTheme = new ThemeTemplate()
+        {
+            Background = ColorTranslator.ToHtml(Color.FromArgb(240, 240, 240)),
+            SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(205, 205, 205)),
+            Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255)),
+            Faded = ColorTranslator.ToHtml(Color.FromArgb(163, 163, 163)),
+            Foreground = ColorTranslator.ToHtml(Color.FromArgb(35, 35, 35)),
+            Outline = ColorTranslator.ToHtml(Color.FromArgb(180, 180, 180))
+        };*/
+
         public PresetColorsTemplate presetCS = new PresetColorsTemplate();
 
         #endregion
@@ -1318,45 +1339,46 @@ namespace VentileClient
         {
             if (_rpcCooldown)
                 return;
+
             if (configCS.RichPresence)
             {
                 RpcToggle.Checked = false;
                 RpcToggle.Text = "Off";
-                rpcLine.Visible = false;
+
+                RPCTextbox.Visible = false;
+
                 buttonForRpc.Visible = false;
-                rpcButtonLink.Visible = false;
-                rpcButtonText.Visible = false;
-                rpcButtonLinkLabel.Visible = false;
-                rpcButtonTextLabel.Visible = false;
+                RPCButtonLinkTextbox.Visible = false;
+                RPCButtonTextbox.Visible = false;
 
                 configCS.RichPresence = false;
 
                 Cooldown(15);
                 RPC.Disable();
-
             }
-            else if (!configCS.RichPresence)
+            else
             {
-
-                configCS.RichPresence = true;
-                RpcToggle.FillColor = ColorTranslator.FromHtml(themeCS.Accent);
+                RpcToggle.Checked = true;
                 RpcToggle.Text = "On";
-                rpcLine.Visible = true;
+
+                RPCTextbox.Text = configCS.RpcText;
+                RPCTextbox.Visible = true;
+
                 buttonForRpc.Visible = true;
 
                 if (configCS.RpcButton)
                 {
-                    rpcButtonLink.Visible = true;
-                    rpcButtonText.Visible = true;
-                    rpcButtonLinkLabel.Visible = true;
-                    rpcButtonTextLabel.Visible = true;
-                    rpcButtonLink.Text = configCS.RpcButtonLink;
-                    rpcButtonText.Text = configCS.RpcButtonText;
+                    RPCButtonTextbox.Visible = true;
+                    RPCButtonLinkTextbox.Visible = true;
+
+                    RPCButtonTextbox.Text = configCS.RpcButtonText;
+                    RPCButtonLinkTextbox.Text = configCS.RpcButtonLink;
                 }
+
+                configCS.RichPresence = true;
 
                 Cooldown(15);
                 RPC.Idling();
-                rpcLine.Text = configCS.RpcText;
             }
         }
 
@@ -1417,23 +1439,23 @@ namespace VentileClient
 
         private void rpcLine_TextChanged(object sender, EventArgs e)
         {
-            configCS.RpcText = rpcLine.Text;
+            configCS.RpcText = RPCTextbox.Text;
         }
 
         private void rpcButtonLink_TextChanged(object sender, EventArgs e)
         {
-            configCS.RpcButtonLink = rpcButtonLink.Text;
+            configCS.RpcButtonLink = RPCButtonLinkTextbox.Text;
         }
 
         private void rpcButtonText_TextChanged(object sender, EventArgs e)
         {
-            configCS.RpcButtonText = rpcButtonText.Text;
+            configCS.RpcButtonText = RPCButtonTextbox.Text;
         }
 
         private async void Cooldown(int sec)
         {
             _rpcCooldown = true;
-            Notif.Toast("Rich Presence", "Your on cooldown for " + sec + "s");
+            Notif.Toast("Rich Presence", "You're on cooldown for " + sec + "s");
             await Task.Delay(sec * 1000);
             _rpcCooldown = false;
             Notif.Toast("Rich Presence", "Cooldown finished");
@@ -1441,27 +1463,25 @@ namespace VentileClient
 
         private void buttonForRpc_Click(object sender, EventArgs e)
         {
-            if (!configCS.RpcButton)
+            if (configCS.RpcButton)
             {
-                rpcButtonLinkLabel.Visible = true;
-                rpcButtonTextLabel.Visible = true;
-                rpcButtonLink.Visible = true;
-                rpcButtonText.Visible = true;
-                buttonForRpc.Checked = true;
+                buttonForRpc.Checked = false;
+                RPCButtonTextbox.Visible = false;
+                RPCButtonLinkTextbox.Visible = false;
 
-                configCS.RpcButton = true;
-                rpcButtonText.Text = configCS.RpcButtonText;
-                rpcButtonLink.Text = configCS.RpcButtonLink;
+                configCS.RpcButton = false;
             }
             else
             {
-                rpcButtonLinkLabel.Visible = false;
-                rpcButtonTextLabel.Visible = false;
-                rpcButtonLink.Visible = false;
-                rpcButtonText.Visible = false;
-                buttonForRpc.Checked = false;
+                RPCButtonTextbox.Text = configCS.RpcButtonText;
+                RPCButtonLinkTextbox.Text = configCS.RpcButtonLink;
 
-                configCS.RpcButton = false;
+                buttonForRpc.Checked = true;
+                RPCButtonTextbox.Visible = true;
+                RPCButtonLinkTextbox.Visible = true;
+
+
+                configCS.RpcButton = true;
             }
         }
 
@@ -1603,18 +1623,16 @@ namespace VentileClient
             if (preset8.BackColor == ColorTranslator.FromHtml(themeCS.SecondBackground))
                 presets[7] = true;
 
-            if (themeCS.Theme == "dark")
+            if (themeCS.Theme == ThemeTemplate.theme.Dark)
             {
-                themeCS.Theme = "light";
+                themeCS.Background = Themes.lightTheme.Background;
+                themeCS.SecondBackground = Themes.lightTheme.SecondBackground;
+                themeCS.Foreground = Themes.lightTheme.Foreground;
+                themeCS.Outline = Themes.lightTheme.Outline;
+                themeCS.Faded = Themes.lightTheme.Faded;
 
-                themeCS.Background = ColorTranslator.ToHtml(Color.FromArgb(240, 240, 240));
-                themeCS.SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(205, 205, 205));
-                //Properties.Colors.Default.accentColor1 = 15;
-                //Properties.Colors.Default.accentColor2 = 105;
-                //Properties.Colors.Default.accentColor3 = 255;
-                themeCS.Foreground = ColorTranslator.ToHtml(Color.FromArgb(0, 0, 0));
-                themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(170, 170, 170));
-                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(123, 123, 123));
+                themeCS.Theme = ThemeTemplate.theme.Light;
+
 
                 logo.Image = Properties.Resources.transparent_logo_black;
 
@@ -1622,18 +1640,15 @@ namespace VentileClient
                 discord.Image = Properties.Resources.transparent_logo_black;
                 website.Image = Properties.Resources.website_black;
             }
-            else if (themeCS.Theme == "light")
+            else if (themeCS.Theme == ThemeTemplate.theme.Light)
             {
-                themeCS.Theme = "dark";
+                themeCS.Background = Themes.darkTheme.Background;
+                themeCS.SecondBackground = Themes.darkTheme.SecondBackground;
+                themeCS.Foreground = Themes.darkTheme.Foreground;
+                themeCS.Outline = Themes.darkTheme.Outline;
+                themeCS.Faded = Themes.darkTheme.Faded;
 
-                themeCS.Background = ColorTranslator.ToHtml(Color.FromArgb(20, 20, 20));
-                themeCS.SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(40, 40, 40));
-                //Properties.Colors.Default.accentColor1 = 15;
-                //Properties.Colors.Default.accentColor2 = 105;
-                //Properties.Colors.Default.accentColor3 = 255;
-                themeCS.Foreground = ColorTranslator.ToHtml(Color.FromArgb(255, 255, 255));
-                themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(5, 5, 5));
-                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(192, 192, 192));
+                themeCS.Theme = ThemeTemplate.theme.Dark;
 
                 logo.Image = Properties.Resources.transparent_logo_white;
 
@@ -1687,15 +1702,16 @@ namespace VentileClient
             if (preset8.BackColor == ColorTranslator.FromHtml(themeCS.SecondBackground))
                 presets[7] = true;
 
-            if (themeCS.Theme == "light")
+            if (themeCS.Theme == ThemeTemplate.theme.Light)
             {
+                themeCS.Background = Themes.lightTheme.Background;
+                themeCS.SecondBackground = Themes.lightTheme.SecondBackground;
+                themeCS.Accent = Themes.lightTheme.Accent;
+                themeCS.Foreground = Themes.lightTheme.Foreground;
+                themeCS.Outline = Themes.lightTheme.Outline;
+                themeCS.Faded = Themes.lightTheme.Faded;
 
-                themeCS.Background = ColorTranslator.ToHtml(Color.FromArgb(240, 240, 240));
-                themeCS.SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(205, 205, 205));
-                themeCS.Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255));
-                themeCS.Foreground = ColorTranslator.ToHtml(Color.FromArgb(0, 0, 0));
-                themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(170, 170, 170));
-                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(163, 163, 163));
+                themeCS.Theme = ThemeTemplate.theme.Light;
 
                 //Accent Color Changer
                 backgroundBrightnessSlider.Value = ColorTranslator.FromHtml(themeCS.Background).R;
@@ -1706,15 +1722,16 @@ namespace VentileClient
                 accentGreenSlider.Value = ColorTranslator.FromHtml(themeCS.Accent).G;
                 accentBlueSlider.Value = ColorTranslator.FromHtml(themeCS.Accent).B;
             }
-            else if (themeCS.Theme == "dark")
+            else if (themeCS.Theme == ThemeTemplate.theme.Dark)
             {
+                themeCS.Background = Themes.darkTheme.Background;
+                themeCS.SecondBackground = Themes.darkTheme.SecondBackground;
+                themeCS.Accent = Themes.darkTheme.Accent;
+                themeCS.Foreground = Themes.darkTheme.Foreground;
+                themeCS.Outline = Themes.darkTheme.Outline;
+                themeCS.Faded = Themes.darkTheme.Faded;
 
-                themeCS.Background = ColorTranslator.ToHtml(Color.FromArgb(20, 20, 20));
-                themeCS.SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(40, 40, 40));
-                themeCS.Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255));
-                themeCS.Foreground = ColorTranslator.ToHtml(Color.FromArgb(255, 255, 255));
-                themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(5, 5, 5));
-                themeCS.Faded = ColorTranslator.ToHtml(Color.FromArgb(192, 192, 192));
+                themeCS.Theme = ThemeTemplate.theme.Dark;
 
                 //Accent Color Changer
                 backgroundBrightnessSlider.Value = ColorTranslator.FromHtml(themeCS.Background).R;
@@ -1801,6 +1818,7 @@ namespace VentileClient
         {
             themeCS.Accent = ColorTranslator.ToHtml(Color.FromArgb(accentRedSlider.Value, accentGreenSlider.Value, accentBlueSlider.Value));
             accentRT.Text = accentRedSlider.Value.ToString();
+
             ColorManager.Settings();
             ColorManager.Global();
         }
@@ -1809,6 +1827,7 @@ namespace VentileClient
         {
             themeCS.Accent = ColorTranslator.ToHtml(Color.FromArgb(accentRedSlider.Value, accentGreenSlider.Value, accentBlueSlider.Value));
             accentGT.Text = accentGreenSlider.Value.ToString();
+
             ColorManager.Settings();
             ColorManager.Global();
         }
@@ -1818,6 +1837,7 @@ namespace VentileClient
 
             themeCS.Accent = ColorTranslator.ToHtml(Color.FromArgb(accentRedSlider.Value, accentGreenSlider.Value, accentBlueSlider.Value));
             accentBT.Text = accentBlueSlider.Value.ToString();
+
             ColorManager.Settings();
             ColorManager.Global();
         }
@@ -1827,6 +1847,7 @@ namespace VentileClient
 
             themeCS.Outline = ColorTranslator.ToHtml(Color.FromArgb(outlineBrightnessSlider.Value, outlineBrightnessSlider.Value, outlineBrightnessSlider.Value));
             outlineOT.Text = outlineBrightnessSlider.Value.ToString();
+
             ColorManager.Settings();
             ColorManager.Global();
 
@@ -1872,7 +1893,6 @@ namespace VentileClient
                 presetCS.p8 = themeCS.SecondBackground;
 
             buttonBuT.Text = buttonBrightnessSlider.Value.ToString();
-
 
             ColorManager.Settings();
             ColorManager.Global();
@@ -2106,6 +2126,7 @@ namespace VentileClient
                     presetCS.p8 = themeCS.SecondBackground;
             }
         }
+
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var importConfig = new OpenFileDialog()
@@ -2289,20 +2310,14 @@ namespace VentileClient
 
         private void performanceModeToggle_Click(object sender, EventArgs e)
         {
+            configCS.PerformanceMode = !configCS.PerformanceMode;
+            performanceModeToggle.Checked = configCS.PerformanceMode;
+            performanceModeToggle.Animated = configCS.PerformanceMode;
+
             if (configCS.PerformanceMode)
-            {
-                configCS.PerformanceMode = false;
-                performanceModeToggle.Checked = false;
-                performanceModeToggle.Animated = false;
-                performanceModeToggle.Text = "Off";
-            }
-            else
-            {
-                configCS.PerformanceMode = true;
-                performanceModeToggle.Checked = true;
-                performanceModeToggle.Animated = true;
                 performanceModeToggle.Text = "On";
-            }
+            else
+                performanceModeToggle.Text = "Off";
 
             ColorManager.Settings();
             ColorManager.Global();
@@ -2408,7 +2423,7 @@ namespace VentileClient
             packProfilesList.AutoScrollPosition = new Point(0, guna2VScrollBar1.Value);
         }
 
-        private async void saveProfileButton_Click(object s, EventArgs e)
+        private void saveProfileButton_Click(object s, EventArgs e)
         {
             string profileName = profileNameTextbox.Text.Trim();
             if (profileName == string.Empty || profileName == null) return;
@@ -2417,9 +2432,19 @@ namespace VentileClient
 
             if (info == null) // Create new profile
             {
-                deleteProfileButton.Enabled = true;
-                loadProfileButton.Enabled = true;
-                await MCDataManager.SaveProfile(profileName);
+                bool isOverwrite = false;
+                if (Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles", profileName))) isOverwrite = true;
+
+                Task.Run(async () =>
+                {
+                    await MCDataManager.SaveProfile(profileName, isOverwrite);
+                    Invoke(new Action(() =>
+                    {
+                        deleteProfileButton.Enabled = true;
+                        loadProfileButton.Enabled = true;
+                    }));
+                });
+
             }
             else // Update existing profile
             {
@@ -2527,7 +2552,22 @@ namespace VentileClient
             }
         }
 
+        private void RPCButtonTextbox_TextChanged(object sender, EventArgs e)
+        {
+            configCS.RpcButtonText = RPCButtonTextbox.Text;
+        }
 
+        private void RPCTextbox_TextChanged(object sender, EventArgs e)
+        {
+            configCS.RpcText = RPCTextbox.Text;
+
+        }
+
+        private void RPCButtonLinkTextbox_TextChanged(object sender, EventArgs e)
+        {
+            configCS.RpcButtonLink = RPCButtonLinkTextbox.Text;
+
+        }
     }
 
     #region Small Classes

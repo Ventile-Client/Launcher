@@ -4,7 +4,7 @@
   "RichPresence": true,
   "RpcText": "No Rich Presence",
   "RpcButton": true,
-  "RpcButtonText": "No Button Text",
+  "RPCButtonLinkTextbox": "No Button Text",
   "RpcButtonLink": "https://none",
   "CustomDLL": true,
   "DefaultDLL": "",

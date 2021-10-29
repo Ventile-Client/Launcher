@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
@@ -58,7 +59,7 @@ namespace VentileClient.LauncherUtils
             }
 
             // Change background and logo
-            if (MAIN.themeCS.Theme == "dark")
+            if (MAIN.themeCS.Theme == ThemeTemplate.theme.Dark)
             {
                 MAIN.logo.Image = VentileClient.Properties.Resources.transparent_logo_white;
                 MAIN.homeTab.BackgroundImage = VentileClient.Properties.Resources.background;
@@ -66,7 +67,7 @@ namespace VentileClient.LauncherUtils
                 MAIN.settingsTab.BackgroundImage = VentileClient.Properties.Resources.background;
                 MAIN.aboutTab.BackgroundImage = VentileClient.Properties.Resources.background;
             }
-            else if (MAIN.themeCS.Theme == "light")
+            else
             {
                 MAIN.logo.Image = VentileClient.Properties.Resources.transparent_logo_black;
                 MAIN.homeTab.BackgroundImage = VentileClient.Properties.Resources.background2;
@@ -122,7 +123,7 @@ namespace VentileClient.LauncherUtils
 
             //Home Button
             MAIN.homeButton.ForeColor = foreColor;
-            if (backColor.R + 15 < 255)
+            if (backColor.R + 15 <= 255)
                 MAIN.homeButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R + 15, backColor.G + 15, backColor.B + 15);
             else
                 MAIN.homeButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R - 15, backColor.G - 15, backColor.B - 15);
@@ -136,7 +137,7 @@ namespace VentileClient.LauncherUtils
 
             //Cosmetics Button
             MAIN.cosmeticsButton.ForeColor = foreColor;
-            if (backColor.R + 15 < 255)
+            if (backColor.R + 15 <= 255)
                 MAIN.cosmeticsButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R + 15, backColor.G + 15, backColor.B + 15);
             else
                 MAIN.cosmeticsButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R - 15, backColor.G - 15, backColor.B - 15);
@@ -150,7 +151,7 @@ namespace VentileClient.LauncherUtils
 
             //Version Button
             MAIN.versionButton.ForeColor = foreColor;
-            if (backColor.R + 15 < 255)
+            if (backColor.R + 15 <= 255)
                 MAIN.versionButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R + 15, backColor.G + 15, backColor.B + 15);
             else
                 MAIN.versionButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R - 15, backColor.G - 15, backColor.B - 15);
@@ -164,7 +165,7 @@ namespace VentileClient.LauncherUtils
 
             //Settings Button
             MAIN.settingsButton.ForeColor = foreColor;
-            if (backColor.R + 15 < 255)
+            if (backColor.R + 15 <= 255)
                 MAIN.settingsButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R + 15, backColor.G + 15, backColor.B + 15);
             else
                 MAIN.settingsButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R - 15, backColor.G - 15, backColor.B - 15);
@@ -178,7 +179,7 @@ namespace VentileClient.LauncherUtils
 
             //About Button
             MAIN.aboutButton.ForeColor = foreColor;
-            if (backColor.R + 15 < 255)
+            if (backColor.R + 15 <= 255)
                 MAIN.aboutButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R + 15, backColor.G + 15, backColor.B + 15);
             else
                 MAIN.aboutButton.CheckedState.FillColor = Color.FromArgb(130, backColor.R - 15, backColor.G - 15, backColor.B - 15);
@@ -230,9 +231,9 @@ namespace VentileClient.LauncherUtils
             MAIN.selectDll.ForeColor = foreColor;
             MAIN.inject.ForeColor = foreColor;
 
-            MAIN.launchMc.BorderColor = outlineColor;
-            MAIN.selectDll.BorderColor = outlineColor;
-            MAIN.inject.BorderColor = outlineColor;
+            MAIN.launchMc.CustomBorderColor = outlineColor;
+            MAIN.selectDll.CustomBorderColor = outlineColor;
+            MAIN.inject.CustomBorderColor = outlineColor;
 
             MAIN.SelectDLLTooltip.BackColor = backColor2;
             MAIN.SelectDLLTooltip.BorderColor = outlineColor;
@@ -497,17 +498,17 @@ namespace VentileClient.LauncherUtils
 
                 if (accentColor.R - MAIN.progressBarGradientOffset > 0)
                     r = accentColor.R - MAIN.progressBarGradientOffset;
-                else if (accentColor.R + MAIN.progressBarGradientOffset < 255)
+                else if (accentColor.R + MAIN.progressBarGradientOffset <= 255)
                     r = accentColor.R + MAIN.progressBarGradientOffset;
 
                 if (accentColor.G - MAIN.progressBarGradientOffset > 0)
                     g = accentColor.G - MAIN.progressBarGradientOffset;
-                else if (accentColor.G + MAIN.progressBarGradientOffset < 255)
+                else if (accentColor.G + MAIN.progressBarGradientOffset <= 255)
                     g = accentColor.G + MAIN.progressBarGradientOffset;
 
                 if (accentColor.B - MAIN.progressBarGradientOffset > 0)
                     b = accentColor.B - MAIN.progressBarGradientOffset;
-                else if (accentColor.B + MAIN.progressBarGradientOffset < 255)
+                else if (accentColor.B + MAIN.progressBarGradientOffset <= 255)
                     b = accentColor.B + MAIN.progressBarGradientOffset;
 
                 progressBar.ProgressColor2 = Color.FromArgb(r, g, b);
@@ -546,8 +547,6 @@ namespace VentileClient.LauncherUtils
             MAIN.injectDelayLabel.BackColor = backColor;
             MAIN.autoLabel.BackColor = backColor;
             MAIN.personaLabel.BackColor = backColor;
-            MAIN.rpcButtonTextLabel.BackColor = backColor;
-            MAIN.rpcButtonLinkLabel.BackColor = backColor;
 
             MAIN.windowStateLabel.ForeColor = foreColor;
             MAIN.richPresenceLabel.ForeColor = foreColor;
@@ -555,8 +554,6 @@ namespace VentileClient.LauncherUtils
             MAIN.injectDelayLabel.ForeColor = foreColor;
             MAIN.autoLabel.ForeColor = foreColor;
             MAIN.personaLabel.ForeColor = foreColor;
-            MAIN.rpcButtonTextLabel.ForeColor = foreColor;
-            MAIN.rpcButtonLinkLabel.ForeColor = foreColor;
 
             //WindowState
 
@@ -589,6 +586,27 @@ namespace VentileClient.LauncherUtils
             MAIN.buttonForRpc.CheckedState.FillColor = accentColor;
             MAIN.buttonForRpc.ForeColor = foreColor;
             MAIN.buttonForRpc.FillColor = backColor2;
+
+            MAIN.profileNameTextbox.BorderColor = outlineColor;
+            MAIN.profileNameTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55));
+            MAIN.profileNameTextbox.ForeColor = foreColor;
+            MAIN.profileNameTextbox.FillColor = backColor2;
+
+            MAIN.RPCTextbox.BorderColor = outlineColor;
+            MAIN.RPCTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55)); ;
+            MAIN.RPCTextbox.ForeColor = foreColor;
+            MAIN.RPCTextbox.FillColor = backColor2; /*Color.FromArgb(((backColor.R + 40 <= 255) ? backColor.R + 40 : backColor.R - 40), ((backColor.G + 40 <= 255) ? backColor.G + 40 : backColor.G - 40), ((backColor.B + 40 <= 255) ? backColor.B + 40 : backColor.B - 40));*/
+
+            MAIN.RPCButtonTextbox.BorderColor = outlineColor;
+            MAIN.RPCButtonTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55)); ;
+            MAIN.RPCButtonTextbox.ForeColor = foreColor;
+            MAIN.RPCButtonTextbox.FillColor = backColor2; /*Color.FromArgb(((backColor.R + 40 <= 255) ? backColor.R + 40 : backColor.R - 40), ((backColor.G + 40 <= 255) ? backColor.G + 40 : backColor.G - 40), ((backColor.B + 40 <= 255) ? backColor.B + 40 : backColor.B - 40));*/
+
+            MAIN.RPCButtonLinkTextbox.BorderColor = outlineColor;
+            MAIN.RPCButtonLinkTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55)); ;
+            MAIN.RPCButtonLinkTextbox.ForeColor = foreColor;
+            MAIN.RPCButtonLinkTextbox.FillColor = backColor2; /*Color.FromArgb(((backColor.R + 40 <= 255) ? backColor.R + 40 : backColor.R - 40), ((backColor.G + 40 <= 255) ? backColor.G + 40 : backColor.G - 40), ((backColor.B + 40 <= 255) ? backColor.B + 40 : backColor.B - 40));*/
+
 
             //DEV DLL
             MAIN.customDLLButton.CheckedState.FillColor = accentColor;
@@ -693,112 +711,56 @@ namespace VentileClient.LauncherUtils
             MAIN.aboutTabLabel.ForeColor = foreColor;
 
             //Rounded
-            if (MAIN.configCS.RoundedButtons)
-            {
-                MAIN.hideWindow.AutoRoundedCorners = true;
-                MAIN.minWindow.AutoRoundedCorners = true;
-                MAIN.closeWindow.AutoRoundedCorners = true;
-                MAIN.openWindow.AutoRoundedCorners = true;
-                MAIN.buttonForRpc.AutoRoundedCorners = true;
-                MAIN.customImage.AutoRoundedCorners = true;
-                MAIN.autoInject.AutoRoundedCorners = true;
-                MAIN.RpcToggle.AutoRoundedCorners = true;
-                MAIN.theme.AutoRoundedCorners = true;
-                MAIN.AppearanceButton.AutoRoundedCorners = true;
-                MAIN.LauncherButton.AutoRoundedCorners = true;
-                MAIN.ExtrasButton.AutoRoundedCorners = true;
-                MAIN.AppearanceButton2.AutoRoundedCorners = true;
-                MAIN.resetThemes.AutoRoundedCorners = true;
-                MAIN.customDLLButton.AutoRoundedCorners = true;
-                MAIN.injectDelay.AutoRoundedCorners = true;
-                MAIN.personaLoc.AutoRoundedCorners = true;
-                MAIN.roundedToggle.AutoRoundedCorners = true;
-                MAIN.toastsToggle.AutoRoundedCorners = true;
-                MAIN.toastsSelector.AutoRoundedCorners = true;
-                MAIN.performanceModeToggle.AutoRoundedCorners = true;
-                MAIN.packProfileButtonOpen.AutoRoundedCorners = true;
-                MAIN.exitPackProfilesButton.AutoRoundedCorners = true;
-            }
-            else
-            {
-                MAIN.hideWindow.AutoRoundedCorners = false;
-                MAIN.minWindow.AutoRoundedCorners = false;
-                MAIN.closeWindow.AutoRoundedCorners = false;
-                MAIN.openWindow.AutoRoundedCorners = false;
-                MAIN.buttonForRpc.AutoRoundedCorners = false;
-                MAIN.customImage.AutoRoundedCorners = false;
-                MAIN.autoInject.AutoRoundedCorners = false;
-                MAIN.RpcToggle.AutoRoundedCorners = false;
-                MAIN.theme.AutoRoundedCorners = false;
-                MAIN.AppearanceButton.AutoRoundedCorners = false;
-                MAIN.LauncherButton.AutoRoundedCorners = false;
-                MAIN.ExtrasButton.AutoRoundedCorners = false;
-                MAIN.AppearanceButton2.AutoRoundedCorners = false;
-                MAIN.resetThemes.AutoRoundedCorners = false;
-                MAIN.customDLLButton.AutoRoundedCorners = false;
-                MAIN.injectDelay.AutoRoundedCorners = false;
-                MAIN.personaLoc.AutoRoundedCorners = false;
-                MAIN.roundedToggle.AutoRoundedCorners = false;
-                MAIN.toastsToggle.AutoRoundedCorners = false;
-                MAIN.toastsSelector.AutoRoundedCorners = false;
-                MAIN.performanceModeToggle.AutoRoundedCorners = false;
-                MAIN.exitPackProfilesButton.AutoRoundedCorners = false;
-                MAIN.packProfileButtonOpen.AutoRoundedCorners = false;
-            }
+            MAIN.hideWindow.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.minWindow.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.closeWindow.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.openWindow.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.buttonForRpc.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.customImage.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.autoInject.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.RpcToggle.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.theme.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.AppearanceButton.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.LauncherButton.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.ExtrasButton.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.AppearanceButton2.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.resetThemes.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.customDLLButton.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.injectDelay.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.personaLoc.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.roundedToggle.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.toastsToggle.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.toastsSelector.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.performanceModeToggle.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.packProfileButtonOpen.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
+            MAIN.exitPackProfilesButton.AutoRoundedCorners = MAIN.configCS.RoundedButtons;
 
             //Performance Mode
-            if (MAIN.configCS.PerformanceMode)
-            {
-                MAIN.hideWindow.Animated = false;
-                MAIN.minWindow.Animated = false;
-                MAIN.closeWindow.Animated = false;
-                MAIN.openWindow.Animated = false;
-                MAIN.buttonForRpc.Animated = false;
-                MAIN.customImage.Animated = false;
-                MAIN.autoInject.Animated = false;
-                MAIN.RpcToggle.Animated = false;
-                MAIN.theme.Animated = false;
-                MAIN.AppearanceButton.Animated = false;
-                MAIN.LauncherButton.Animated = false;
-                MAIN.ExtrasButton.Animated = false;
-                MAIN.AppearanceButton2.Animated = false;
-                MAIN.resetThemes.Animated = false;
-                MAIN.customDLLButton.Animated = false;
-                MAIN.personaLoc.Animated = false;
-                MAIN.roundedToggle.Animated = false;
-                MAIN.toastsToggle.Animated = false;
-                MAIN.toastsSelector.Animated = false;
-                MAIN.performanceModeToggle.Animated = false;
-                MAIN.packProfileButtonOpen.Animated = false;
-                MAIN.exitPackProfilesButton.Animated = false;
-
-            }
-            else
-            {
-                MAIN.hideWindow.Animated = true;
-                MAIN.minWindow.Animated = true;
-                MAIN.closeWindow.Animated = true;
-                MAIN.openWindow.Animated = true;
-                MAIN.buttonForRpc.Animated = true;
-                MAIN.customImage.Animated = true;
-                MAIN.autoInject.Animated = true;
-                MAIN.RpcToggle.Animated = true;
-                MAIN.theme.Animated = true;
-                MAIN.AppearanceButton.Animated = true;
-                MAIN.LauncherButton.Animated = true;
-                MAIN.ExtrasButton.Animated = true;
-                MAIN.AppearanceButton2.Animated = true;
-                MAIN.resetThemes.Animated = true;
-                MAIN.customDLLButton.Animated = true;
-                MAIN.personaLoc.Animated = true;
-                MAIN.roundedToggle.Animated = true;
-                MAIN.toastsToggle.Animated = true;
-                MAIN.toastsSelector.Animated = true;
-                MAIN.performanceModeToggle.Animated = true;
-                MAIN.packProfileButtonOpen.Animated = true;
-                MAIN.exitPackProfilesButton.Animated = true;
-
-            }
+            MAIN.hideWindow.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.minWindow.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.closeWindow.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.openWindow.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.buttonForRpc.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.customImage.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.autoInject.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.RpcToggle.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.theme.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.AppearanceButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.LauncherButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.ExtrasButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.AppearanceButton2.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.resetThemes.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.customDLLButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.personaLoc.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.roundedToggle.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.toastsToggle.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.toastsSelector.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.performanceModeToggle.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.packProfileButtonOpen.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.exitPackProfilesButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.loadProfileButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.deleteProfileButton.Animated = !MAIN.configCS.PerformanceMode;
+            MAIN.saveProfileButton.Animated = !MAIN.configCS.PerformanceMode;
 
             //Presets
             MAIN.preset1.BorderColor = outlineColor;
@@ -895,20 +857,18 @@ namespace VentileClient.LauncherUtils
 
             MAIN.profileIconPictureBox.FillColor = backColor2;
 
-            MAIN.profileNameTextbox.BorderColor = backColor2;
-            MAIN.profileNameTextbox.PlaceholderForeColor = fadedColor;
-
-            MAIN.profileNameTextbox.ForeColor = Color.FromArgb(((foreColor.R + 55 < 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 < 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 < 255) ? foreColor.B + 55 : foreColor.B - 55)); ;
-            MAIN.profileNameTextbox.FillColor = Color.FromArgb(((backColor.R + 40 < 255) ? backColor.R + 40 : backColor.R - 40), ((backColor.G + 40 < 255) ? backColor.G + 40 : backColor.G - 40), ((backColor.B + 40 < 255) ? backColor.B + 40 : backColor.B - 40));
+            MAIN.profileNameTextbox.BorderColor = outlineColor;
+            MAIN.profileNameTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55));
+            MAIN.profileNameTextbox.ForeColor = foreColor;
+            MAIN.profileNameTextbox.FillColor = backColor2;
 
             for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
             {
                 if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
 
-                ((Guna2Button)MAIN.packProfilesList.Controls[i]).FillColor = Color.FromArgb(((backColor.R + 10 < 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 < 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 < 255) ? backColor.B + 10 : backColor.B - 10));
+                ((Guna2Button)MAIN.packProfilesList.Controls[i]).FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10));
                 ((Guna2Button)MAIN.packProfilesList.Controls[i]).ForeColor = foreColor;
-
-                return;
+                ((Guna2Button)MAIN.packProfilesList.Controls[i]).Animated = !MAIN.configCS.PerformanceMode;
             }
 
             MAIN.settingsTab.BackColor = backColor;

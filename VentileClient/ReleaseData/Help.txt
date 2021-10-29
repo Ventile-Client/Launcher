@@ -94,13 +94,13 @@ Settings
 
     ~ Extras
         > Background Image: 
-            - Allows you to select an image from your computer for the launcher background
+            - Allows you to select an image from your computer for the launcher's background
 
         > Toasts:
-            - Enables/Disables Toast notifications and where they appear
+            - Enables/Disables toast notifications and where they appear
 
         > Rounded Buttons:
-            - Enables/Disables whether the buttons are rounded or square
+            - Enables/Disables whether the buttons are rounded
 
         > Performance Mode:
             - Enables/Disables animations and transitions
@@ -112,15 +112,15 @@ Settings
                + Right Click: Resets the image to the default one
 
         > Load:
-            - Loads the selected profile on the right
+            - Loads the selected profile
 
         > Delete:
-            - Loads the selected profile on the right
+            - Loads the selected profile
 
         > Save:
             - Updates and saves current com.mojang
-                + No Selected Profile On Right: Creates a new profile based on the Profile Name (Textbox) 
-                + Selected Profile On Right: Renames a profile based on the Profile Name (Textbox)
+                + No Selected Profile: Creates a new profile based on the Profile Name (Textbox) 
+                + Selected Profile: Renames a profile based on the Profile Name (Textbox)
 
         > Profile Name (Textbox):
             - Changes the name of the profile selected on the right, or if none selected, creates a new one

@@ -2,10 +2,8 @@
  - Added:
     Help Button
     Pack Profiles
-    Hiding the launcher by right clicking the minmize button
+    Hide launcher by right clicking the minimize button
     Error handling for cosmetics when buttons are spammed
-
- - Removed:
 
  - Fixes:
     Version Switcher
