@@ -42,7 +42,7 @@ namespace VentileClient
             launcherVersion = "4.2.0",
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
-            isBeta = true,
+            isBeta = false,
             rpcID = "832806990953840710",
             changelog = Properties.Resources.Changelog.Trim().Split('\n'),
             help = Properties.Resources.Help.Trim().Split('\n')

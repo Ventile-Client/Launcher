@@ -16,7 +16,7 @@ namespace VentileClient.Utils
         static string MINECRAFT_NAME = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
 
-        public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool ignorePopup = false)
+        public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool showPopup = true)
         {
 
             Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
@@ -35,7 +35,7 @@ namespace VentileClient.Utils
             {
                 MAIN.vLogger.Log("Directory existed: " + sourceDirName);
                 DialogResult result = DialogResult.Yes;
-                if (!ignorePopup)
+                if (showPopup)
                     result = MessageBox.Show("Are you sure you want to overwrite the profile: \"" + ProfileName + "\"?", "Overwrite " + ProfileName, MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {

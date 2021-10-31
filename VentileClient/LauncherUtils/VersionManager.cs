@@ -22,7 +22,7 @@ namespace VentileClient.LauncherUtils
             {
                 try
                 {
-                    await MCDataManager.SaveProfile("Default", true, true);
+                    await MCDataManager.SaveProfile("Default", true, false);
                     if ((await MCDataManager.MCInstallLoc()).StartsWith(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP")) //Means mc was installed from microsoft store
                     {
                         await UninstallMC();

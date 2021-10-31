@@ -43,6 +43,9 @@ namespace TextFormatterBecusLazy
             }
             Console.WriteLine("Deleted Excess Files");
 
+            File.Copy(Path.Combine(PROJECT_DIR, "AppLogo.ico"), Path.Combine(TARGET_DIR, "LauncherZip", "AppLogo.ico"));
+            Console.WriteLine("Copied Icon");
+
             Console.WriteLine("Zipping Launcher");
             ZipFile.CreateFromDirectory(Path.Combine(TARGET_DIR, "LauncherZip"), Path.Combine(TARGET_DIR, "VentileClient.zip"));
             Console.WriteLine("Zipped Launcher");
@@ -51,8 +54,7 @@ namespace TextFormatterBecusLazy
             Console.WriteLine("Copied Changelog");
 
             Directory.Delete(Path.Combine(TARGET_DIR, "LauncherZip"), true);
-            Directory.Delete(Path.Combine(TARGET_DIR, "PresetsZip"), true);
-            Console.WriteLine("Deleted Extra Folders");
+            Console.WriteLine("Deleted Extra Folder");
 
             FormatDiscord();
             FormatGithub();
@@ -67,7 +69,7 @@ namespace TextFormatterBecusLazy
             Console.WriteLine("|");
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
 
-            Console.ReadKey();
+            return;
         }
 
         static void FormatDiscord()
