@@ -1,12 +1,4 @@
-﻿Version 4.2.0 Changelog:
- - Added:
-    Help Button
-    Pack Profiles
-    Hide launcher by right clicking the minimize button
-    Error handling for cosmetics when buttons are spammed
-
+﻿Version 4.2.1 Changelog:
  - Fixes:
-    Version Switcher
-    Themes
-    Hiding/Showing Launcher
-    Resource packs don't reset every time launcher is used
+  Version Switcher
+  Read/Write Configs

@@ -48,7 +48,9 @@ namespace VentileClient.JSON_Template_Classes
             get
             {
                 if (string.IsNullOrEmpty(_secondBackground))
+                {
                     _secondBackground = Themes.darkTheme.SecondBackground;
+                }
 
                 return (_secondBackground);
             }

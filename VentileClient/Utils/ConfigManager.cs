@@ -16,20 +16,22 @@ namespace VentileClient.Utils
         {
             try
             {
+                Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+
                 if (!File.Exists(path))
                 {
                     MAIN.configCS = new ConfigTemplate();
-
                     WriteConfig(path);
                     return;
                 }
+
                 string temp = File.ReadAllText(path);
                 MAIN.configCS = JsonConvert.DeserializeObject<ConfigTemplate>(temp);
                 MAIN.cLogger.Log("Successfully read: " + Path.GetFileName(path));
             }
             catch (Exception ex)
             {
-                Notif.Toast("Error", "There was an error :(");
+                Notif.Toast("Config Error", "There was an error reading the config!");
                 MAIN.cLogger.Log(ex);
             }
         }
@@ -40,17 +42,18 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    ConfigTemplate temp = MAIN.configCS;
+                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
 
-                    if (temp == null) MAIN.configCS = new ConfigTemplate();
+                    if (MAIN.configCS == null)
+                        MAIN.configCS = new ConfigTemplate();
 
-                    string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(MAIN.configCS, Formatting.Indented);
                     File.WriteAllText(path, json);
                     MAIN.cLogger.Log("Successfully wrote to " + Path.GetFileName(path));
                 }
                 catch (Exception ex)
                 {
-                    Notif.Toast("Error", "There was an error :(");
+                    Notif.Toast("Config Error", "There was an error writing to your config!");
                     MAIN.cLogger.Log(ex);
                 }
             });
@@ -63,19 +66,22 @@ namespace VentileClient.Utils
         {
             try
             {
+                Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
+
                 if (!File.Exists(path))
                 {
                     MAIN.themeCS = new ThemeTemplate();
                     WriteTheme(path);
                     return;
                 }
+
                 string temp = File.ReadAllText(path);
                 MAIN.themeCS = JsonConvert.DeserializeObject<ThemeTemplate>(temp);
                 MAIN.cLogger.Log("Successfully read: " + Path.GetFileName(path));
             }
             catch (Exception ex)
             {
-                Notif.Toast("Error", "There was an error :(");
+                Notif.Toast("Theme Error", "There was an error reading your theme!");
                 MAIN.cLogger.Log(ex);
             }
         }
@@ -86,18 +92,18 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    ThemeTemplate temp = MAIN.themeCS;
+                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
 
-                    if (temp == null)
+                    if (MAIN.themeCS == null)
                         MAIN.themeCS = new ThemeTemplate();
 
-                    string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(MAIN.themeCS, Formatting.Indented);
                     File.WriteAllText(path, json);
                     MAIN.cLogger.Log("Successfully wrote to: " + Path.GetFileName(path));
                 }
                 catch (Exception ex)
                 {
-                    Notif.Toast("Error", "There was an error :(");
+                    Notif.Toast("Theme Error", "There was an error writing to your theme!");
                     MAIN.cLogger.Log(ex);
                 }
             });
@@ -105,46 +111,26 @@ namespace VentileClient.Utils
 
 
         // Cosmetics
-        private static void SetDefaultCosmetics()
-        {
-            MAIN.cosmeticsCS = new CosmeticsTemplate()
-            {
-                cBlack = false,
-                cWhite = false,
-                cPink = false,
-                cBlue = false,
-                cYellow = false,
-                cRick = false,
-                mBlack = false,
-                mWhite = false,
-                mPink = false,
-                mBlue = false,
-                mYellow = false,
-                mRick = false,
-                aGlowing = false,
-                aSlide = false,
-                oWavy = false,
-                oKagune = false
-            };
-        }
-
         public static void ReadCosmetics(string path)
         {
             try
             {
+                Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+
                 if (!File.Exists(path))
                 {
-                    SetDefaultCosmetics();
+                    MAIN.cosmeticsCS = new CosmeticsTemplate();
                     WriteCosmetics(path);
                     return;
                 }
+
                 string temp = File.ReadAllText(path);
                 MAIN.cosmeticsCS = JsonConvert.DeserializeObject<CosmeticsTemplate>(temp);
                 MAIN.cLogger.Log("Successfully read: " + Path.GetFileName(path));
             }
             catch (Exception ex)
             {
-                Notif.Toast("Error", "There was an error :(");
+                Notif.Toast("Cosmetics Error", "There was an error reading your cosmetics!");
                 MAIN.cLogger.Log(ex);
             }
         }
@@ -155,17 +141,18 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    CosmeticsTemplate temp = MAIN.cosmeticsCS;
+                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
 
-                    if (temp == null) SetDefaultCosmetics();
+                    if (MAIN.cosmeticsCS == null)
+                        MAIN.cosmeticsCS = new CosmeticsTemplate();
 
-                    string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(MAIN.cosmeticsCS, Formatting.Indented);
                     File.WriteAllText(path, json);
                     MAIN.cLogger.Log("Successfully wrote to: " + Path.GetFileName(path));
                 }
                 catch (Exception ex)
                 {
-                    Notif.Toast("Error", "There was an error  :(");
+                    Notif.Toast("Cosmetics Error", "There was an error writing to your cosmetics!");
                     MAIN.cLogger.Log(ex);
                 }
             });

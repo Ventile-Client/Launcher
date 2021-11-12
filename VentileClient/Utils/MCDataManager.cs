@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Management.Automation;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.LauncherUtils;
@@ -18,7 +20,7 @@ namespace VentileClient.Utils
 
         public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool showPopup = true)
         {
-
+            
             Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
 
             if (MAIN.savingProfile.Contains(ProfileName))
@@ -30,36 +32,6 @@ namespace VentileClient.Utils
 
             string sourceDirName = Path.Combine(MAIN.gamesFolder, "com.mojang");
             string destDirName = @"C:\temp\VentileClient\Profiles\" + ProfileName;
-
-            if (Directory.Exists(destDirName) && isOverwrite)
-            {
-                MAIN.vLogger.Log("Directory existed: " + sourceDirName);
-                DialogResult result = DialogResult.Yes;
-                if (showPopup)
-                    result = MessageBox.Show("Are you sure you want to overwrite the profile: \"" + ProfileName + "\"?", "Overwrite " + ProfileName, MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    await Task.Run(() =>
-                    {
-                        MAIN.vLogger.Log("Overwriting profile: " + ProfileName);
-
-                        Directory.Delete(destDirName, true);
-
-                        Directory.CreateDirectory(destDirName);
-
-                        FileSystem.CopyDirectory(sourceDirName, destDirName, true);
-
-                        if (File.Exists(Path.Combine(destDirName, "profileLogo.png")))
-                            File.Delete(Path.Combine(destDirName, "profileLogo.png"));
-
-                        DataManager.UpdateProfile(ProfileName, NewImage: Properties.Resources.GrassBlock);
-                    });
-                } else
-                {
-                    MAIN.vLogger.Log("Canceled Overwrite for profile: " + ProfileName);
-                }
-                return;
-            }
 
             if (!Directory.Exists(sourceDirName))
             {
@@ -73,11 +45,43 @@ namespace VentileClient.Utils
                 MAIN.vLogger.Log("Empty Directory: " + sourceDirName);
                 return;
             }
+           
+            if (Directory.Exists(destDirName) && isOverwrite)
+            {
+                MAIN.vLogger.Log("Directory existed: " + sourceDirName);
+                DialogResult result = DialogResult.Yes;
+                if (showPopup)
+                    result = MessageBox.Show("Are you sure you want to overwrite the profile: \"" + ProfileName + "\"?", "Overwrite " + ProfileName, MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        MAIN.vLogger.Log("Overwriting profile: " + ProfileName);
+                        Notif.Toast("Profile Manager", "Overwriting Data to Profile: " + ProfileName);
+
+                        Directory.Delete(destDirName, true);
+
+                        Directory.CreateDirectory(destDirName);
+
+                        FileSystem.CopyDirectory(sourceDirName, destDirName, true);
+
+                        DataManager.UpdateProfile(ProfileName, NewImage: Properties.Resources.GrassBlock);
+
+                        Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
+                        MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
+                    });
+                }
+                else
+                {
+                    MAIN.vLogger.Log("Canceled Overwrite for profile: " + ProfileName);
+                }
+                return;
+            }
+
 
             Notif.Toast("Profile Manager", "Saving Data to Profile: " + ProfileName);
             MAIN.vLogger.Log("Saving current Minecraft data to profile: " + ProfileName);
             MAIN.savingProfile.Add(ProfileName);
-
 
             try
             {
@@ -91,10 +95,10 @@ namespace VentileClient.Utils
                         File.Delete(Path.Combine(destDirName, "profileLogo.png"));
 
                     DataManager.AddProfile(new DirectoryInfo(destDirName));
-                });
-
                 Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
                 MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
+                });
+
             }
             catch (Exception err)
             {
@@ -266,31 +270,46 @@ namespace VentileClient.Utils
             string installLoc = "none";
             await Task.Run(() =>
             {
-                if (File.Exists(@"C:\temp\VentileClient\mcInfo.txt"))
-                    File.Delete(@"C:\temp\VentileClient\mcInfo.txt");
-
                 MAIN.vLogger.Log("Checking Install Location Of Minecraft");
-                PowerShell.Create()
-                    .AddScript(@"Get-AppxPackage Microsoft.MinecraftUWP >> C:\temp\VentileClient\mcInfo.txt")
-                    .Invoke();
-                foreach (var line in File.ReadAllLines(@"C:\temp\VentileClient\mcInfo.txt"))
+                using (var powerShell = PowerShell.Create())
                 {
-                    if (line.StartsWith("InstallLocation"))
-                    {
-                        string[] args = line.Split(new string[] { " : " }, StringSplitOptions.None);
-                        for (int i = 0; i < args.Length; i++)
-                        {
-                            args[i] = args[i].Trim();
+                    powerShell
+                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty InstallLocation")
+                        .AddCommand("Out-String");
+                    var psOutput = powerShell.Invoke();
+                    var stringBuilder = new StringBuilder();
+                    foreach (var pSObject in psOutput)
+                        stringBuilder.AppendLine(pSObject.ToString());
 
-                            File.Delete(@"C:\temp\VentileClient\mcInfo.txt");
-                        }
-                        installLoc = args[args.Length - 1];
-                        break;
-                    }
+                    installLoc = stringBuilder.ToString().Replace(Environment.NewLine, "");
                 }
             });
             MAIN.vLogger.Log(installLoc);
             return installLoc;
+        }
+
+
+        public static async Task<Version> GetMCVersion()
+        {
+            string version = "none";
+            await Task.Run(() =>
+            {
+                MAIN.vLogger.Log("Checking Version Of Minecraft");
+                using (var powerShell = PowerShell.Create())
+                {
+                    powerShell
+                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty Version")
+                        .AddCommand("Out-String");
+                    var psOutput = powerShell.Invoke();
+                    var stringBuilder = new StringBuilder();
+                    foreach (var pSObject in psOutput)
+                        stringBuilder.AppendLine(pSObject.ToString());
+
+                    version = stringBuilder.ToString().Replace(Environment.NewLine, "");
+                }
+            });
+            MAIN.vLogger.Log(version);
+            return new Version(version);
         }
 
         public static async Task RestoreMCData()

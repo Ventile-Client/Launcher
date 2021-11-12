@@ -519,29 +519,29 @@ namespace VentileClient.LauncherUtils
                 MAIN.RpcToggle.Text = "On";
                 MAIN.RPCTextbox.Text = MAIN.configCS.RpcText;
                 MAIN.RPCTextbox.Visible = true;
+                MAIN.buttonForRpc.Visible = true;
             }
             else
             {
                 MAIN.RpcToggle.Checked = false;
                 MAIN.RpcToggle.Text = "Off";
                 MAIN.RPCTextbox.Visible = false;
+                MAIN.buttonForRpc.Visible = false;
             }
 
             if (MAIN.configCS.RpcButton)
             {
                 MAIN.buttonForRpc.Checked = true;
-                MAIN.buttonForRpc.Visible = true;
                 MAIN.RPCButtonLinkTextbox.Visible = true;
-                MAIN.RPCButtonLinkTextbox.Visible = true;
+                MAIN.RPCButtonTextbox.Visible = true;
 
-                MAIN.RPCButtonTextbox.Text = MAIN.configCS.RpcButtonText;
                 MAIN.RPCButtonLinkTextbox.Text = MAIN.configCS.RpcButtonLink;
+                MAIN.RPCButtonTextbox.Text = MAIN.configCS.RpcButtonText;
             }
             else
             {
-                MAIN.buttonForRpc.Visible = false;
                 MAIN.RPCButtonLinkTextbox.Visible = false;
-                MAIN.RPCButtonLinkTextbox.Visible = false;
+                MAIN.RPCButtonTextbox.Visible = false;
             }
 
             //Dev DLL
@@ -718,7 +718,7 @@ namespace VentileClient.LauncherUtils
 
             foreach (RepositoryContent dll in contents)
             {
-                if (dll.Type == "file" && dll.Name.EndsWith(".dll"))
+                if (dll.Type == "file" && dll.Name.ToLower().EndsWith(".dll"))
                 {
                     await DownloadManager.DownloadAsync(dll.DownloadUrl, @"C:\temp\VentileClient\Dlls", dll.Name);
 

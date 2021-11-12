@@ -39,7 +39,7 @@ namespace VentileClient
 
         public VentileSettings ventile_settings = new VentileSettings()
         {
-            launcherVersion = "4.2.0",
+            launcherVersion = "4.2.1",
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
             isBeta = false,
@@ -52,7 +52,13 @@ namespace VentileClient
         public LinkSettings link_settings = new LinkSettings()
         {
             githubProductHeader = "VentileClientLauncher",
-            githubToken = null
+            githubToken = null,
+
+            discordInvite = "https://discord.gg/WxXw2SA9ZH",
+            websiteLink = "https://ventileclient.ml",
+            repoOwner = "Ventile-Client",
+            versionsRepo = "VersionChanger",
+            downloadRepo = "Download"
         };
 
         /*     >>>>>>>>>>>>>>>> REMEMBER TO CHANGE "isBeta" IN VENTILE SETTINGS BEFORE RELEASE <<<<<<<<<<<<<<<<     */
@@ -119,6 +125,8 @@ namespace VentileClient
         public static MainWindow INSTANCE;
         public MainWindow()
         {
+            Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
+
             INSTANCE = this;
 
             //Only allow app to open once is in Program.cs
@@ -129,15 +137,23 @@ namespace VentileClient
             //Get Link settings
             if (internet)
             {
-                DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.json");
-                string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.json");
-                LinkSettings tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
-                link_settings.discordInvite = tmpSettings.discordInvite;
-                link_settings.websiteLink = tmpSettings.websiteLink;
-                link_settings.repoOwner = tmpSettings.repoOwner;
-                link_settings.versionsRepo = tmpSettings.versionsRepo;
-                link_settings.downloadRepo = tmpSettings.downloadRepo;
-                File.Delete(@"C:\temp\VentileClient\link_settings.json");
+                try
+                {
+
+                    DownloadManager.Download(@"https://github.com/Ventile-Client/Download/blob/main/Settings/link_settings.json?raw=true", @"C:\temp\VentileClient", "link_settings.json");
+                    string temp = File.ReadAllText(@"C:\temp\VentileClient\link_settings.json");
+                    LinkSettings tmpSettings = JsonConvert.DeserializeObject<LinkSettings>(temp);
+                    link_settings.discordInvite = tmpSettings?.discordInvite;
+                    link_settings.websiteLink = tmpSettings?.websiteLink;
+                    link_settings.repoOwner = tmpSettings?.repoOwner;
+                    link_settings.versionsRepo = tmpSettings?.versionsRepo;
+                    link_settings.downloadRepo = tmpSettings?.downloadRepo;
+                    File.Delete(@"C:\temp\VentileClient\link_settings.json");
+                }
+                catch (Exception err)
+                {
+                    dLogger.Log(err);
+                }
             }
 
             github = new GitHubClient(new ProductHeaderValue(link_settings.githubProductHeader));
@@ -161,9 +177,8 @@ namespace VentileClient
 
             // Check for update
             if (!internet)
-            {
                 fadeIn.Start();
-            }
+
             else
             {
                 new UpdateCheck()
@@ -617,15 +632,18 @@ namespace VentileClient
                 dLogger.Log(ex);
                 return;
             }
+
             if (configCS.AutoInject)
             {
                 await Task.Delay(configCS.InjectDelay * 1000); // Delay injection by amount of milliseconds
+
                 if (Process.GetProcessesByName("Minecraft.Windows").Length > 0)
                 {
                     if (configCS.CustomDLL)
                     {
                         if (configCS.DefaultDLL?.Length > 0)
                             InjectionManager.InjectDLL(configCS.DefaultDLL);
+
                         else
                             Notif.Toast("DLL", "Not injecting, no file specified");
                     }
@@ -633,7 +651,8 @@ namespace VentileClient
                     {
                         //Inject Selected DLL
                         if (selectedDLLName != null)
-                            InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\DLLS", selectedDLLName));
+                            InjectionManager.InjectDLL(Path.Combine(@"C:\temp\VentileClient\Dlls", selectedDLLName));
+
                         else
                             Notif.Toast("DLL", "Not injecting, no file specified");
                     }
@@ -1353,7 +1372,7 @@ namespace VentileClient
 
                 configCS.RichPresence = false;
 
-                Cooldown(15);
+                Cooldown(10);
                 RPC.Disable();
             }
             else
@@ -1361,23 +1380,25 @@ namespace VentileClient
                 RpcToggle.Checked = true;
                 RpcToggle.Text = "On";
 
-                RPCTextbox.Text = configCS.RpcText;
                 RPCTextbox.Visible = true;
 
                 buttonForRpc.Visible = true;
+                RPCTextbox.Text = configCS.RpcText;
+                RPCTextbox.Visible = true;
+
 
                 if (configCS.RpcButton)
                 {
-                    RPCButtonTextbox.Visible = true;
                     RPCButtonLinkTextbox.Visible = true;
+                    RPCButtonTextbox.Visible = true;
 
-                    RPCButtonTextbox.Text = configCS.RpcButtonText;
                     RPCButtonLinkTextbox.Text = configCS.RpcButtonLink;
+                    RPCButtonTextbox.Text = configCS.RpcButtonText;
                 }
 
                 configCS.RichPresence = true;
 
-                Cooldown(15);
+                Cooldown(10);
                 RPC.Idling();
             }
         }
@@ -1466,19 +1487,19 @@ namespace VentileClient
             if (configCS.RpcButton)
             {
                 buttonForRpc.Checked = false;
-                RPCButtonTextbox.Visible = false;
                 RPCButtonLinkTextbox.Visible = false;
+                RPCButtonTextbox.Visible = false;
 
                 configCS.RpcButton = false;
             }
             else
             {
-                RPCButtonTextbox.Text = configCS.RpcButtonText;
                 RPCButtonLinkTextbox.Text = configCS.RpcButtonLink;
+                RPCButtonTextbox.Text = configCS.RpcButtonText;
 
                 buttonForRpc.Checked = true;
-                RPCButtonTextbox.Visible = true;
                 RPCButtonLinkTextbox.Visible = true;
+                RPCButtonTextbox.Visible = true;
 
 
                 configCS.RpcButton = true;
@@ -2552,15 +2573,14 @@ namespace VentileClient
             }
         }
 
-        private void RPCButtonTextbox_TextChanged(object sender, EventArgs e)
-        {
-            configCS.RpcButtonText = RPCButtonTextbox.Text;
-        }
-
         private void RPCTextbox_TextChanged(object sender, EventArgs e)
         {
             configCS.RpcText = RPCTextbox.Text;
+        }
 
+        private void RPCButtonTextbox_TextChanged(object sender, EventArgs e)
+        {
+            configCS.RpcButtonText = RPCButtonTextbox.Text;
         }
 
         private void RPCButtonLinkTextbox_TextChanged(object sender, EventArgs e)

@@ -73,6 +73,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterFolderBrowser, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BetterFolderBrowser.1.2.0\lib\BetterFolderBrowser.dll</HintPath>
@@ -208,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppLogo.ico" />
+    <Content Include="Personal\dllInfoTemplate.txt" />
     <Content Include="Personal\Fix.txt" />
     <Content Include="Personal\OnRelease.txt" />
     <Content Include="ReleaseData\Changelog.txt" />
@@ -215,9 +219,6 @@
     <Content Include="ReleaseData\Help.txt" />
     <None Include="Resources\GrassBlock.png" />
     <None Include="packages.config" />
-    <None Include="ReleaseData\Config.json" />
-    <None Include="ReleaseData\Cosmetics.json" />
-    <None Include="ReleaseData\Theme.json" />
     <None Include="Resources\website_white.png" />
     <None Include="Resources\website_black.png" />
     <None Include="Resources\transparent_logo_white.png" />

@@ -5,19 +5,19 @@
         //Private variables
         string _windowState;
         bool _autoInject;
-        bool _richPresence;
+        bool _richPresence = true;
         string _rpcText;
         bool _rpcButton;
-        string _RPCButtonLinkTextbox;
+        string _rpcButtonText;
         string _rpcButtonLink;
         bool _customDLL;
         string _defaultDLL;
         bool _persona;
         string _personaLoc;
         int _injectDelay;
-        bool _toasts;
+        bool _toasts = true;
         string _toastsLoc;
-        bool _roundedButtons;
+        bool _roundedButtons = true;
         bool _performanceMode;
         bool _backgroundImage;
         string _backgroundImageLoc;
@@ -77,6 +77,7 @@
         {
             get
             {
+
                 return _rpcButton;
             }
             set
@@ -88,14 +89,14 @@
         {
             get
             {
-                if (string.IsNullOrEmpty(_RPCButtonLinkTextbox))
-                    _RPCButtonLinkTextbox = "Hide";
+                if (string.IsNullOrEmpty(_rpcButtonText))
+                    _rpcButtonText = "No Text";
 
-                return _RPCButtonLinkTextbox;
+                return _rpcButtonText;
             }
             set
             {
-                _RPCButtonLinkTextbox = value;
+                _rpcButtonText = value;
             }
         }
         public string RpcButtonLink
@@ -103,7 +104,7 @@
             get
             {
                 if (string.IsNullOrEmpty(_rpcButtonLink))
-                    _rpcButtonLink = "Hide";
+                    _rpcButtonLink = "https://none";
 
                 return _rpcButtonLink;
             }
