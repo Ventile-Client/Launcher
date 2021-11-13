@@ -10,7 +10,7 @@
   </p>
   <p>
     <b>Ventile Client<b> is a MCBE client used to enhance minecraft, we don't take responsibilty in how you use this.<br>
-    Make sure to join our <a href="https://discord.gg/gDFNwf48Fq">discord!</a>
+    Make sure to join our <a href="https://discord.gg/WxXw2SA9ZH">discord!</a>
   </p>
 </div>
 <br>
