@@ -21,7 +21,8 @@ namespace VentileClient.JSON_Template_Classes
 
         public theme Theme
         {
-            get {
+            get
+            {
                 return _theme;
             }
             set

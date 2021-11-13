@@ -39,7 +39,7 @@ namespace VentileClient
 
         public VentileSettings ventile_settings = new VentileSettings()
         {
-            launcherVersion = "4.2.1",
+            launcherVersion = new Version(4, 2, 1),
             clientVersion = "N/A",
             cosmeticsVersion = "1.1.0",
             isBeta = false,
@@ -2594,7 +2594,7 @@ namespace VentileClient
 
     public class VentileSettings
     {
-        public string launcherVersion;
+        public Version launcherVersion;
         public string clientVersion;
         public string cosmeticsVersion;
         public bool isBeta;

@@ -34,7 +34,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion.ToString(),
                             },
                             Buttons = new Button[]
                             {
@@ -53,7 +53,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion.ToString(),
                             },
                             Buttons = new Button[]
                             {
@@ -106,7 +106,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion.ToString(),
                             },
                             Buttons = new Button[]
                             {
@@ -125,7 +125,7 @@ namespace VentileClient
                             Assets = new Assets()
                             {
                                 LargeImageKey = "logo",
-                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion,
+                                LargeImageText = MainWindow.INSTANCE.ventile_settings.launcherVersion.ToString(),
                             },
                             Buttons = new Button[]
                             {

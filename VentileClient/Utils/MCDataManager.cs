@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Management.Automation;
 using System.Text;
@@ -20,7 +19,7 @@ namespace VentileClient.Utils
 
         public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool showPopup = true)
         {
-            
+
             Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
 
             if (MAIN.savingProfile.Contains(ProfileName))
@@ -45,7 +44,7 @@ namespace VentileClient.Utils
                 MAIN.vLogger.Log("Empty Directory: " + sourceDirName);
                 return;
             }
-           
+
             if (Directory.Exists(destDirName) && isOverwrite)
             {
                 MAIN.vLogger.Log("Directory existed: " + sourceDirName);
@@ -95,8 +94,8 @@ namespace VentileClient.Utils
                         File.Delete(Path.Combine(destDirName, "profileLogo.png"));
 
                     DataManager.AddProfile(new DirectoryInfo(destDirName));
-                Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
-                MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
+                    Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
+                    MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
                 });
 
             }

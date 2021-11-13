@@ -1,6 +1,6 @@
 ﻿using Octokit;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using VentileClient.JSON_Template_Classes;
 using VentileClient.Utils;
@@ -11,16 +11,6 @@ namespace VentileClient
     {
         public async void CheckForUpdate(ThemeTemplate themeCS, VentileSettings ventileSettings, LinkSettings link_settings, bool internet, GitHubClient github)
         {
-            if (File.Exists(@"C:\temp\VentileClient\Version.txt"))
-            {
-                File.Delete(@"C:\temp\VentileClient\Version.txt");
-            }
-
-            if (File.Exists(@"C:\temp\VentileClient\Version.zip"))
-            {
-                File.Delete(@"C:\temp\VentileClient\Version.zip");
-            }
-
             if (!internet || !GithubManager.HaveRequests())
             {
                 MainWindow.INSTANCE.fadeIn.Start();
@@ -31,12 +21,12 @@ namespace VentileClient
 
             if (!(releases.Count > 0))
             {
-                Debug.WriteLine("No releases Found!");
+                MainWindow.INSTANCE.dLogger.Log("No releases Found!");
                 MainWindow.INSTANCE.fadeIn.Start();
                 return;
             }
 
-            if (releases[0].TagName != ventileSettings.launcherVersion && !ventileSettings.isBeta)
+            if (new Version(releases[0].TagName) > ventileSettings.launcherVersion)
             {
                 await DownloadManager.DownloadAsync($"https://github.com/{link_settings.repoOwner}/{link_settings.downloadRepo}/releases/download/{releases[0].TagName}/Changelog.txt", @"C:\temp\VentileClient", "Changelog.txt");
 
@@ -53,6 +43,7 @@ namespace VentileClient
 
                 return;
             }
+
             MainWindow.INSTANCE.fadeIn.Start();
         }
     }

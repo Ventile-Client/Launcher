@@ -75,7 +75,7 @@ Settings
         > Accent Color
             - Modifies the RGB values of the accents
 
-        > Outline COlor
+        > Outline Color
             - Modifies the brightness of the outlines
 
         > Button Color

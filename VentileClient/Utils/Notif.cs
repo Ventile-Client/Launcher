@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using VentileClient.JSON_Template_Classes;
+﻿using VentileClient.JSON_Template_Classes;
 
 namespace VentileClient.Utils
 {
