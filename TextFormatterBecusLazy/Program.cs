@@ -79,7 +79,7 @@ namespace TextFormatterBecusLazy
 
             using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, ".DiscordChangelog.txt"))) //path
             {
-                for (int i = 0; i < changelogLines.Length; i++)
+                for (int i = 1; i < changelogLines.Length; i++)
                 {
                     if (changelogLines[i].StartsWith(" -"))
                     {
@@ -94,6 +94,8 @@ namespace TextFormatterBecusLazy
                         sw.WriteLine(changelogLines[i]);
                     }
                 }
+                sw.WriteLine();
+                sw.WriteLine("You can use Ventile-Installer (<#890391081462689793>) or do it manually using the .zip below");
                 sw.Close();
             }
             Console.WriteLine("Formatted Discord");

@@ -4,6 +4,7 @@ namespace VentileClient.Utils
 {
     public static class Notif
     {
+        // POSSIBLE: Add three types, Custom Toast, Windows Notif, and none
         public static void Toast(string Title, string Message)
         {
             var toast = new ToastForm();

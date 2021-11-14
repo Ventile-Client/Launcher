@@ -8,9 +8,8 @@ namespace VentileClient
 {
     public partial class HelpPrompt : Form
     {
-        public HelpPrompt(ThemeTemplate themeCS, string[] tempHelpParam)
+        public HelpPrompt(ThemeTemplate themeCS, string[] helpParam)
         {
-            var helpParam = new List<string>(tempHelpParam);
             InitializeComponent();
 
 
@@ -23,7 +22,7 @@ namespace VentileClient
             CoverUpSliderPanel.BackColor = ColorTranslator.FromHtml(themeCS.Background);
             CloseButton.ForeColor = ColorTranslator.FromHtml(themeCS.Foreground);
 
-            for (int i = 0; i < helpParam.Count; i++)
+            for (int i = 0; i < helpParam.Length; i++)
             {
                 HelpLog.Text += helpParam[i] + "\n";
             }

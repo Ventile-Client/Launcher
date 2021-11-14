@@ -17,6 +17,7 @@ namespace VentileClient
                 return;
             }
 
+            // POSSIBLE: Remove api requests to github
             IReadOnlyList<Release> releases = await github.Repository.Release.GetAll(MainWindow.INSTANCE.link_settings.repoOwner, MainWindow.INSTANCE.link_settings.downloadRepo); // Gets all releases from the VersionChanger repo
 
             if (!(releases.Count > 0))

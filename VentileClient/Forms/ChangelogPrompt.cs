@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VentileClient.JSON_Template_Classes;
@@ -10,6 +11,7 @@ namespace VentileClient
         public ChangelogPrompt(ThemeTemplate themeCS, string[] changelogParam)
         {
             InitializeComponent();
+
             TopMost = true;
             this.BackColor = ColorTranslator.FromHtml(themeCS.Background);
             Title.ForeColor = ColorTranslator.FromHtml(themeCS.Foreground);
@@ -18,6 +20,8 @@ namespace VentileClient
             ChangeLogScrollPanel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
             CoverUpSliderPanel.BackColor = ColorTranslator.FromHtml(themeCS.Background);
 
+
+            // FIX: There is no indenting with the text
             for (int i = 0; i < changelogParam.Length; i++)
             {
                 ChangeLog.Text += changelogParam[i] + "\n";

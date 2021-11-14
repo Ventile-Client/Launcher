@@ -697,6 +697,7 @@ namespace VentileClient.LauncherUtils
                 return;
             }
 
+            // POSSIBLE: Remove api requests to github
             IReadOnlyList<RepositoryContent> contents = await MAIN.github.Repository.Content.GetAllContents(LINK_SETTINGS.repoOwner, LINK_SETTINGS.downloadRepo, @"Dlls\");
 
             if (contents.Count < 1)
@@ -997,6 +998,7 @@ namespace VentileClient.LauncherUtils
 
             if (!GithubManager.HaveRequests()) return;
 
+            // POSSIBLE: Remove api requests to github
             IReadOnlyList<Release> releases = await MAIN.github.Repository.Release.GetAll(MAIN.link_settings.repoOwner, MAIN.link_settings.versionsRepo); // Gets all releases from the VersionChanger repo
 
             foreach (Release release in releases) // Used to sort and add versions to the versions list

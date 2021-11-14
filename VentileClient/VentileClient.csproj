@@ -211,11 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppLogo.ico" />
-    <Content Include="Personal\dllInfoTemplate.txt" />
-    <Content Include="Personal\Fix.txt" />
     <Content Include="Personal\OnRelease.txt" />
     <Content Include="ReleaseData\Changelog.txt" />
-    <Content Include="Personal\WorkOn.txt" />
+    <Content Include="Personal\Tasks.txt" />
     <Content Include="ReleaseData\Help.txt" />
     <None Include="Resources\GrassBlock.png" />
     <None Include="packages.config" />

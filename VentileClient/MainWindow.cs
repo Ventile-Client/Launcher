@@ -2291,6 +2291,7 @@ namespace VentileClient
             this.Refresh();
         }
 
+        // POSSIBLE: If adding windows notif, configCS.Toasts cannot be a bool, maybe use int or enum.
         private void toastsToggle_Click(object sender, EventArgs e)
         {
             if (configCS.Toasts)
@@ -2312,21 +2313,13 @@ namespace VentileClient
         private void toastsSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (toastsSelector.SelectedIndex == 0) //Top Right
-            {
                 configCS.ToastsLoc = "topRight";
-            }
             else if (toastsSelector.SelectedIndex == 1) //Bottom Right
-            {
                 configCS.ToastsLoc = "bottomRight";
-            }
             else if (toastsSelector.SelectedIndex == 2) //Top Left
-            {
                 configCS.ToastsLoc = "topLeft";
-            }
             else if (toastsSelector.SelectedIndex == 3) //Bottom Left
-            {
                 configCS.ToastsLoc = "bottomLeft";
-            }
         }
 
         private void performanceModeToggle_Click(object sender, EventArgs e)
