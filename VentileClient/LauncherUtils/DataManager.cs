@@ -679,8 +679,8 @@ namespace VentileClient.LauncherUtils
         {
             string beta = MAIN.ventile_settings.isBeta ? "Beta" : "";
             MAIN.launcherVLabel.Text = $"{beta} {MAIN.ventile_settings.launcherVersion}";
-            MAIN.clientVLabel.Text = MAIN.ventile_settings.clientVersion;
-            MAIN.cosmeticsVLabel.Text = MAIN.ventile_settings.cosmeticsVersion;
+            MAIN.clientVLabel.Text = MAIN.ventile_settings.clientVersion?.ToString() ?? "N/A";
+            MAIN.cosmeticsVLabel.Text = MAIN.ventile_settings.cosmeticsVersion.ToString();
         }
 
         public static async void GetDLLS()

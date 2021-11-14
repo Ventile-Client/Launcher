@@ -39,12 +39,12 @@ namespace VentileClient
 
         public VentileSettings ventile_settings = new VentileSettings()
         {
-            launcherVersion = new Version(4, 2, 1),
-            clientVersion = "N/A",
-            cosmeticsVersion = "1.1.0",
+            launcherVersion = new Version(4, 2, 2),
+            clientVersion = null,
+            cosmeticsVersion = new Version(1, 1, 0),
             isBeta = false,
             rpcID = "832806990953840710",
-            changelog = Properties.Resources.Changelog.Trim().Split('\n'),
+            changelog = null, // Initialized in public MainWindow()
             help = Properties.Resources.Help.Trim().Split('\n')
         };
 
@@ -125,7 +125,7 @@ namespace VentileClient
         public static MainWindow INSTANCE;
         public MainWindow()
         {
-            Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
+            ventile_settings.changelog = Properties.Resources.Changelog.Trim().Replace("{{Version}}", ventile_settings.launcherVersion.ToString()).Split('\n');
 
             INSTANCE = this;
 
@@ -2588,8 +2588,8 @@ namespace VentileClient
     public class VentileSettings
     {
         public Version launcherVersion;
-        public string clientVersion;
-        public string cosmeticsVersion;
+        public Version clientVersion;
+        public Version cosmeticsVersion;
         public bool isBeta;
 
         public string rpcID;
