@@ -1932,6 +1932,8 @@ namespace VentileClient
 
         private Panel _panel;
         private string _hoveredPreset;
+
+        // POSSIBLE: Added built in presets, where if you click "Load from name", and you type in a name, if the file exists on a github page or smthn, then download it. You would also have to add an upload button
         private void presetHover(object sender, EventArgs e)
         {
             _panel = (Panel)sender;

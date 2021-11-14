@@ -109,12 +109,12 @@ namespace VentileClient
             this.foreColorLabel = new System.Windows.Forms.Label();
             this.buttonColorLabel = new System.Windows.Forms.Label();
             this.preset8 = new Guna.UI2.WinForms.Guna2Panel();
-            this.presets = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
-            this.saveToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.presetsContextStrip = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
+            this.savePresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadPresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletePresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importPresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportPresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preset7 = new Guna.UI2.WinForms.Guna2Panel();
             this.preset6 = new Guna.UI2.WinForms.Guna2Panel();
             this.preset5 = new Guna.UI2.WinForms.Guna2Panel();
@@ -216,7 +216,7 @@ namespace VentileClient
             this.Launcher.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.injectDelay)).BeginInit();
             this.Appearance.SuspendLayout();
-            this.presets.SuspendLayout();
+            this.presetsContextStrip.SuspendLayout();
             this.Extras.SuspendLayout();
             this.PackProfiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.profileIconPictureBox)).BeginInit();
@@ -1982,7 +1982,7 @@ namespace VentileClient
             this.preset8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset8.BorderColor = System.Drawing.Color.White;
             this.preset8.BorderThickness = 2;
-            this.preset8.ContextMenuStrip = this.presets;
+            this.preset8.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset8, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset8.Location = new System.Drawing.Point(532, 264);
             this.preset8.Name = "preset8";
@@ -1991,68 +1991,68 @@ namespace VentileClient
             this.preset8.TabIndex = 118;
             this.preset8.MouseEnter += new System.EventHandler(this.presetHover);
             // 
-            // presets
+            // presetsContextStrip
             // 
-            this.FadeEffectBetweenPages.SetDecoration(this.presets, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.presets.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripMenuItem1,
-            this.loadToolStripMenuItem1,
-            this.deleteToolStripMenuItem,
-            this.importToolStripMenuItem,
-            this.exportToolStripMenuItem});
-            this.presets.Name = "presets";
-            this.presets.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
-            this.presets.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
-            this.presets.RenderStyle.ColorTable = null;
-            this.presets.RenderStyle.RoundedEdges = true;
-            this.presets.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
-            this.presets.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.presets.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
-            this.presets.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
-            this.presets.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.presets.Size = new System.Drawing.Size(111, 114);
+            this.FadeEffectBetweenPages.SetDecoration(this.presetsContextStrip, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.presetsContextStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.savePresetMenuItem,
+            this.loadPresetMenuItem,
+            this.deletePresetMenuItem,
+            this.importPresetMenuItem,
+            this.exportPresetMenuItem});
+            this.presetsContextStrip.Name = "presets";
+            this.presetsContextStrip.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
+            this.presetsContextStrip.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
+            this.presetsContextStrip.RenderStyle.ColorTable = null;
+            this.presetsContextStrip.RenderStyle.RoundedEdges = true;
+            this.presetsContextStrip.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
+            this.presetsContextStrip.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.presetsContextStrip.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.presetsContextStrip.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.presetsContextStrip.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.presetsContextStrip.Size = new System.Drawing.Size(111, 114);
             // 
-            // saveToolStripMenuItem1
+            // savePresetMenuItem
             // 
-            this.saveToolStripMenuItem1.Name = "saveToolStripMenuItem1";
-            this.saveToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
-            this.saveToolStripMenuItem1.Text = "Save";
-            this.saveToolStripMenuItem1.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.savePresetMenuItem.Name = "savePresetMenuItem";
+            this.savePresetMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.savePresetMenuItem.Text = "Save";
+            this.savePresetMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // loadToolStripMenuItem1
+            // loadPresetMenuItem
             // 
-            this.loadToolStripMenuItem1.Name = "loadToolStripMenuItem1";
-            this.loadToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
-            this.loadToolStripMenuItem1.Text = "Load";
-            this.loadToolStripMenuItem1.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadPresetMenuItem.Name = "loadPresetMenuItem";
+            this.loadPresetMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.loadPresetMenuItem.Text = "Load";
+            this.loadPresetMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
-            // deleteToolStripMenuItem
+            // deletePresetMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deletePresetMenuItem.Name = "deletePresetMenuItem";
+            this.deletePresetMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.deletePresetMenuItem.Text = "Delete";
+            this.deletePresetMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // importToolStripMenuItem
+            // importPresetMenuItem
             // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.importToolStripMenuItem.Text = "Import";
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            this.importPresetMenuItem.Name = "importPresetMenuItem";
+            this.importPresetMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.importPresetMenuItem.Text = "Import";
+            this.importPresetMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
-            // exportToolStripMenuItem
+            // exportPresetMenuItem
             // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.exportToolStripMenuItem.Text = "Export";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            this.exportPresetMenuItem.Name = "exportPresetMenuItem";
+            this.exportPresetMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exportPresetMenuItem.Text = "Export";
+            this.exportPresetMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // preset7
             // 
             this.preset7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset7.BorderColor = System.Drawing.Color.White;
             this.preset7.BorderThickness = 2;
-            this.preset7.ContextMenuStrip = this.presets;
+            this.preset7.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset7, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset7.Location = new System.Drawing.Point(487, 264);
             this.preset7.Name = "preset7";
@@ -2066,7 +2066,7 @@ namespace VentileClient
             this.preset6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset6.BorderColor = System.Drawing.Color.White;
             this.preset6.BorderThickness = 2;
-            this.preset6.ContextMenuStrip = this.presets;
+            this.preset6.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset6, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset6.Location = new System.Drawing.Point(532, 221);
             this.preset6.Name = "preset6";
@@ -2080,7 +2080,7 @@ namespace VentileClient
             this.preset5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset5.BorderColor = System.Drawing.Color.White;
             this.preset5.BorderThickness = 2;
-            this.preset5.ContextMenuStrip = this.presets;
+            this.preset5.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset5, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset5.Location = new System.Drawing.Point(487, 221);
             this.preset5.Name = "preset5";
@@ -2094,7 +2094,7 @@ namespace VentileClient
             this.preset4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset4.BorderColor = System.Drawing.Color.White;
             this.preset4.BorderThickness = 2;
-            this.preset4.ContextMenuStrip = this.presets;
+            this.preset4.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset4, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset4.Location = new System.Drawing.Point(532, 179);
             this.preset4.Name = "preset4";
@@ -2108,7 +2108,7 @@ namespace VentileClient
             this.preset3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset3.BorderColor = System.Drawing.Color.White;
             this.preset3.BorderThickness = 2;
-            this.preset3.ContextMenuStrip = this.presets;
+            this.preset3.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset3, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset3.Location = new System.Drawing.Point(487, 179);
             this.preset3.Name = "preset3";
@@ -2122,7 +2122,7 @@ namespace VentileClient
             this.preset2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset2.BorderColor = System.Drawing.Color.White;
             this.preset2.BorderThickness = 2;
-            this.preset2.ContextMenuStrip = this.presets;
+            this.preset2.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset2, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset2.Location = new System.Drawing.Point(532, 142);
             this.preset2.Name = "preset2";
@@ -2235,7 +2235,7 @@ namespace VentileClient
             this.preset1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.preset1.BorderColor = System.Drawing.Color.White;
             this.preset1.BorderThickness = 2;
-            this.preset1.ContextMenuStrip = this.presets;
+            this.preset1.ContextMenuStrip = this.presetsContextStrip;
             this.FadeEffectBetweenPages.SetDecoration(this.preset1, Guna.UI2.AnimatorNS.DecorationType.None);
             this.preset1.Location = new System.Drawing.Point(487, 142);
             this.preset1.Name = "preset1";
@@ -3451,7 +3451,7 @@ namespace VentileClient
             ((System.ComponentModel.ISupportInitialize)(this.injectDelay)).EndInit();
             this.Appearance.ResumeLayout(false);
             this.Appearance.PerformLayout();
-            this.presets.ResumeLayout(false);
+            this.presetsContextStrip.ResumeLayout(false);
             this.Extras.ResumeLayout(false);
             this.Extras.PerformLayout();
             this.PackProfiles.ResumeLayout(false);
@@ -3590,12 +3590,12 @@ namespace VentileClient
         public Guna.UI2.WinForms.Guna2Button autoInject;
         public Guna.UI2.WinForms.Guna2Button personaLoc;
         public Guna.UI2.WinForms.Guna2Button AppearanceButton;
-        public Guna.UI2.WinForms.Guna2ContextMenuStrip presets;
-        public System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;
-        public System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem1;
-        public System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        public Guna.UI2.WinForms.Guna2ContextMenuStrip presetsContextStrip;
+        public System.Windows.Forms.ToolStripMenuItem savePresetMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem loadPresetMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem deletePresetMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem importPresetMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem exportPresetMenuItem;
         public Guna.UI2.WinForms.Guna2Button customImage;
         public System.Windows.Forms.Label backImageTitle;
         public Guna.UI2.WinForms.Guna2Button roundedToggle;

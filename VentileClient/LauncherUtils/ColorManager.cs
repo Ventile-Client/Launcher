@@ -781,11 +781,11 @@ namespace VentileClient.LauncherUtils
             MAIN.preset7.BackColor = ColorTranslator.FromHtml(MAIN.presetCS.p7);
             MAIN.preset8.BackColor = ColorTranslator.FromHtml(MAIN.presetCS.p8);
 
-            MAIN.presets.ForeColor = foreColor;
-            MAIN.presets.BackColor = backColor2;
-            MAIN.presets.RenderStyle.SelectionBackColor = accentColor;
-            MAIN.presets.RenderStyle.SelectionForeColor = foreColor;
-            MAIN.presets.RenderStyle.BorderColor = outlineColor;
+            MAIN.presetsContextStrip.ForeColor = foreColor;
+            MAIN.presetsContextStrip.BackColor = backColor2;
+            MAIN.presetsContextStrip.RenderStyle.SelectionBackColor = accentColor;
+            MAIN.presetsContextStrip.RenderStyle.SelectionForeColor = foreColor;
+            MAIN.presetsContextStrip.RenderStyle.BorderColor = outlineColor;
 
             //Extras
             MAIN.AppearanceButton2.FillColor = backColor2;
