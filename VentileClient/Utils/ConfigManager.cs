@@ -16,7 +16,7 @@ namespace VentileClient.Utils
         {
             try
             {
-                Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+                Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
 
                 if (!File.Exists(path))
                 {
@@ -42,7 +42,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+                    Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
 
                     if (MAIN.configCS == null)
                         MAIN.configCS = new ConfigTemplate();
@@ -92,7 +92,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+                    Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
 
                     if (MAIN.themeCS == null)
                         MAIN.themeCS = new ThemeTemplate();
@@ -115,7 +115,7 @@ namespace VentileClient.Utils
         {
             try
             {
-                Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+                Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
 
                 if (!File.Exists(path))
                 {
@@ -141,7 +141,7 @@ namespace VentileClient.Utils
             {
                 try
                 {
-                    Directory.CreateDirectory(@"C\temp\VentileClient\Presets");
+                    Directory.CreateDirectory(@"C:\temp\VentileClient\Presets");
 
                     if (MAIN.cosmeticsCS == null)
                         MAIN.cosmeticsCS = new CosmeticsTemplate();

@@ -76,26 +76,27 @@ namespace TextFormatterBecusLazy
         {
             string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
 
-
             using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, ".DiscordChangelog.txt"))) //path
             {
-                for (int i = 1; i < changelogLines.Length; i++)
-                {
-                    if (changelogLines[i].StartsWith(" -"))
+                    for (int i = 0; i < changelogLines.Length; i++)
                     {
-                        sw.WriteLine($"``` {changelogLines[i].Substring(3, changelogLines[i].Length - 3)} ```");
+                        if (changelogLines[i].StartsWith(" -"))
+                        {
+                            sw.WriteLine($"``` {changelogLines[i].Substring(3, changelogLines[i].Length - 3)} ```");
+                        }
+                        else if (changelogLines[i].StartsWith("    "))
+                        {
+                            sw.WriteLine($"> {changelogLines[i].Trim()}");
+                        }
+                        else
+                        {
+                            sw.WriteLine(changelogLines[i]);
+                        }
                     }
-                    else if (changelogLines[i].StartsWith("    "))
-                    {
-                        sw.WriteLine($"> {changelogLines[i].Trim()}");
-                    }
-                    else
-                    {
-                        sw.WriteLine(changelogLines[i]);
-                    }
-                }
+
                 sw.WriteLine();
                 sw.WriteLine("You can use Ventile-Installer (<#890391081462689793>) or do it manually using the .zip below");
+                sw.Flush();
                 sw.Close();
             }
             Console.WriteLine("Formatted Discord");
@@ -104,7 +105,7 @@ namespace TextFormatterBecusLazy
         static void FormatGithub()
         {
             string[] changelogLines = File.ReadAllLines(Path.Combine(PROJECT_DIR, "ReleaseData\\Changelog.txt"));
-
+            
 
             using (var sw = new StreamWriter(Path.Combine(TARGET_DIR, ".GithubChangelog.txt"))) //path
             {
@@ -119,6 +120,7 @@ namespace TextFormatterBecusLazy
                         sw.WriteLine(changelogLines[i]);
                     }
                 }
+                sw.Flush();
                 sw.Close();
             }
             Console.WriteLine("Formatted Github");
