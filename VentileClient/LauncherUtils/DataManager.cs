@@ -597,10 +597,17 @@ namespace VentileClient.LauncherUtils
             }
 
             //Toasts
-            if (MAIN.configCS.Toasts)
+            if (MAIN.configCS.Toasts == 0)
+            {
+                MAIN.toastsToggle.Checked = false;
+                MAIN.toastsToggle.Text = "Off";
+
+                MAIN.toastsSelector.Visible = false;
+            }
+            else if (MAIN.configCS.Toasts == 1)
             {
                 MAIN.toastsToggle.Checked = true;
-                MAIN.toastsToggle.Text = "On";
+                MAIN.toastsToggle.Text = "Ventile Toast";
 
                 if (MAIN.configCS.ToastsLoc == "topRight")
                     MAIN.toastsSelector.SelectedItem = "Top Right";
@@ -610,14 +617,13 @@ namespace VentileClient.LauncherUtils
                     MAIN.toastsSelector.SelectedItem = "Top Left";
                 else if (MAIN.configCS.ToastsLoc == "bottomLeft")
                     MAIN.toastsSelector.SelectedItem = "Bottom Left";
-
                 MAIN.toastsSelector.Visible = true;
-            }
-            else
+            } else
             {
-                MAIN.toastsToggle.Checked = false;
-                MAIN.toastsToggle.Text = "Off";
+                MAIN.toastsToggle.Checked = true;
+                MAIN.toastsToggle.Text = "Windows Toast";
                 MAIN.toastsSelector.Visible = false;
+
             }
 
             //Rounded Buttons

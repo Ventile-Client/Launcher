@@ -12,7 +12,7 @@ namespace VentileClient.Utils
 
         // Configs
 
-        public static void ReadConfig(string path)
+        public static void ReadConfig(string path = @"C:\temp\VentileClient\Presets\Config.json")
         {
             try
             {
@@ -36,7 +36,7 @@ namespace VentileClient.Utils
             }
         }
 
-        public static async void WriteConfig(string path)
+        public static async void WriteConfig(string path = @"C:\temp\VentileClient\Presets\Config.json")
         {
             await Task.Run(() =>
             {
@@ -62,7 +62,7 @@ namespace VentileClient.Utils
 
         // Themes
 
-        public static void ReadTheme(string path)
+        public static void ReadTheme(string path = @"C:\temp\VentileClient\Presets\Theme.json")
         {
             try
             {
@@ -86,7 +86,7 @@ namespace VentileClient.Utils
             }
         }
 
-        public static async void WriteTheme(string path)
+        public static async void WriteTheme(string path = @"C:\temp\VentileClient\Presets\Theme.json")
         {
             await Task.Run(() =>
             {
@@ -111,7 +111,7 @@ namespace VentileClient.Utils
 
 
         // Cosmetics
-        public static void ReadCosmetics(string path)
+        public static void ReadCosmetics(string path = @"C:\temp\VentileClient\Presets\Cosmetics.json")
         {
             try
             {
@@ -135,7 +135,7 @@ namespace VentileClient.Utils
             }
         }
 
-        public static async void WriteCosmetics(string path)
+        public static async void WriteCosmetics(string path = @"C:\temp\VentileClient\Presets\Cosmetics.json")
         {
             await Task.Run(() =>
             {
@@ -159,7 +159,7 @@ namespace VentileClient.Utils
         }
 
         // Preset Colors
-        public static void GetPresetColors(string directory)
+        public static void GetPresetColors(string directory = @"C:\temp\VentileClient\Presets\")
         {
             try
             {

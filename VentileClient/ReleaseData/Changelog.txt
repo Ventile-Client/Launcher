@@ -1,3 +1,3 @@
 ﻿Version {{Version}} Changelog:
- - Fixes:
-    Mistype in code
+ - Added:
+    Windows Notifications

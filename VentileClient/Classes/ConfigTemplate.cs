@@ -15,7 +15,7 @@
         bool _persona;
         string _personaLoc;
         int _injectDelay;
-        bool _toasts = true;
+        int _toasts = 1; // 0 = Off | 1 = Custom | 2 = Windows
         string _toastsLoc;
         bool _roundedButtons = true;
         bool _performanceMode;
@@ -168,7 +168,7 @@
                 _injectDelay = value;
             }
         }
-        public bool Toasts
+        public int Toasts
         {
             get
             {

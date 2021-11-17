@@ -169,7 +169,7 @@ namespace VentileClient
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             // Get Current Theme
-            ConfigManager.ReadTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+            ConfigManager.ReadTheme();
 
             // Set the version's text
             version.Text = $"{(ventile_settings.isBeta ? "Beta " : "")}{ventile_settings.launcherVersion}";
@@ -201,13 +201,13 @@ namespace VentileClient
 
         private async void MainWindow_Load(object sender, EventArgs e)
         {
-            ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\Config.json");
+            ConfigManager.ReadConfig();
 
             if (!Directory.Exists(Path.Combine(gamesFolder, "com.mojang")))
                 Notif.Toast("MC Data", "I couldn't find your com.mojang, maybe start minecraft?");
 
-            ConfigManager.ReadCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
-            ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
+            ConfigManager.ReadCosmetics();
+            ConfigManager.GetPresetColors();
 
             ColorManager.Global();
             ColorManager.Home();
@@ -279,19 +279,19 @@ namespace VentileClient
                 {
                     this.Hide();
                     TrayIcon.Visible = true;
-                    Notif.Toast("Launcher", "Minimized to tray!");
+                    //Notif.Toast("Launcher", "Minimized to tray!");
                 }
 
                 if (configCS.WindowState == "minimize") // Minimizes launcher to taskbar
                 {
                     this.WindowState = FormWindowState.Minimized;
-                    Notif.Toast("Launcher", "Minimized!");
+                    //Notif.Toast("Launcher", "Minimized!");
                 }
 
                 if (configCS.WindowState == "close") // Closes Launcher
                 {
-                    ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-                    ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+                    ConfigManager.WriteConfig();
+                    ConfigManager.WriteTheme();
                     RPC.Disable();
                     Task.Delay(100);
                     fadeOut.Start();
@@ -563,9 +563,9 @@ namespace VentileClient
                 if (_isClosing) return;
                 _isClosing = true;
 
-                ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-                ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteConfig();
+                ConfigManager.WriteTheme();
+                ConfigManager.WriteCosmetics();
 
                 RPC.Disable();
 
@@ -726,7 +726,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "BlackVentileCape.zip"), minecraftResourcePacks, "BlackVentileCape.zip");
@@ -751,7 +751,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -778,7 +778,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -805,7 +805,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -832,7 +832,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -859,7 +859,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -916,7 +916,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -942,7 +942,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -968,7 +968,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -994,7 +994,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -1020,7 +1020,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -1046,7 +1046,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 //Auto Download
 
@@ -1132,7 +1132,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
 
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "GlowingVentileCape.zip"), minecraftResourcePacks, "GlowingVentileCape.zip");
@@ -1159,7 +1159,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
 
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "SlidingVentileCape.zip"), minecraftResourcePacks, "SlidingVentileCape.zip");
@@ -1206,7 +1206,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
 
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "WavyVentile.zip"), minecraftResourcePacks, "WavyVentile.zip");
@@ -1229,7 +1229,7 @@ namespace VentileClient
                 CosmeticManager.Remove(CosmeticManager.Pack.CosmeticMixer);
                 CosmeticManager.Add(CosmeticManager.Pack.CosmeticMixer);
 
-                ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+                ConfigManager.WriteCosmetics();
 
                 await DownloadManager.DownloadAsync(string.Format(@"https://github.com/" + link_settings.repoOwner + "/" + link_settings.downloadRepo + @"/blob/main/Cosmetics/{0}?raw=true", "Kagune.zip"), minecraftResourcePacks, "KaguneVentile.zip");
             }
@@ -1264,7 +1264,7 @@ namespace VentileClient
             resetMasks();
             resetAnimated();
             resetOthers();
-            ConfigManager.WriteCosmetics(@"C:\temp\VentileClient\Presets\Cosmetics.json");
+            ConfigManager.WriteCosmetics();
         }
 
         #endregion
@@ -1933,7 +1933,6 @@ namespace VentileClient
         private Panel _panel;
         private string _hoveredPreset;
 
-        // POSSIBLE: Added built in presets, where if you click "Load from name", and you type in a name, if the file exists on a github page or smthn, then download it. You would also have to add an upload button
         private void presetHover(object sender, EventArgs e)
         {
             _panel = (Panel)sender;
@@ -1947,7 +1946,7 @@ namespace VentileClient
             }
             else
             {
-                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
+                ConfigManager.GetPresetColors();
 
                 if (Convert.ToInt32(_panel.Name.Substring(6)) == 1)
                     presetCS.p1 = themeCS.Accent;
@@ -2010,8 +2009,8 @@ namespace VentileClient
 
                     ConfigManager.ReadConfig(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + ".json");
                     ConfigManager.ReadTheme(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + "Theme.json");
-                    ConfigManager.WriteConfig(@"C:\temp\VentileClient\Presets\Config.json");
-                    ConfigManager.WriteTheme(@"C:\temp\VentileClient\Presets\Theme.json");
+                    ConfigManager.WriteConfig();
+                    ConfigManager.WriteTheme();
 
                     if (presets[0])
                         presetCS.p1 = themeCS.SecondBackground;
@@ -2087,7 +2086,7 @@ namespace VentileClient
                     File.Delete(@"C:\temp\VentileClient\Presets\" + _hoveredPreset + "Theme.json");
                 }
                 catch { }
-                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
+                ConfigManager.GetPresetColors();
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
 
@@ -2119,7 +2118,7 @@ namespace VentileClient
             else
             {
                 Notif.Toast("Presets", "This preset doesn't exist!");
-                ConfigManager.GetPresetColors(@"C:\temp\VentileClient\Presets\");
+                ConfigManager.GetPresetColors();
 
                 _panel.BackColor = ColorTranslator.FromHtml(themeCS.SecondBackground);
 
@@ -2293,22 +2292,27 @@ namespace VentileClient
             this.Refresh();
         }
 
-        // POSSIBLE: If adding windows notif, configCS.Toasts cannot be a bool, maybe use int or enum.
         private void toastsToggle_Click(object sender, EventArgs e)
         {
-            if (configCS.Toasts)
+            if (configCS.Toasts == 0)
             {
-                configCS.Toasts = false;
+                configCS.Toasts = 1;
+                toastsToggle.Checked = true;
+                toastsToggle.Text = "Ventile Toast";
+                toastsSelector.Visible = true;
+            }
+            else if (configCS.Toasts == 1)
+            {
+                configCS.Toasts = 2;
+                toastsToggle.Checked = true;
+                toastsToggle.Text = "Windows Toast";
+                toastsSelector.Visible = false;
+            } else
+            {
+                configCS.Toasts = 0;
                 toastsToggle.Checked = false;
                 toastsToggle.Text = "Off";
                 toastsSelector.Visible = false;
-            }
-            else
-            {
-                configCS.Toasts = true;
-                toastsToggle.Checked = true;
-                toastsToggle.Text = "On";
-                toastsSelector.Visible = true;
             }
         }
 
@@ -2326,6 +2330,7 @@ namespace VentileClient
 
         private void performanceModeToggle_Click(object sender, EventArgs e)
         {
+            Notif.Toast("Hello", "Epico");
             configCS.PerformanceMode = !configCS.PerformanceMode;
             performanceModeToggle.Checked = configCS.PerformanceMode;
             performanceModeToggle.Animated = configCS.PerformanceMode;

@@ -81,8 +81,7 @@ namespace VentileClient.Utils
 
                 ALREADY_ATTEMPTED_INJECT = false;
 
-                Notif.Toast("DLL", "Injected!");
-                Notif.Toast("Path", DownloadedDllFilePath);
+                Notif.Toast("DLL", "Injected | " + DownloadedDllFilePath);
                 MainWindow.INSTANCE.dLogger.Log($"DLL Injected: {DownloadedDllFilePath}");
             }
             else
