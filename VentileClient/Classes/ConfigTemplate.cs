@@ -1,4 +1,7 @@
-﻿namespace VentileClient.JSON_Template_Classes
+﻿using System.Collections.Generic;
+using VentileClient.Classes;
+
+namespace VentileClient.JSON_Template_Classes
 {
     public class ConfigTemplate
     {
@@ -22,6 +25,7 @@
         bool _backgroundImage;
         string _backgroundImageLoc;
         string _defaultProfile;
+        List<Alarm> _alarms = new List<Alarm>();
 
         public string WindowState
         {
@@ -247,6 +251,20 @@
             set
             {
                 _defaultProfile = value;
+            }
+        }
+        public List<Alarm> Alarms
+        {
+            get
+            {
+                if (_alarms == null)
+                    _alarms = new List<Alarm>();
+
+                return _alarms;
+            }
+            set
+            {
+                _alarms = value;
             }
         }
     }

@@ -849,7 +849,7 @@ namespace VentileClient.LauncherUtils
             MAIN.saveProfileButton.ForeColor = foreColor;
             MAIN.saveProfileButton.FillColor = backColor2;
 
-            MAIN.guna2VScrollBar1.ThumbColor = backColor2;
+            MAIN.packProfileScrollBar.ThumbColor = backColor2;
             MAIN.packProfilesList.BackColor = backColor2;
 
             MAIN.profileNameLabel.ForeColor = foreColor;
@@ -869,6 +869,68 @@ namespace VentileClient.LauncherUtils
                 ((Guna2Button)MAIN.packProfilesList.Controls[i]).FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10));
                 ((Guna2Button)MAIN.packProfilesList.Controls[i]).ForeColor = foreColor;
                 ((Guna2Button)MAIN.packProfilesList.Controls[i]).Animated = !MAIN.configCS.PerformanceMode;
+            }
+
+            MAIN.AlarmsButton.CheckedState.FillColor = accentColor;
+            MAIN.AlarmsButton.ForeColor = foreColor;
+            MAIN.AlarmsButton.FillColor = backColor2;
+
+            MAIN.ExtrasButton2.CheckedState.FillColor = accentColor;
+            MAIN.ExtrasButton2.ForeColor = foreColor;
+            MAIN.ExtrasButton2.FillColor = backColor2;
+
+            MAIN.deleteAlarm.CheckedState.FillColor = accentColor;
+            MAIN.deleteAlarm.ForeColor = foreColor;
+            MAIN.deleteAlarm.FillColor = backColor2;
+
+            MAIN.saveAlarm.CheckedState.FillColor = accentColor;
+            MAIN.saveAlarm.ForeColor = foreColor;
+            MAIN.saveAlarm.FillColor = backColor2;
+
+            MAIN.alarmMinutesSelector.ForeColor = foreColor;
+            MAIN.alarmMinutesSelector.UpDownButtonFillColor = accentColor;
+            MAIN.alarmMinutesSelector.FillColor = backColor2;
+
+            MAIN.alarmHoursSelector.ForeColor = foreColor;
+            MAIN.alarmHoursSelector.UpDownButtonFillColor = accentColor;
+            MAIN.alarmHoursSelector.FillColor = backColor2;
+
+            MAIN.alarmRepeatedToggle.CheckedState.FillColor = accentColor;
+            MAIN.alarmRepeatedToggle.UncheckedState.FillColor = backColor2;
+
+            MAIN.AmPmToggle.CheckedState.FillColor = backColor2;
+            MAIN.AmPmToggle.UncheckedState.FillColor = backColor2;
+            MAIN.AmPmToggle.CheckedState.InnerColor = foreColor;
+            MAIN.AmPmToggle.UncheckedState.InnerColor = foreColor;
+
+            MAIN.alarmsScrollbar.ThumbColor = backColor2;
+            MAIN.alarmsList.BackColor = backColor2;
+
+            MAIN.alarmNameLabel.ForeColor = foreColor;
+            MAIN.alarmsListLabel.ForeColor = foreColor;
+            MAIN.alarmHours.ForeColor = foreColor;
+            MAIN.alarmMinutes.ForeColor = foreColor;
+            MAIN.alarmRepeatedLabel.ForeColor = foreColor;
+            MAIN.amLabel.ForeColor = foreColor;
+            MAIN.pmLabel.ForeColor = foreColor;
+
+            MAIN.alarmNameTextbox.BorderColor = outlineColor;
+            MAIN.alarmNameTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55));
+            MAIN.alarmNameTextbox.ForeColor = foreColor;
+            MAIN.alarmNameTextbox.FillColor = backColor2;
+
+            MAIN.alarmMessageTextbox.BorderColor = outlineColor;
+            MAIN.alarmMessageTextbox.PlaceholderForeColor = Color.FromArgb(((foreColor.R + 55 <= 255) ? foreColor.R + 55 : foreColor.R - 55), ((foreColor.G + 55 <= 255) ? foreColor.G + 55 : foreColor.G - 55), ((foreColor.B + 55 <= 255) ? foreColor.B + 55 : foreColor.B - 55));
+            MAIN.alarmMessageTextbox.ForeColor = foreColor;
+            MAIN.alarmMessageTextbox.FillColor = backColor2;
+
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                ((Guna2Button)MAIN.alarmsList.Controls[i]).FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10));
+                ((Guna2Button)MAIN.alarmsList.Controls[i]).ForeColor = foreColor;
+                ((Guna2Button)MAIN.alarmsList.Controls[i]).Animated = !MAIN.configCS.PerformanceMode;
             }
 
             MAIN.settingsTab.BackColor = backColor;

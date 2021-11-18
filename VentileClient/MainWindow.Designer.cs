@@ -151,6 +151,7 @@ namespace VentileClient
             this.backgroundColorLabel = new System.Windows.Forms.Label();
             this.themeTitle = new System.Windows.Forms.Label();
             this.Extras = new System.Windows.Forms.TabPage();
+            this.AlarmsButton = new Guna.UI2.WinForms.Guna2Button();
             this.packProfileButtonOpen = new Guna.UI2.WinForms.Guna2Button();
             this.packProfilesTitle = new System.Windows.Forms.Label();
             this.performanceModeToggle = new Guna.UI2.WinForms.Guna2Button();
@@ -164,7 +165,7 @@ namespace VentileClient
             this.AppearanceButton2 = new Guna.UI2.WinForms.Guna2Button();
             this.toastsTitle = new System.Windows.Forms.Label();
             this.PackProfiles = new System.Windows.Forms.TabPage();
-            this.guna2VScrollBar1 = new Guna.UI2.WinForms.Guna2VScrollBar();
+            this.packProfileScrollBar = new Guna.UI2.WinForms.Guna2VScrollBar();
             this.profileNameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             this.saveProfileButton = new Guna.UI2.WinForms.Guna2Button();
             this.deleteProfileButton = new Guna.UI2.WinForms.Guna2Button();
@@ -174,6 +175,25 @@ namespace VentileClient
             this.profileListLabel = new System.Windows.Forms.Label();
             this.exitPackProfilesButton = new Guna.UI2.WinForms.Guna2Button();
             this.profileNameLabel = new System.Windows.Forms.Label();
+            this.Alarms = new System.Windows.Forms.TabPage();
+            this.alarmMessageTextbox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.AmPmToggle = new Guna.UI2.WinForms.Guna2ToggleSwitch();
+            this.pmLabel = new System.Windows.Forms.Label();
+            this.amLabel = new System.Windows.Forms.Label();
+            this.alarmRepeatedLabel = new System.Windows.Forms.Label();
+            this.alarmRepeatedToggle = new Guna.UI2.WinForms.Guna2CustomCheckBox();
+            this.alarmHoursSelector = new Guna.UI2.WinForms.Guna2NumericUpDown();
+            this.alarmNameLabel = new System.Windows.Forms.Label();
+            this.alarmHours = new System.Windows.Forms.Label();
+            this.alarmMinutes = new System.Windows.Forms.Label();
+            this.alarmMinutesSelector = new Guna.UI2.WinForms.Guna2NumericUpDown();
+            this.alarmsScrollbar = new Guna.UI2.WinForms.Guna2VScrollBar();
+            this.alarmsList = new System.Windows.Forms.FlowLayoutPanel();
+            this.alarmsListLabel = new System.Windows.Forms.Label();
+            this.deleteAlarm = new Guna.UI2.WinForms.Guna2Button();
+            this.saveAlarm = new Guna.UI2.WinForms.Guna2Button();
+            this.alarmNameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.ExtrasButton2 = new Guna.UI2.WinForms.Guna2Button();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.helpButton = new Guna.UI2.WinForms.Guna2Button();
             this.changeLogLink = new System.Windows.Forms.LinkLabel();
@@ -199,6 +219,7 @@ namespace VentileClient
             this.internetCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             this.SelectDLLTooltip = new Guna.UI2.WinForms.Guna2HtmlToolTip();
+            this.alarmsTimer = new System.Windows.Forms.Timer(this.components);
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
@@ -221,6 +242,10 @@ namespace VentileClient
             this.PackProfiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.profileIconPictureBox)).BeginInit();
             this.packProfilesList.SuspendLayout();
+            this.Alarms.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmHoursSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmMinutesSelector)).BeginInit();
+            this.alarmsList.SuspendLayout();
             this.aboutTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discord)).BeginInit();
@@ -676,6 +701,7 @@ namespace VentileClient
             this.homeTab.Size = new System.Drawing.Size(644, 465);
             this.homeTab.TabIndex = 0;
             this.homeTab.Text = "home";
+            this.homeTab.Click += new System.EventHandler(this.ExtrasButton_Click);
             // 
             // launchMc
             // 
@@ -1369,6 +1395,7 @@ namespace VentileClient
             this.settingsPagesTabControl.Controls.Add(this.Appearance);
             this.settingsPagesTabControl.Controls.Add(this.Extras);
             this.settingsPagesTabControl.Controls.Add(this.PackProfiles);
+            this.settingsPagesTabControl.Controls.Add(this.Alarms);
             this.FadeEffectBetweenPages.SetDecoration(this.settingsPagesTabControl, Guna.UI2.AnimatorNS.DecorationType.None);
             this.settingsPagesTabControl.ItemSize = new System.Drawing.Size(180, 40);
             this.settingsPagesTabControl.Location = new System.Drawing.Point(0, 85);
@@ -1890,7 +1917,7 @@ namespace VentileClient
             this.AppearanceButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.AppearanceButton.ForeColor = System.Drawing.Color.White;
             this.AppearanceButton.HoverState.Parent = this.AppearanceButton;
-            this.AppearanceButton.Location = new System.Drawing.Point(533, 336);
+            this.AppearanceButton.Location = new System.Drawing.Point(530, 336);
             this.AppearanceButton.Name = "AppearanceButton";
             this.AppearanceButton.ShadowDecoration.Parent = this.AppearanceButton;
             this.AppearanceButton.Size = new System.Drawing.Size(96, 29);
@@ -2010,7 +2037,7 @@ namespace VentileClient
             this.presetsContextStrip.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.presetsContextStrip.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.presetsContextStrip.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.presetsContextStrip.Size = new System.Drawing.Size(181, 136);
+            this.presetsContextStrip.Size = new System.Drawing.Size(111, 114);
             // 
             // savePresetMenuItem
             // 
@@ -2389,7 +2416,7 @@ namespace VentileClient
             this.ExtrasButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.ExtrasButton.ForeColor = System.Drawing.Color.White;
             this.ExtrasButton.HoverState.Parent = this.ExtrasButton;
-            this.ExtrasButton.Location = new System.Drawing.Point(540, 337);
+            this.ExtrasButton.Location = new System.Drawing.Point(537, 336);
             this.ExtrasButton.Name = "ExtrasButton";
             this.ExtrasButton.ShadowDecoration.Parent = this.ExtrasButton;
             this.ExtrasButton.Size = new System.Drawing.Size(90, 29);
@@ -2570,6 +2597,7 @@ namespace VentileClient
             // Extras
             // 
             this.Extras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Extras.Controls.Add(this.AlarmsButton);
             this.Extras.Controls.Add(this.packProfileButtonOpen);
             this.Extras.Controls.Add(this.packProfilesTitle);
             this.Extras.Controls.Add(this.performanceModeToggle);
@@ -2589,6 +2617,30 @@ namespace VentileClient
             this.Extras.Size = new System.Drawing.Size(635, 374);
             this.Extras.TabIndex = 2;
             this.Extras.Text = "Extras";
+            // 
+            // TimersButton
+            // 
+            this.AlarmsButton.Animated = true;
+            this.AlarmsButton.AutoRoundedCorners = true;
+            this.AlarmsButton.BackColor = System.Drawing.Color.Transparent;
+            this.AlarmsButton.BorderRadius = 13;
+            this.AlarmsButton.CheckedState.Parent = this.AlarmsButton;
+            this.AlarmsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AlarmsButton.CustomImages.Parent = this.AlarmsButton;
+            this.FadeEffectBetweenPages.SetDecoration(this.AlarmsButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.AlarmsButton.DisabledState.Parent = this.AlarmsButton;
+            this.AlarmsButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.AlarmsButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.AlarmsButton.ForeColor = System.Drawing.Color.White;
+            this.AlarmsButton.HoverState.Parent = this.AlarmsButton;
+            this.AlarmsButton.Location = new System.Drawing.Point(547, 336);
+            this.AlarmsButton.Name = "AlarmsButton";
+            this.AlarmsButton.ShadowDecoration.Parent = this.AlarmsButton;
+            this.AlarmsButton.Size = new System.Drawing.Size(80, 29);
+            this.AlarmsButton.TabIndex = 90;
+            this.AlarmsButton.TabStop = false;
+            this.AlarmsButton.Text = "Alarms";
+            this.AlarmsButton.Click += new System.EventHandler(this.TimersButton_Click);
             // 
             // packProfileButtonOpen
             // 
@@ -2811,7 +2863,7 @@ namespace VentileClient
             this.AppearanceButton2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.AppearanceButton2.ForeColor = System.Drawing.Color.White;
             this.AppearanceButton2.HoverState.Parent = this.AppearanceButton2;
-            this.AppearanceButton2.Location = new System.Drawing.Point(6, 336);
+            this.AppearanceButton2.Location = new System.Drawing.Point(5, 336);
             this.AppearanceButton2.Name = "AppearanceButton2";
             this.AppearanceButton2.ShadowDecoration.Parent = this.AppearanceButton2;
             this.AppearanceButton2.Size = new System.Drawing.Size(99, 29);
@@ -2837,7 +2889,7 @@ namespace VentileClient
             // PackProfiles
             // 
             this.PackProfiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.PackProfiles.Controls.Add(this.guna2VScrollBar1);
+            this.PackProfiles.Controls.Add(this.packProfileScrollBar);
             this.PackProfiles.Controls.Add(this.profileNameTextbox);
             this.PackProfiles.Controls.Add(this.saveProfileButton);
             this.PackProfiles.Controls.Add(this.deleteProfileButton);
@@ -2854,27 +2906,27 @@ namespace VentileClient
             this.PackProfiles.TabIndex = 3;
             this.PackProfiles.Text = "Pack Profiles";
             // 
-            // guna2VScrollBar1
+            // packProfileScrollBar
             // 
-            this.guna2VScrollBar1.AutoRoundedCorners = true;
-            this.guna2VScrollBar1.BorderRadius = 7;
-            this.guna2VScrollBar1.Cursor = System.Windows.Forms.Cursors.SizeNS;
-            this.FadeEffectBetweenPages.SetDecoration(this.guna2VScrollBar1, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.guna2VScrollBar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.guna2VScrollBar1.HoverState.Parent = null;
-            this.guna2VScrollBar1.InUpdate = false;
-            this.guna2VScrollBar1.LargeChange = 30;
-            this.guna2VScrollBar1.Location = new System.Drawing.Point(612, 13);
-            this.guna2VScrollBar1.Maximum = 32;
-            this.guna2VScrollBar1.Name = "guna2VScrollBar1";
-            this.guna2VScrollBar1.PressedState.Parent = this.guna2VScrollBar1;
-            this.guna2VScrollBar1.ScrollbarSize = 17;
-            this.guna2VScrollBar1.Size = new System.Drawing.Size(17, 340);
-            this.guna2VScrollBar1.SmallChange = 5;
-            this.guna2VScrollBar1.TabIndex = 22;
-            this.guna2VScrollBar1.TabStop = false;
-            this.guna2VScrollBar1.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.guna2VScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.guna2VScrollBar1_Scroll);
+            this.packProfileScrollBar.AutoRoundedCorners = true;
+            this.packProfileScrollBar.BorderRadius = 7;
+            this.packProfileScrollBar.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.FadeEffectBetweenPages.SetDecoration(this.packProfileScrollBar, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.packProfileScrollBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.packProfileScrollBar.HoverState.Parent = null;
+            this.packProfileScrollBar.InUpdate = false;
+            this.packProfileScrollBar.LargeChange = 30;
+            this.packProfileScrollBar.Location = new System.Drawing.Point(612, 13);
+            this.packProfileScrollBar.Maximum = 32;
+            this.packProfileScrollBar.Name = "packProfileScrollBar";
+            this.packProfileScrollBar.PressedState.Parent = this.packProfileScrollBar;
+            this.packProfileScrollBar.ScrollbarSize = 17;
+            this.packProfileScrollBar.Size = new System.Drawing.Size(17, 340);
+            this.packProfileScrollBar.SmallChange = 5;
+            this.packProfileScrollBar.TabIndex = 22;
+            this.packProfileScrollBar.TabStop = false;
+            this.packProfileScrollBar.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.packProfileScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.packProfilesScrollbar_Scroll);
             // 
             // profileNameTextbox
             // 
@@ -3071,6 +3123,423 @@ namespace VentileClient
             this.profileNameLabel.TabIndex = 16;
             this.profileNameLabel.Text = "Profile Name";
             this.profileNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Alarms
+            // 
+            this.Alarms.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.Alarms.Controls.Add(this.alarmMessageTextbox);
+            this.Alarms.Controls.Add(this.AmPmToggle);
+            this.Alarms.Controls.Add(this.pmLabel);
+            this.Alarms.Controls.Add(this.amLabel);
+            this.Alarms.Controls.Add(this.alarmRepeatedLabel);
+            this.Alarms.Controls.Add(this.alarmRepeatedToggle);
+            this.Alarms.Controls.Add(this.alarmHoursSelector);
+            this.Alarms.Controls.Add(this.alarmNameLabel);
+            this.Alarms.Controls.Add(this.alarmHours);
+            this.Alarms.Controls.Add(this.alarmMinutes);
+            this.Alarms.Controls.Add(this.alarmMinutesSelector);
+            this.Alarms.Controls.Add(this.alarmsScrollbar);
+            this.Alarms.Controls.Add(this.alarmsList);
+            this.Alarms.Controls.Add(this.deleteAlarm);
+            this.Alarms.Controls.Add(this.saveAlarm);
+            this.Alarms.Controls.Add(this.alarmNameTextbox);
+            this.Alarms.Controls.Add(this.ExtrasButton2);
+            this.FadeEffectBetweenPages.SetDecoration(this.Alarms, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.Alarms.Location = new System.Drawing.Point(5, 4);
+            this.Alarms.Margin = new System.Windows.Forms.Padding(0);
+            this.Alarms.Name = "Alarms";
+            this.Alarms.Size = new System.Drawing.Size(635, 374);
+            this.Alarms.TabIndex = 4;
+            this.Alarms.Text = "Alarms";
+            // 
+            // alarmMessageTextbox
+            // 
+            this.alarmMessageTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.alarmMessageTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmMessageTextbox.BorderThickness = 2;
+            this.alarmMessageTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmMessageTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmMessageTextbox.DefaultText = "";
+            this.alarmMessageTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.alarmMessageTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.alarmMessageTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.alarmMessageTextbox.DisabledState.Parent = this.alarmMessageTextbox;
+            this.alarmMessageTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.alarmMessageTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.alarmMessageTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.alarmMessageTextbox.FocusedState.Parent = this.alarmMessageTextbox;
+            this.alarmMessageTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.alarmMessageTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.alarmMessageTextbox.HoverState.Parent = this.alarmMessageTextbox;
+            this.alarmMessageTextbox.Location = new System.Drawing.Point(59, 256);
+            this.alarmMessageTextbox.MaxLength = 32;
+            this.alarmMessageTextbox.Name = "alarmMessageTextbox";
+            this.alarmMessageTextbox.PasswordChar = '\0';
+            this.alarmMessageTextbox.PlaceholderText = "Message";
+            this.alarmMessageTextbox.SelectedText = "";
+            this.alarmMessageTextbox.ShadowDecoration.Parent = this.alarmMessageTextbox;
+            this.alarmMessageTextbox.Size = new System.Drawing.Size(216, 25);
+            this.alarmMessageTextbox.TabIndex = 203;
+            // 
+            // AmPmToggle
+            // 
+            this.AmPmToggle.Animated = true;
+            this.AmPmToggle.AutoRoundedCorners = true;
+            this.AmPmToggle.BackColor = System.Drawing.Color.Transparent;
+            this.AmPmToggle.CheckedState.BorderColor = System.Drawing.Color.RoyalBlue;
+            this.AmPmToggle.CheckedState.FillColor = System.Drawing.Color.RoyalBlue;
+            this.AmPmToggle.CheckedState.InnerBorderColor = System.Drawing.Color.White;
+            this.AmPmToggle.CheckedState.InnerColor = System.Drawing.Color.White;
+            this.AmPmToggle.CheckedState.Parent = this.AmPmToggle;
+            this.AmPmToggle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FadeEffectBetweenPages.SetDecoration(this.AmPmToggle, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.AmPmToggle.Location = new System.Drawing.Point(141, 192);
+            this.AmPmToggle.Name = "AmPmToggle";
+            this.AmPmToggle.ShadowDecoration.Parent = this.AmPmToggle;
+            this.AmPmToggle.Size = new System.Drawing.Size(50, 20);
+            this.AmPmToggle.TabIndex = 0;
+            this.AmPmToggle.TabStop = false;
+            this.AmPmToggle.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.AmPmToggle.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.AmPmToggle.UncheckedState.InnerBorderColor = System.Drawing.Color.White;
+            this.AmPmToggle.UncheckedState.InnerColor = System.Drawing.Color.White;
+            this.AmPmToggle.UncheckedState.Parent = this.AmPmToggle;
+            this.AmPmToggle.UseTransparentBackground = true;
+            // 
+            // pmLabel
+            // 
+            this.pmLabel.AutoSize = true;
+            this.pmLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.pmLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.pmLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pmLabel.ForeColor = System.Drawing.Color.White;
+            this.pmLabel.Location = new System.Drawing.Point(197, 192);
+            this.pmLabel.Name = "pmLabel";
+            this.pmLabel.Size = new System.Drawing.Size(32, 20);
+            this.pmLabel.TabIndex = 117;
+            this.pmLabel.Text = "PM";
+            this.pmLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // amLabel
+            // 
+            this.amLabel.AutoSize = true;
+            this.amLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.amLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.amLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.amLabel.ForeColor = System.Drawing.Color.White;
+            this.amLabel.Location = new System.Drawing.Point(101, 192);
+            this.amLabel.Name = "amLabel";
+            this.amLabel.Size = new System.Drawing.Size(34, 20);
+            this.amLabel.TabIndex = 116;
+            this.amLabel.Text = "AM";
+            this.amLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // alarmRepeatedLabel
+            // 
+            this.alarmRepeatedLabel.AutoSize = true;
+            this.alarmRepeatedLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmRepeatedLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmRepeatedLabel.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alarmRepeatedLabel.ForeColor = System.Drawing.Color.White;
+            this.alarmRepeatedLabel.Location = new System.Drawing.Point(116, 156);
+            this.alarmRepeatedLabel.Name = "alarmRepeatedLabel";
+            this.alarmRepeatedLabel.Size = new System.Drawing.Size(79, 20);
+            this.alarmRepeatedLabel.TabIndex = 115;
+            this.alarmRepeatedLabel.Text = "Repeated:";
+            this.alarmRepeatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // alarmRepeatedToggle
+            // 
+            this.alarmRepeatedToggle.BackColor = System.Drawing.Color.Transparent;
+            this.alarmRepeatedToggle.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.alarmRepeatedToggle.CheckedState.BorderRadius = 2;
+            this.alarmRepeatedToggle.CheckedState.BorderThickness = 0;
+            this.alarmRepeatedToggle.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.alarmRepeatedToggle.CheckedState.Parent = this.alarmRepeatedToggle;
+            this.alarmRepeatedToggle.CheckMarkColor = System.Drawing.Color.Empty;
+            this.alarmRepeatedToggle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmRepeatedToggle, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmRepeatedToggle.Location = new System.Drawing.Point(196, 157);
+            this.alarmRepeatedToggle.Name = "alarmRepeatedToggle";
+            this.alarmRepeatedToggle.ShadowDecoration.Parent = this.alarmRepeatedToggle;
+            this.alarmRepeatedToggle.Size = new System.Drawing.Size(20, 20);
+            this.alarmRepeatedToggle.TabIndex = 0;
+            this.alarmRepeatedToggle.TabStop = false;
+            this.alarmRepeatedToggle.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.alarmRepeatedToggle.UncheckedState.BorderRadius = 2;
+            this.alarmRepeatedToggle.UncheckedState.BorderThickness = 0;
+            this.alarmRepeatedToggle.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.alarmRepeatedToggle.UncheckedState.Parent = this.alarmRepeatedToggle;
+            this.alarmRepeatedToggle.UseTransparentBackground = true;
+            // 
+            // alarmHoursSelector
+            // 
+            this.alarmHoursSelector.AutoRoundedCorners = true;
+            this.alarmHoursSelector.BackColor = System.Drawing.Color.Transparent;
+            this.alarmHoursSelector.BorderColor = System.Drawing.Color.Empty;
+            this.alarmHoursSelector.BorderRadius = 13;
+            this.alarmHoursSelector.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmHoursSelector, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmHoursSelector.DisabledState.Parent = this.alarmHoursSelector;
+            this.alarmHoursSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmHoursSelector.FocusedState.Parent = this.alarmHoursSelector;
+            this.alarmHoursSelector.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.alarmHoursSelector.ForeColor = System.Drawing.Color.Black;
+            this.alarmHoursSelector.Location = new System.Drawing.Point(93, 117);
+            this.alarmHoursSelector.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.alarmHoursSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.alarmHoursSelector.Name = "alarmHoursSelector";
+            this.alarmHoursSelector.ShadowDecoration.Parent = this.alarmHoursSelector;
+            this.alarmHoursSelector.Size = new System.Drawing.Size(69, 29);
+            this.alarmHoursSelector.TabIndex = 200;
+            this.alarmHoursSelector.UpDownButtonFillColor = System.Drawing.Color.RoyalBlue;
+            this.alarmHoursSelector.UseTransparentBackground = true;
+            this.alarmHoursSelector.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // alarmNameLabel
+            // 
+            this.alarmNameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmNameLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmNameLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alarmNameLabel.ForeColor = System.Drawing.Color.White;
+            this.alarmNameLabel.Location = new System.Drawing.Point(30, 43);
+            this.alarmNameLabel.Name = "alarmNameLabel";
+            this.alarmNameLabel.Size = new System.Drawing.Size(269, 42);
+            this.alarmNameLabel.TabIndex = 108;
+            this.alarmNameLabel.Text = "Alarm Name";
+            this.alarmNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // alarmHours
+            // 
+            this.alarmHours.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmHours, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmHours.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alarmHours.ForeColor = System.Drawing.Color.White;
+            this.alarmHours.Location = new System.Drawing.Point(93, 90);
+            this.alarmHours.Name = "alarmHours";
+            this.alarmHours.Size = new System.Drawing.Size(69, 21);
+            this.alarmHours.TabIndex = 112;
+            this.alarmHours.Text = "Hour";
+            this.alarmHours.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // alarmMinutes
+            // 
+            this.alarmMinutes.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmMinutes, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmMinutes.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alarmMinutes.ForeColor = System.Drawing.Color.White;
+            this.alarmMinutes.Location = new System.Drawing.Point(172, 90);
+            this.alarmMinutes.Name = "alarmMinutes";
+            this.alarmMinutes.Size = new System.Drawing.Size(69, 21);
+            this.alarmMinutes.TabIndex = 113;
+            this.alarmMinutes.Text = "Minute";
+            this.alarmMinutes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // alarmMinutesSelector
+            // 
+            this.alarmMinutesSelector.AutoRoundedCorners = true;
+            this.alarmMinutesSelector.BackColor = System.Drawing.Color.Transparent;
+            this.alarmMinutesSelector.BorderColor = System.Drawing.Color.Empty;
+            this.alarmMinutesSelector.BorderRadius = 13;
+            this.alarmMinutesSelector.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmMinutesSelector, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmMinutesSelector.DisabledState.Parent = this.alarmMinutesSelector;
+            this.alarmMinutesSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmMinutesSelector.FocusedState.Parent = this.alarmMinutesSelector;
+            this.alarmMinutesSelector.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.alarmMinutesSelector.ForeColor = System.Drawing.Color.Black;
+            this.alarmMinutesSelector.Location = new System.Drawing.Point(172, 117);
+            this.alarmMinutesSelector.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.alarmMinutesSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.alarmMinutesSelector.Name = "alarmMinutesSelector";
+            this.alarmMinutesSelector.ShadowDecoration.Parent = this.alarmMinutesSelector;
+            this.alarmMinutesSelector.Size = new System.Drawing.Size(69, 29);
+            this.alarmMinutesSelector.TabIndex = 201;
+            this.alarmMinutesSelector.UpDownButtonFillColor = System.Drawing.Color.RoyalBlue;
+            this.alarmMinutesSelector.UseTransparentBackground = true;
+            this.alarmMinutesSelector.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // alarmsScrollbar
+            // 
+            this.alarmsScrollbar.AutoRoundedCorners = true;
+            this.alarmsScrollbar.BorderRadius = 7;
+            this.alarmsScrollbar.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmsScrollbar, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmsScrollbar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.alarmsScrollbar.HoverState.Parent = null;
+            this.alarmsScrollbar.InUpdate = false;
+            this.alarmsScrollbar.LargeChange = 30;
+            this.alarmsScrollbar.Location = new System.Drawing.Point(612, 13);
+            this.alarmsScrollbar.Maximum = 32;
+            this.alarmsScrollbar.Name = "alarmsScrollbar";
+            this.alarmsScrollbar.PressedState.Parent = this.alarmsScrollbar;
+            this.alarmsScrollbar.ScrollbarSize = 17;
+            this.alarmsScrollbar.Size = new System.Drawing.Size(17, 340);
+            this.alarmsScrollbar.SmallChange = 5;
+            this.alarmsScrollbar.TabIndex = 93;
+            this.alarmsScrollbar.TabStop = false;
+            this.alarmsScrollbar.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmsScrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alarmsScrollbar_Scroll);
+            // 
+            // alarmsList
+            // 
+            this.alarmsList.AutoScroll = true;
+            this.alarmsList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmsList.Controls.Add(this.alarmsListLabel);
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmsList, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmsList.Location = new System.Drawing.Point(329, 13);
+            this.alarmsList.Name = "alarmsList";
+            this.alarmsList.Size = new System.Drawing.Size(300, 340);
+            this.alarmsList.TabIndex = 94;
+            this.alarmsList.Click += new System.EventHandler(this.alarmsList_Click);
+            // 
+            // alarmsListLabel
+            // 
+            this.alarmsListLabel.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmsListLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmsListLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alarmsListLabel.ForeColor = System.Drawing.Color.White;
+            this.alarmsListLabel.Location = new System.Drawing.Point(3, 0);
+            this.alarmsListLabel.Name = "alarmsListLabel";
+            this.alarmsListLabel.Size = new System.Drawing.Size(269, 42);
+            this.alarmsListLabel.TabIndex = 13;
+            this.alarmsListLabel.Text = "Alarms";
+            this.alarmsListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // deleteAlarm
+            // 
+            this.deleteAlarm.Animated = true;
+            this.deleteAlarm.BackColor = System.Drawing.Color.Transparent;
+            this.deleteAlarm.CheckedState.Parent = this.deleteAlarm;
+            this.deleteAlarm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deleteAlarm.CustomImages.Parent = this.deleteAlarm;
+            this.FadeEffectBetweenPages.SetDecoration(this.deleteAlarm, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.deleteAlarm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.deleteAlarm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.deleteAlarm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.deleteAlarm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.deleteAlarm.DisabledState.Parent = this.deleteAlarm;
+            this.deleteAlarm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.deleteAlarm.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.deleteAlarm.ForeColor = System.Drawing.Color.White;
+            this.deleteAlarm.HoverState.Parent = this.deleteAlarm;
+            this.deleteAlarm.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deleteAlarm.Location = new System.Drawing.Point(170, 288);
+            this.deleteAlarm.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.deleteAlarm.Name = "deleteAlarm";
+            this.deleteAlarm.ShadowDecoration.Parent = this.deleteAlarm;
+            this.deleteAlarm.Size = new System.Drawing.Size(105, 25);
+            this.deleteAlarm.TabIndex = 109;
+            this.deleteAlarm.TabStop = false;
+            this.deleteAlarm.Text = "Remove";
+            this.deleteAlarm.UseTransparentBackground = true;
+            this.deleteAlarm.Click += new System.EventHandler(this.deleteAlarm_Click);
+            // 
+            // saveAlarm
+            // 
+            this.saveAlarm.Animated = true;
+            this.saveAlarm.BackColor = System.Drawing.Color.Transparent;
+            this.saveAlarm.CheckedState.Parent = this.saveAlarm;
+            this.saveAlarm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saveAlarm.CustomImages.Parent = this.saveAlarm;
+            this.FadeEffectBetweenPages.SetDecoration(this.saveAlarm, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.saveAlarm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.saveAlarm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.saveAlarm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.saveAlarm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.saveAlarm.DisabledState.Parent = this.saveAlarm;
+            this.saveAlarm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.saveAlarm.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.saveAlarm.ForeColor = System.Drawing.Color.White;
+            this.saveAlarm.HoverState.Parent = this.saveAlarm;
+            this.saveAlarm.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.saveAlarm.Location = new System.Drawing.Point(59, 288);
+            this.saveAlarm.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.saveAlarm.Name = "saveAlarm";
+            this.saveAlarm.ShadowDecoration.Parent = this.saveAlarm;
+            this.saveAlarm.Size = new System.Drawing.Size(105, 25);
+            this.saveAlarm.TabIndex = 107;
+            this.saveAlarm.TabStop = false;
+            this.saveAlarm.Text = "Save";
+            this.saveAlarm.UseTransparentBackground = true;
+            this.saveAlarm.Click += new System.EventHandler(this.saveAlarm_Click);
+            // 
+            // alarmNameTextbox
+            // 
+            this.alarmNameTextbox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.alarmNameTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.alarmNameTextbox.BorderThickness = 2;
+            this.alarmNameTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.FadeEffectBetweenPages.SetDecoration(this.alarmNameTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.alarmNameTextbox.DefaultText = "";
+            this.alarmNameTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.alarmNameTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.alarmNameTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.alarmNameTextbox.DisabledState.Parent = this.alarmNameTextbox;
+            this.alarmNameTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.alarmNameTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.alarmNameTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.alarmNameTextbox.FocusedState.Parent = this.alarmNameTextbox;
+            this.alarmNameTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.alarmNameTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.alarmNameTextbox.HoverState.Parent = this.alarmNameTextbox;
+            this.alarmNameTextbox.Location = new System.Drawing.Point(59, 225);
+            this.alarmNameTextbox.MaxLength = 32;
+            this.alarmNameTextbox.Name = "alarmNameTextbox";
+            this.alarmNameTextbox.PasswordChar = '\0';
+            this.alarmNameTextbox.PlaceholderText = "Name";
+            this.alarmNameTextbox.SelectedText = "";
+            this.alarmNameTextbox.ShadowDecoration.Parent = this.alarmNameTextbox;
+            this.alarmNameTextbox.Size = new System.Drawing.Size(216, 25);
+            this.alarmNameTextbox.TabIndex = 202;
+            // 
+            // ExtrasButton2
+            // 
+            this.ExtrasButton2.Animated = true;
+            this.ExtrasButton2.AutoRoundedCorners = true;
+            this.ExtrasButton2.BackColor = System.Drawing.Color.Transparent;
+            this.ExtrasButton2.BorderRadius = 13;
+            this.ExtrasButton2.CheckedState.Parent = this.ExtrasButton2;
+            this.ExtrasButton2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ExtrasButton2.CustomImages.Parent = this.ExtrasButton2;
+            this.FadeEffectBetweenPages.SetDecoration(this.ExtrasButton2, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.ExtrasButton2.DisabledState.Parent = this.ExtrasButton2;
+            this.ExtrasButton2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ExtrasButton2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.ExtrasButton2.ForeColor = System.Drawing.Color.White;
+            this.ExtrasButton2.HoverState.Parent = this.ExtrasButton2;
+            this.ExtrasButton2.Location = new System.Drawing.Point(5, 336);
+            this.ExtrasButton2.Name = "ExtrasButton2";
+            this.ExtrasButton2.ShadowDecoration.Parent = this.ExtrasButton2;
+            this.ExtrasButton2.Size = new System.Drawing.Size(99, 29);
+            this.ExtrasButton2.TabIndex = 80;
+            this.ExtrasButton2.TabStop = false;
+            this.ExtrasButton2.Text = "Extras";
+            this.ExtrasButton2.Click += new System.EventHandler(this.ExtrasButton_Click);
             // 
             // aboutTab
             // 
@@ -3410,6 +3879,12 @@ namespace VentileClient
             this.SelectDLLTooltip.AllowLinksHandling = true;
             this.SelectDLLTooltip.MaximumSize = new System.Drawing.Size(0, 0);
             // 
+            // alarmsTimer
+            // 
+            this.alarmsTimer.Enabled = true;
+            this.alarmsTimer.Interval = 1000;
+            this.alarmsTimer.Tick += new System.EventHandler(this.alarmsTimer_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3457,6 +3932,11 @@ namespace VentileClient
             this.PackProfiles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.profileIconPictureBox)).EndInit();
             this.packProfilesList.ResumeLayout(false);
+            this.Alarms.ResumeLayout(false);
+            this.Alarms.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmHoursSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmMinutesSelector)).EndInit();
+            this.alarmsList.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.website)).EndInit();
@@ -3630,7 +4110,7 @@ namespace VentileClient
         public System.Windows.Forms.Label packProfilesTitle;
         public System.Windows.Forms.TabPage PackProfiles;
         public Guna.UI2.WinForms.Guna2Button exitPackProfilesButton;
-        public Guna.UI2.WinForms.Guna2VScrollBar guna2VScrollBar1;
+        public Guna.UI2.WinForms.Guna2VScrollBar packProfileScrollBar;
         public Guna.UI2.WinForms.Guna2TextBox profileNameTextbox;
         public Guna.UI2.WinForms.Guna2Button saveProfileButton;
         public Guna.UI2.WinForms.Guna2Button deleteProfileButton;
@@ -3642,6 +4122,27 @@ namespace VentileClient
         public Guna.UI2.WinForms.Guna2TextBox RPCTextbox;
         public Guna.UI2.WinForms.Guna2TextBox RPCButtonLinkTextbox;
         public Guna.UI2.WinForms.Guna2TextBox RPCButtonTextbox;
+        public Guna.UI2.WinForms.Guna2Button AlarmsButton;
+        public System.Windows.Forms.TabPage Alarms;
+        public Guna.UI2.WinForms.Guna2Button ExtrasButton2;
+        public Guna.UI2.WinForms.Guna2VScrollBar alarmsScrollbar;
+        public System.Windows.Forms.FlowLayoutPanel alarmsList;
+        public System.Windows.Forms.Label alarmsListLabel;
+        public System.Windows.Forms.Label pmLabel;
+        public System.Windows.Forms.Label amLabel;
+        public System.Windows.Forms.Label alarmRepeatedLabel;
+        public Guna.UI2.WinForms.Guna2NumericUpDown alarmHoursSelector;
+        public System.Windows.Forms.Label alarmNameLabel;
+        public System.Windows.Forms.Label alarmHours;
+        public System.Windows.Forms.Label alarmMinutes;
+        public Guna.UI2.WinForms.Guna2NumericUpDown alarmMinutesSelector;
+        public Guna.UI2.WinForms.Guna2Button deleteAlarm;
+        public Guna.UI2.WinForms.Guna2Button saveAlarm;
+        public Guna.UI2.WinForms.Guna2TextBox alarmNameTextbox;
+        public Guna.UI2.WinForms.Guna2ToggleSwitch AmPmToggle;
+        public Guna.UI2.WinForms.Guna2TextBox alarmMessageTextbox;
+        public Guna.UI2.WinForms.Guna2CustomCheckBox alarmRepeatedToggle;
+        public System.Windows.Forms.Timer alarmsTimer;
     }
 }
 

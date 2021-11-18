@@ -69,6 +69,7 @@ namespace VentileClient
         public Logger dLogger = new Logger(@"C:\temp\VentileClient\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger cLogger = new Logger(@"C:\temp\VentileClient\Logs", "Config", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public Logger vLogger = new Logger(@"C:\temp\VentileClient\Logs", "Version", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public Logger aLogger = new Logger(@"C:\temp\VentileClient\Logs", "Alarms", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
 
         #region Global Variables
 
@@ -78,25 +79,6 @@ namespace VentileClient
         public CosmeticsTemplate cosmeticsCS = new CosmeticsTemplate();
 
         public ThemeTemplate themeCS = new ThemeTemplate();
-        /*public readonly ThemeTemplate darkTheme = new ThemeTemplate()
-        {
-            Background = ColorTranslator.ToHtml(Color.FromArgb(20, 20, 20)),
-            SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(40, 40, 40)),
-            Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255)),
-            Faded = ColorTranslator.ToHtml(Color.FromArgb(192, 192, 192)),
-            Foreground = ColorTranslator.ToHtml(Color.FromArgb(255, 255, 255)),
-            Outline = ColorTranslator.ToHtml(Color.FromArgb(30, 30, 30))
-        };
-
-        public readonly ThemeTemplate lightTheme = new ThemeTemplate()
-        {
-            Background = ColorTranslator.ToHtml(Color.FromArgb(240, 240, 240)),
-            SecondBackground = ColorTranslator.ToHtml(Color.FromArgb(205, 205, 205)),
-            Accent = ColorTranslator.ToHtml(Color.FromArgb(65, 105, 255)),
-            Faded = ColorTranslator.ToHtml(Color.FromArgb(163, 163, 163)),
-            Foreground = ColorTranslator.ToHtml(Color.FromArgb(35, 35, 35)),
-            Outline = ColorTranslator.ToHtml(Color.FromArgb(180, 180, 180))
-        };*/
 
         public PresetColorsTemplate presetCS = new PresetColorsTemplate();
 
@@ -502,6 +484,7 @@ namespace VentileClient
             aboutButton.Checked = false;
 
             DataManager.GetProfiles();
+            DataManager.GetAlarms();
         }
 
         private void aboutButton_Click(object sender, EventArgs e)
@@ -2307,7 +2290,8 @@ namespace VentileClient
                 toastsToggle.Checked = true;
                 toastsToggle.Text = "Windows Toast";
                 toastsSelector.Visible = false;
-            } else
+            }
+            else
             {
                 configCS.Toasts = 0;
                 toastsToggle.Checked = false;
@@ -2400,6 +2384,35 @@ namespace VentileClient
             this.Refresh();
         }
 
+        // Timers
+        private void TimersButton_Click(object sender, EventArgs e)
+        {
+            var p = new Guna2Panel();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.BackColor = ColorTranslator.FromHtml(themeCS.Background);
+                p.Size = new Size(settingsTab.Width, settingsPagesTabControl.Height);
+                p.Location = new Point(165, 110);
+                this.Controls.Add(p);
+                p.BringToFront();
+                sidebar.BringToFront();
+                /*p.Visible = false;
+                FadeEffectBetweenPages.ShowSync(p);*/
+            }
+
+            settingsPagesTabControl.SelectedTab = Alarms;
+            this.Refresh();
+
+            if (!configCS.PerformanceMode)
+            {
+                p.Visible = true;
+                FadeEffectBetweenPages.HideSync(p);
+                this.Controls.Remove(p);
+            }
+            this.Refresh();
+        }
+
         #endregion
 
         #endregion
@@ -2439,9 +2452,14 @@ namespace VentileClient
 
         #endregion
 
-        private void guna2VScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void packProfilesScrollbar_Scroll(object sender, ScrollEventArgs e)
         {
-            packProfilesList.AutoScrollPosition = new Point(0, guna2VScrollBar1.Value);
+            packProfilesList.AutoScrollPosition = new Point(0, packProfileScrollBar.Value);
+        }
+
+        private void alarmsScrollbar_Scroll(object sender, ScrollEventArgs e)
+        {
+            alarmsList.AutoScrollPosition = new Point(0, packProfileScrollBar.Value);
         }
 
         private void saveProfileButton_Click(object s, EventArgs e)
@@ -2588,6 +2606,72 @@ namespace VentileClient
             configCS.RpcButtonLink = RPCButtonLinkTextbox.Text;
 
         }
+
+        private void saveAlarm_Click(object s, EventArgs e)
+        {
+            string alarmName = alarmNameTextbox.Text.Trim();
+            if (alarmName == string.Empty || alarmName == null) return;
+            Guna2Button sender = (Guna2Button)s;
+            Alarm info = sender.Tag as Alarm; // Gets information about the selected profile | If null, it means wants to create a new profile
+
+            if (info == null) // Create new profile
+            {
+                string message = alarmMessageTextbox.Text;
+                if (message == null || message == string.Empty) message = "Alarm Finished!";
+                DataManager.AddAlarm(alarmNameTextbox.Text, message, (int)alarmHoursSelector.Value, (int)alarmMinutesSelector.Value, alarmRepeatedToggle.Checked, AmPmToggle.Checked);
+            }
+            else // Update existing profile
+            {
+                DataManager.UpdateAlarm(info.Name, (int)alarmHoursSelector.Value, (int)alarmMinutesSelector.Value, alarmRepeatedToggle.Checked, AmPmToggle.Checked, alarmNameTextbox.Text, alarmMessageTextbox.Text);
+            }
+        }
+
+        private void deleteAlarm_Click(object s, EventArgs e)
+        {
+            Guna2Button sender = (Guna2Button)s;
+
+            Alarm alarm = sender.Tag as Alarm;
+
+            alarm.Delete();
+        }
+
+        private void alarmsList_Click(object sender, EventArgs e)
+        {
+            foreach (Control alarmBtn in alarmsList.Controls)
+            {
+                if (alarmBtn.GetType() == typeof(Guna2Button))
+                    ((Guna2Button)alarmBtn).Checked = false;
+            }
+
+            saveAlarm.Tag = null;
+            deleteAlarm.Tag = null;
+
+            alarmNameLabel.Tag = null;
+            alarmMinutesSelector.Tag = null;
+            alarmHoursSelector.Tag = null;
+            alarmRepeatedToggle.Tag = null;
+            AmPmToggle.Tag = null;
+
+            alarmNameLabel.Text = "Name";
+
+            alarmHoursSelector.Value = DateTime.Now.Hour;
+            alarmMinutesSelector.Value = DateTime.Now.Minute;
+            alarmRepeatedToggle.Checked = false;
+            AmPmToggle.Checked = false;
+
+            alarmNameTextbox.Text = null;
+            alarmMessageTextbox.Text = null;
+        }
+
+        private void alarmsTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Alarm alarm in configCS.Alarms)
+                    alarm.TestTrigger();
+            }
+            catch (Exception err) { aLogger.Log(err); };
+        }
     }
 
     #region Small Classes
@@ -2634,45 +2718,4 @@ namespace VentileClient
     }
 
     #endregion
-}
-
-public static class TaskEx
-{
-    /// <summary>
-    /// Blocks while condition is true or timeout occurs.
-    /// </summary>
-    /// <param name="condition">The condition that will perpetuate the block.</param>
-    /// <param name="frequency">The frequency at which the condition will be check, in milliseconds.</param>
-    /// <param name="timeout">Timeout in milliseconds.</param>
-    /// <exception cref="TimeoutException"></exception>
-    /// <returns></returns>
-    public static async Task WaitWhile(Func<bool> condition, int frequency = 25, int timeout = -1)
-    {
-        var waitTask = Task.Run(async () =>
-        {
-            while (condition()) await Task.Delay(frequency);
-        });
-
-        if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
-            throw new TimeoutException();
-    }
-
-    /// <summary>
-    /// Blocks until condition is true or timeout occurs.
-    /// </summary>
-    /// <param name="condition">The break condition.</param>
-    /// <param name="frequency">The frequency at which the condition will be checked.</param>
-    /// <param name="timeout">The timeout in milliseconds.</param>
-    /// <returns></returns>
-    public static async Task WaitUntil(Func<bool> condition, int frequency = 25, int timeout = -1)
-    {
-        var waitTask = Task.Run(async () =>
-        {
-            while (!condition()) await Task.Delay(frequency);
-        });
-
-        if (waitTask != await Task.WhenAny(waitTask,
-                Task.Delay(timeout)))
-            throw new TimeoutException();
-    }
 }

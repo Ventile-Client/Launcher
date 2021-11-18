@@ -1,3 +1,4 @@
 ﻿Version {{Version}} Changelog:
  - Added:
     Windows Notifications
+    Timers

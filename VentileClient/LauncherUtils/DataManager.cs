@@ -618,7 +618,8 @@ namespace VentileClient.LauncherUtils
                 else if (MAIN.configCS.ToastsLoc == "bottomLeft")
                     MAIN.toastsSelector.SelectedItem = "Bottom Left";
                 MAIN.toastsSelector.Visible = true;
-            } else
+            }
+            else
             {
                 MAIN.toastsToggle.Checked = true;
                 MAIN.toastsToggle.Text = "Windows Toast";
@@ -936,21 +937,285 @@ namespace VentileClient.LauncherUtils
             MAIN.profileNameTextbox.Text = null;
             MAIN.profileIconPictureBox.Image = null;
 
-            updateMaxScroll();
+            updateMaxScroll(MAIN.packProfileScrollBar, MAIN.packProfilesList);
         }
 
-        private static void updateMaxScroll()
+        public static void UpdateAlarm(string Name, int NewHour, int NewMinute, bool NewRepeated, bool isPM, string NewName = null, string NewMessage = null)
         {
-            var prevScrollAmount = MAIN.packProfilesList.AutoScrollPosition;
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.alarmsList.Controls[i].Name == Name)
+                {
+                    Alarm info = MAIN.alarmsList.Controls[i].Tag as Alarm;
+
+
+                    info.Name = NewName ?? info.Name;
+                    info.Message = NewMessage ?? info.Message;
+                    info.Hour = NewHour == 0 ? info.Hour : NewHour;
+                    info.Minute = NewMinute == 0 ? info.Minute : NewMinute;
+                    info.IsRepeated = NewRepeated;
+                    info.IsPM = isPM;
+
+                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Tag = info;
+                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Text = info.Name;
+                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Name = info.Name;
+
+                    MAIN.saveAlarm.Tag = info;
+                    MAIN.deleteAlarm.Tag = info;
+
+                    MAIN.alarmNameLabel.Tag = info;
+                    MAIN.alarmMinutesSelector.Tag = info;
+                    MAIN.alarmHoursSelector.Tag = info;
+                    MAIN.alarmRepeatedToggle.Tag = info;
+                    MAIN.AmPmToggle.Tag = info;
+
+                    MAIN.alarmNameTextbox.Text = info.Name;
+                    MAIN.alarmMessageTextbox.Text = info.Message;
+                    return;
+                }
+            }
+        }
+
+        public static void RemoveAlarm(Alarm alarm)
+        {
+            MAIN.saveAlarm.Tag = null;
+            MAIN.deleteAlarm.Tag = null;
+
+            MAIN.alarmNameLabel.Tag = null;
+            MAIN.alarmMinutesSelector.Tag = null;
+            MAIN.alarmHoursSelector.Tag = null;
+            MAIN.alarmRepeatedToggle.Tag = null;
+            MAIN.AmPmToggle.Tag = null;
+
+            MAIN.alarmNameTextbox.Text = null;
+            MAIN.alarmMessageTextbox.Text = null;
+
+            MAIN.alarmNameLabel.Text = "Name";
+
+
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.alarmsList.Controls[i].Name == alarm.Name)
+                {
+                    MAIN.alarmsList.Controls.RemoveAt(i);
+                    int j = 0;
+                    foreach (Alarm a in MAIN.configCS.Alarms)
+                    {
+                        if ((
+                            a.Hour == alarm.Hour &&
+                            a.Minute == alarm.Minute &&
+                            a.Name == alarm.Name &&
+                            a.Message == alarm.Message &&
+                            a.IsPM == alarm.IsPM &&
+                            a.IsRepeated == alarm.IsRepeated
+                            ))
+                        {
+                            MAIN.configCS.Alarms.RemoveAt(j);
+                            break;
+                        }
+                        j++;
+                    }
+
+                    break;
+                }
+            }
+        }
+        public static void AddAlarm(Alarm alarm)
+        {
+            AddAlarm(alarm.Name, alarm.Message, alarm.Hour, alarm.Minute, alarm.IsRepeated, alarm.IsPM);
+        }
+        public static void AddAlarm(string Name, string Message, int Hour, int Minute, bool IsRepeated, bool IsPM)
+        {
+            // Make the color variable smaller
+            Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
+            Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
+            Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
+            Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
+            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
+            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
+
+            Alarm alarmInfo = new Alarm(Hour, Minute, IsRepeated, IsPM, Name, Message);
+
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.alarmsList.Controls[i].Name == Name) return;
+            }
+
+            var newButton = new Guna2Button()
+            {
+                Name = Name,
+                Animated = true,
+                ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton,
+
+                FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10)),
+                Font = new Font("Segoe UI", 11.25f, FontStyle.Bold),
+
+                ForeColor = foreColor,
+
+                Margin = new Padding(10, 3, 10, 3),
+                Size = new Size(263, 36),
+
+                TabStop = false,
+
+                Tag = alarmInfo,
+                Cursor = Cursors.Hand,
+
+                Text = Name,
+                TextAlign = HorizontalAlignment.Left,
+                UseTransparentBackground = true
+            };
+
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.alarmsList.Controls[i].Name != Name) ((Guna2Button)MAIN.alarmsList.Controls[i]).Checked = false;
+            }
+
+            if (MAIN.configCS.Alarms.Count == 0)
+                MAIN.configCS.Alarms.Add(alarmInfo);
+
+            foreach (Alarm a in MAIN.configCS.Alarms)
+            {
+
+                if ((
+                    a.Hour == alarmInfo.Hour &&
+                    a.Minute == alarmInfo.Minute &&
+                    a.Name == alarmInfo.Name &&
+                    a.Message == alarmInfo.Message &&
+                    a.IsPM == alarmInfo.IsPM &&
+                    a.IsRepeated == alarmInfo.IsRepeated
+                    )) continue;
+
+                MAIN.configCS.Alarms.Add(alarmInfo);
+            }
+
+            newButton.Click += OnAlarmSelect;
+
+            MAIN.Invoke(new Action(() =>
+            {
+                MAIN.alarmsList.Controls.Add(newButton);
+
+                MAIN.saveAlarm.Tag = alarmInfo;
+                MAIN.deleteAlarm.Tag = alarmInfo;
+
+                MAIN.alarmNameLabel.Tag = alarmInfo;
+                MAIN.alarmMinutesSelector.Tag = alarmInfo;
+                MAIN.alarmHoursSelector.Tag = alarmInfo;
+                MAIN.alarmRepeatedToggle.Tag = alarmInfo;
+                MAIN.AmPmToggle.Tag = alarmInfo;
+
+                MAIN.alarmNameLabel.Text = alarmInfo.Name;
+                MAIN.alarmNameTextbox.Text = alarmInfo.Name;
+                MAIN.alarmMessageTextbox.Text = alarmInfo.Message;
+
+            }));
+        }
+
+        private static void OnAlarmSelect(object s, EventArgs e)
+        {
+            Guna2Button sender = (Guna2Button)s;
+
+            if (!sender.Checked) // Profile was de-selected
+            {
+                MAIN.saveAlarm.Tag = null;
+                MAIN.deleteAlarm.Tag = null;
+
+                MAIN.alarmNameLabel.Tag = null;
+                MAIN.alarmMinutesSelector.Tag = null;
+                MAIN.alarmHoursSelector.Tag = null;
+                MAIN.alarmRepeatedToggle.Tag = null;
+                MAIN.AmPmToggle.Tag = null;
+
+                MAIN.alarmNameLabel.Text = "Name";
+
+                MAIN.alarmMinutesSelector.Value = 1;
+                MAIN.alarmHoursSelector.Value = 1;
+                MAIN.alarmRepeatedToggle.Checked = false;
+                MAIN.AmPmToggle.Checked = false;
+
+                MAIN.alarmNameTextbox.Text = null;
+                MAIN.alarmMessageTextbox.Text = null;
+            }
+
+
+            // Profile was selected
+            Alarm info = (Alarm)sender.Tag;
+
+            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
+            {
+                if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
+                    ((Guna2Button)profileBtn).Checked = false;
+            }
+
+            MAIN.saveAlarm.Tag = info;
+            MAIN.deleteAlarm.Tag = info;
+
+            MAIN.alarmNameLabel.Tag = info;
+            MAIN.alarmHoursSelector.Tag = info;
+            MAIN.alarmMinutesSelector.Tag = info;
+            MAIN.alarmRepeatedToggle.Tag = info;
+            MAIN.AmPmToggle.Tag = info;
+
+            MAIN.alarmNameLabel.Text = info.Name;
+
+            MAIN.alarmNameTextbox.Text = info.Name;
+            MAIN.alarmMessageTextbox.Text = info.Message;
+            MAIN.alarmHoursSelector.Value = info.Hour;
+            MAIN.alarmMinutesSelector.Value = info.Minute;
+            MAIN.alarmRepeatedToggle.Checked = info.IsRepeated;
+            MAIN.AmPmToggle.Checked = info.IsPM;
+        }
+
+        public static void GetAlarms()
+        {
+            if (MAIN.configCS?.Alarms == null) return;
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                MAIN.alarmsList.Controls.RemoveAt(i);
+                i--;
+            }
+
+            foreach (Alarm alarm in MAIN.configCS.Alarms)
+                AddAlarm(alarm);
+
+            MAIN.saveAlarm.Tag = null;
+            MAIN.deleteAlarm.Tag = null;
+
+            MAIN.alarmNameLabel.Tag = null;
+            MAIN.alarmMinutesSelector.Tag = null;
+            MAIN.alarmHoursSelector.Tag = null;
+            MAIN.alarmRepeatedToggle.Tag = null;
+            MAIN.AmPmToggle.Tag = null;
+
+            MAIN.alarmNameLabel.Text = "Name";
+
+            MAIN.alarmNameTextbox.Text = null;
+            MAIN.alarmMessageTextbox.Text = null;
+
+            updateMaxScroll(MAIN.alarmsScrollbar, MAIN.alarmsList);
+        }
+
+        private static void updateMaxScroll(Guna2VScrollBar scrollbar, FlowLayoutPanel panel)
+        {
+            var prevScrollAmount = panel.AutoScrollPosition;
             var tempControl = new System.Windows.Forms.Label() { };
 
-            MAIN.packProfilesList.Controls.Add(tempControl);
+            panel.Controls.Add(tempControl);
 
-            MAIN.packProfilesList.ScrollControlIntoView(tempControl);
-            MAIN.guna2VScrollBar1.Maximum = MAIN.packProfilesList.VerticalScroll.Value + 10;
+            panel.ScrollControlIntoView(tempControl);
+            scrollbar.Maximum = panel.VerticalScroll.Value + 10;
 
-            MAIN.packProfilesList.Controls.Remove(tempControl);
-            MAIN.packProfilesList.AutoScrollPosition = prevScrollAmount;
+            panel.Controls.Remove(tempControl);
+            panel.AutoScrollPosition = prevScrollAmount;
         }
 
         private static void OnProfileSelect(object s, EventArgs e)

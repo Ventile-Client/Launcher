@@ -1,6 +1,6 @@
 ﻿General
-    > Close Button (X)
-        - Closes the application and saves your config and theme
+    > Close Button (x)
+        - Closes the application and saves configs
 
     > Minimize Button (-)
         + Click: Minimizes launcher to your taskbar
@@ -34,14 +34,14 @@ Cosmetics
 
     > Other
         - Any cosmetics/overlays that don't fall into previous categories
-            (Wavy Overlay just makes any cape you wear wAvY)
+            (Wavy Overlay just makes any cape you wear wAvY | Its an OVERLAY)
 
 Version
     > Download
         - Downloads the version and extracts it
 
     > Uninstall
-        - Deletes the version from your computer 
+        - Deletes the version from your computer
             (Persona in that folder as well)
 
     > Select
@@ -115,7 +115,7 @@ Settings
             - Loads the selected profile
 
         > Delete:
-            - Loads the selected profile
+            - Deletes the selected profile
 
         > Save:
             - Updates and saves current com.mojang
@@ -127,6 +127,31 @@ Settings
 
         > Profile List:
             - List of buttons with corresponding names and profile images
+
+    ~ Pack Profiles
+        > Hour and Minute:
+            - The time that the alarm should go off
+                Ex.) 9:27
+
+        > Repeated: 
+            - Makes the alarm repeat every day
+
+        > AM/PM: 
+            - When to trigger it, AM or PM
+
+        > Name: 
+            - The name of the alarm
+
+        > Message: 
+            - The message displayed when the alarm is triggered
+
+        > Remove:
+            - Removes the selected alarm
+
+        > Save:
+            - Updates and saves the alarm
+                + No Selected Alarm: Creates a new alarm based on the Name
+                + Selected Alarm: Edits the selected Alarm
 
 About
     - Information about the launcher and the team
