@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -2622,7 +2623,7 @@ namespace VentileClient
             }
             else // Update existing profile
             {
-                DataManager.UpdateAlarm(info.Name, (int)alarmHoursSelector.Value, (int)alarmMinutesSelector.Value, alarmRepeatedToggle.Checked, AmPmToggle.Checked, alarmNameTextbox.Text, alarmMessageTextbox.Text);
+                DataManager.UpdateAlarm(info.ID, (int)alarmHoursSelector.Value, (int)alarmMinutesSelector.Value, alarmRepeatedToggle.Checked, AmPmToggle.Checked, alarmNameTextbox.Text, alarmMessageTextbox.Text);
             }
         }
 
@@ -2653,11 +2654,11 @@ namespace VentileClient
             AmPmToggle.Tag = null;
 
             alarmNameLabel.Text = "Name";
-
-            alarmHoursSelector.Value = DateTime.Now.Hour;
-            alarmMinutesSelector.Value = DateTime.Now.Minute;
+            DateTime currentTime = DateTime.Now;
+            alarmHoursSelector.Value = currentTime.Hour > 12 ? currentTime.Hour - 12 : currentTime.Hour;
+            alarmMinutesSelector.Value = currentTime.Minute;
             alarmRepeatedToggle.Checked = false;
-            AmPmToggle.Checked = false;
+            AmPmToggle.Checked = currentTime.ToString("tt", CultureInfo.InvariantCulture).ToLower() == "pm";
 
             alarmNameTextbox.Text = null;
             alarmMessageTextbox.Text = null;

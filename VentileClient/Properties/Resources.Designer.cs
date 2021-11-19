@@ -81,20 +81,10 @@ namespace VentileClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version 4.2.0 Changelog:
+        ///   Looks up a localized string similar to Version {{Version}} Changelog:
         /// - Added:
-        ///    Help Button
-        ///    Pack Profiles
-        ///    Hiding the launcher by right clicking the minmize button
-        ///    Error handling for cosmetics when buttons are spammed
-        ///
-        /// - Removed:
-        ///
-        /// - Fixes:
-        ///    Version Switcher
-        ///    Themes
-        ///    Hiding/Showing Launcher
-        ///    Resource packs don&apos;t reset every time launcher is used.
+        ///    Windows Notifications
+        ///    Timers.
         /// </summary>
         internal static string Changelog {
             get {
@@ -114,8 +104,8 @@ namespace VentileClient.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to General
-        ///    &gt; Close Button (X)
-        ///        - Closes the application and saves your config and theme
+        ///    &gt; Close Button (x)
+        ///        - Closes the application and saves configs
         ///
         ///    &gt; Minimize Button (-)
         ///        + Click: Minimizes launcher to your taskbar
@@ -131,7 +121,8 @@ namespace VentileClient.Properties {
         ///      - Opens a file prompt, which is where you choose your custom dll 
         ///          (Custom DLL must be enabled)
         ///
-        ///  &gt; [rest of string was truncated]&quot;;.
+        ///  &gt; Inject
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Help {
             get {

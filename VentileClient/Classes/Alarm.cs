@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.Threading;
 using System.Threading.Tasks;
 using VentileClient.LauncherUtils;
 using VentileClient.Utils;
@@ -10,7 +8,7 @@ namespace VentileClient.Classes
 {
     public class Alarm
     {
-        public Alarm(int hour, int minute, bool isRepeated, bool isPM, string name = "Alarm", string message = "Alarm Finished!")
+        public Alarm(int hour, int minute, bool isRepeated, bool isPM, DateTime creationDate = new DateTime(), string name = "Alarm", string message = "Alarm Finished!")
         {
             Name = name;
             Message = message;
@@ -18,6 +16,7 @@ namespace VentileClient.Classes
             Minute = minute;
             IsRepeated = isRepeated;
             IsPM = isPM;
+            CreationDate = (creationDate == new DateTime() ? DateTime.Now : creationDate);
         }
 
         public string Name;
@@ -26,6 +25,8 @@ namespace VentileClient.Classes
         public int Minute;
         public bool IsRepeated;
         public bool IsPM;
+        public string ID = DateTime.Now.Ticks.ToString() + "-" + Guid.NewGuid().ToString();
+        public DateTime CreationDate;
 
         private bool IsExpired;
 
@@ -45,6 +46,10 @@ namespace VentileClient.Classes
         public bool ShouldTrigger()
         {
             DateTime currentTime = DateTime.Now;
+            if (!IsRepeated)
+                if (CreationDate.Month != currentTime.Month || CreationDate.Day != currentTime.Day)
+                    return true;
+
             if (
                 currentTime.Hour >= Hour &&
                 currentTime.Minute >= Minute &&

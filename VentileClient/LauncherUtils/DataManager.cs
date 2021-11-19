@@ -1,10 +1,13 @@
-﻿using Guna.UI2.WinForms;
+﻿using FontAwesome.Sharp;
+using Guna.UI2.WinForms;
 using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.Classes;
@@ -741,76 +744,6 @@ namespace VentileClient.LauncherUtils
             }
         }
 
-        public static void UpdateProfile(string Name, Image NewImage = null, string NewName = null)
-        {
-            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
-            {
-                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
-
-                if (MAIN.packProfilesList.Controls[i].Name == Name)
-                {
-                    ProfileInfo info = MAIN.packProfilesList.Controls[i].Tag as ProfileInfo;
-
-                    if (NewImage != null)
-                        info.Image = NewImage;
-
-                    if (NewName != null)
-                    {
-                        string newPath = @"C:\temp\VentileClient\Profiles\" + NewName;
-                        if (!Directory.Exists(newPath))
-                            Directory.Move(@"C:\temp\VentileClient\Profiles\" + info.Name, newPath);
-
-                        info.Name = NewName;
-
-                    }
-
-                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Tag = info;
-                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Text = info.Name;
-                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Image = info.Image;
-                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Name = info.Name;
-
-                    MAIN.profileIconPictureBox.Tag = info;
-                    MAIN.profileNameTextbox.Tag = info;
-                    MAIN.saveProfileButton.Tag = info;
-                    MAIN.saveProfileButton.Tag = info;
-                    MAIN.deleteProfileButton.Tag = info;
-
-                    MAIN.profileNameLabel.Text = info.Name;
-                    MAIN.profileNameTextbox.Text = info.Name;
-                    MAIN.profileIconPictureBox.Image = info.Image;
-                    return;
-                }
-            }
-        }
-
-        public static async void RemoveProfile(string name)
-        {
-
-            MAIN.profileIconPictureBox.Tag = null;
-            MAIN.profileNameTextbox.Tag = null;
-            MAIN.saveProfileButton.Tag = null;
-            MAIN.saveProfileButton.Tag = null;
-            MAIN.deleteProfileButton.Tag = null;
-
-            MAIN.profileNameLabel.Text = "Profile Name";
-            MAIN.profileNameTextbox.Text = null;
-            MAIN.profileIconPictureBox.Image = null;
-
-
-            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
-            {
-                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
-
-                if (MAIN.packProfilesList.Controls[i].Name == name)
-                {
-                    MAIN.packProfilesList.Controls.RemoveAt(i);
-                    break;
-                }
-            }
-
-            await MCDataManager.DeleteProfile(name);
-        }
-
         public static void AddProfile(DirectoryInfo dir)
         {
             // Make the color variable smaller
@@ -908,6 +841,76 @@ namespace VentileClient.LauncherUtils
             }));
         }
 
+        public static void UpdateProfile(string Name, Image NewImage = null, string NewName = null)
+        {
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name == Name)
+                {
+                    ProfileInfo info = MAIN.packProfilesList.Controls[i].Tag as ProfileInfo;
+
+                    if (NewImage != null)
+                        info.Image = NewImage;
+
+                    if (NewName != null)
+                    {
+                        string newPath = @"C:\temp\VentileClient\Profiles\" + NewName;
+                        if (!Directory.Exists(newPath))
+                            Directory.Move(@"C:\temp\VentileClient\Profiles\" + info.Name, newPath);
+
+                        info.Name = NewName;
+
+                    }
+
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Tag = info;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Text = info.Name;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Image = info.Image;
+                    ((Guna2Button)MAIN.packProfilesList.Controls[i]).Name = info.Name;
+
+                    MAIN.profileIconPictureBox.Tag = info;
+                    MAIN.profileNameTextbox.Tag = info;
+                    MAIN.saveProfileButton.Tag = info;
+                    MAIN.saveProfileButton.Tag = info;
+                    MAIN.deleteProfileButton.Tag = info;
+
+                    MAIN.profileNameLabel.Text = info.Name;
+                    MAIN.profileNameTextbox.Text = info.Name;
+                    MAIN.profileIconPictureBox.Image = info.Image;
+                    return;
+                }
+            }
+        }
+
+        public static async void RemoveProfile(string name)
+        {
+
+            MAIN.profileIconPictureBox.Tag = null;
+            MAIN.profileNameTextbox.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.saveProfileButton.Tag = null;
+            MAIN.deleteProfileButton.Tag = null;
+
+            MAIN.profileNameLabel.Text = "Profile Name";
+            MAIN.profileNameTextbox.Text = null;
+            MAIN.profileIconPictureBox.Image = null;
+
+
+            for (int i = 0; i < MAIN.packProfilesList.Controls.Count; i++)
+            {
+                if (MAIN.packProfilesList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                if (MAIN.packProfilesList.Controls[i].Name == name)
+                {
+                    MAIN.packProfilesList.Controls.RemoveAt(i);
+                    break;
+                }
+            }
+
+            await MCDataManager.DeleteProfile(name);
+        }
+
         public static void GetProfiles()
         {
             Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
@@ -940,26 +943,159 @@ namespace VentileClient.LauncherUtils
             updateMaxScroll(MAIN.packProfileScrollBar, MAIN.packProfilesList);
         }
 
-        public static void UpdateAlarm(string Name, int NewHour, int NewMinute, bool NewRepeated, bool isPM, string NewName = null, string NewMessage = null)
+        private static void OnProfileSelect(object s, EventArgs e)
         {
+            Guna2Button sender = (Guna2Button)s;
+
+            if (!sender.Checked) // Profile was de-selected
+            {
+                MAIN.deleteProfileButton.Enabled = false;
+                MAIN.loadProfileButton.Enabled = false;
+
+                MAIN.profileIconPictureBox.Tag = null;
+                MAIN.profileNameTextbox.Tag = null;
+                MAIN.saveProfileButton.Tag = null;
+                MAIN.saveProfileButton.Tag = null;
+                MAIN.deleteProfileButton.Tag = null;
+
+                MAIN.profileNameLabel.Text = "Profile Name";
+                MAIN.profileNameTextbox.Text = null;
+                MAIN.profileIconPictureBox.Image = null;
+                return;
+            }
+
+
+            // Profile was selected
+            ProfileInfo info = (ProfileInfo)sender.Tag;
+
+            MAIN.deleteProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
+            MAIN.loadProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
+
+            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
+            {
+                if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
+                    ((Guna2Button)profileBtn).Checked = false;
+            }
+
+            MAIN.profileIconPictureBox.Tag = info;
+            MAIN.profileNameTextbox.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.saveProfileButton.Tag = info;
+            MAIN.deleteProfileButton.Tag = info;
+
+            MAIN.profileNameLabel.Text = info.Name;
+            MAIN.profileNameTextbox.Text = info.Name;
+            MAIN.profileIconPictureBox.Image = info.Image;
+        }
+
+
+        public static void AddAlarm(Alarm alarm, bool ShouldUpdateAlarms = true, bool ShouldSort = true)
+        {
+            AddAlarm(alarm.Name, alarm.Message, alarm.Hour, alarm.Minute, alarm.IsRepeated, alarm.IsPM, alarm.CreationDate, ShouldUpdateAlarms, ShouldSort);
+        }
+        public static void AddAlarm(string Name, string Message, int Hour, int Minute, bool IsRepeated, bool IsPM, DateTime CreationDate = new DateTime(), bool ShouldUpdateAlarms = true, bool ShouldSort = true)
+        {
+            // Make the color variable smaller
+            Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
+            Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
+            Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
+            Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
+            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
+            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
+
+            Alarm alarmInfo = new Alarm(Hour, Minute, IsRepeated, IsPM, CreationDate, Name, Message);
+
+            Image moonIcon = IconChar.Moon.ToBitmap(Color.DarkGray, 64);
+            Image sunIcon = IconChar.Sun.ToBitmap(Color.FromArgb(249, 215, 28), 64);
+            Image AlarmImage = (IsPM ? moonIcon : sunIcon);
+
+            var newButton = new Guna2Button()
+            {
+                Name = Name,
+                Animated = true,
+                ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton,
+                Image = AlarmImage,
+                ImageOffset = new Point(0, 1),
+                ImageAlign = HorizontalAlignment.Right,
+
+                FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10)),
+                Font = new Font("Segoe UI", 11.25f, FontStyle.Bold),
+
+                ForeColor = foreColor,
+
+                Margin = new Padding(10, 3, 10, 3),
+                Size = new Size(263, 36),
+
+                TabStop = false,
+
+                Tag = alarmInfo,
+                Cursor = Cursors.Hand,
+
+                Text = Name + " | " + Hour.ToString() + ":" + (Minute < 10 ? "0" + Minute.ToString() : Minute.ToString()),
+                TextAlign = HorizontalAlignment.Left,
+                UseTransparentBackground = true
+            };
+
             for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
             {
                 if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
 
-                if (MAIN.alarmsList.Controls[i].Name == Name)
+                ((Guna2Button)MAIN.alarmsList.Controls[i]).Checked = false;
+            }
+
+            if (ShouldUpdateAlarms)
+                MAIN.configCS.Alarms.Add(alarmInfo);
+
+            newButton.Click += OnAlarmSelect;
+
+            MAIN.Invoke(new Action(() =>
+            {
+                MAIN.alarmsList.Controls.Add(newButton);
+
+                MAIN.saveAlarm.Tag = alarmInfo;
+                MAIN.deleteAlarm.Tag = alarmInfo;
+
+                MAIN.alarmNameLabel.Tag = alarmInfo;
+                MAIN.alarmMinutesSelector.Tag = alarmInfo;
+                MAIN.alarmHoursSelector.Tag = alarmInfo;
+                MAIN.alarmRepeatedToggle.Tag = alarmInfo;
+                MAIN.AmPmToggle.Tag = alarmInfo;
+
+                MAIN.alarmNameLabel.Text = alarmInfo.Name;
+                MAIN.alarmNameTextbox.Text = alarmInfo.Name;
+                MAIN.alarmMessageTextbox.Text = alarmInfo.Message;
+
+            }));
+
+            if (ShouldSort)
+                SortAlarms();
+        }
+
+        public static void UpdateAlarm(string ID, int NewHour, int NewMinute, bool NewRepeated, bool isPM, string NewName = null, string NewMessage = null)
+        {           
+            Image moonIcon = IconChar.Moon.ToBitmap(Color.DarkGray, 64);
+            Image sunIcon = IconChar.Sun.ToBitmap(Color.FromArgb(249, 215, 28), 64);
+
+            Image AlarmImage = (isPM ? moonIcon : sunIcon);
+
+            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
+            {
+                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+
+                Alarm info = MAIN.alarmsList.Controls[i].Tag as Alarm;
+                if (info.ID == ID)
                 {
-                    Alarm info = MAIN.alarmsList.Controls[i].Tag as Alarm;
-
-
                     info.Name = NewName ?? info.Name;
                     info.Message = NewMessage ?? info.Message;
                     info.Hour = NewHour == 0 ? info.Hour : NewHour;
-                    info.Minute = NewMinute == 0 ? info.Minute : NewMinute;
+                    info.Minute = NewMinute;
                     info.IsRepeated = NewRepeated;
                     info.IsPM = isPM;
 
+
                     ((Guna2Button)MAIN.alarmsList.Controls[i]).Tag = info;
-                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Text = info.Name;
+                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Image = AlarmImage;
+                    ((Guna2Button)MAIN.alarmsList.Controls[i]).Text = info.Name + " | " + info.Hour.ToString() + ":" + (info.Minute < 10 ? "0" + info.Minute.ToString() : info.Minute.ToString());
                     ((Guna2Button)MAIN.alarmsList.Controls[i]).Name = info.Name;
 
                     MAIN.saveAlarm.Tag = info;
@@ -973,9 +1109,11 @@ namespace VentileClient.LauncherUtils
 
                     MAIN.alarmNameTextbox.Text = info.Name;
                     MAIN.alarmMessageTextbox.Text = info.Message;
+                    SortAlarms();
                     return;
                 }
             }
+
         }
 
         public static void RemoveAlarm(Alarm alarm)
@@ -1024,98 +1162,30 @@ namespace VentileClient.LauncherUtils
                 }
             }
         }
-        public static void AddAlarm(Alarm alarm)
+
+        public static void GetAlarms()
         {
-            AddAlarm(alarm.Name, alarm.Message, alarm.Hour, alarm.Minute, alarm.IsRepeated, alarm.IsPM);
-        }
-        public static void AddAlarm(string Name, string Message, int Hour, int Minute, bool IsRepeated, bool IsPM)
-        {
-            // Make the color variable smaller
-            Color backColor = ColorTranslator.FromHtml(MAIN.themeCS.Background);
-            Color accentColor = ColorTranslator.FromHtml(MAIN.themeCS.Accent);
-            Color foreColor = ColorTranslator.FromHtml(MAIN.themeCS.Foreground);
-            Color outlineColor = ColorTranslator.FromHtml(MAIN.themeCS.Outline);
-            Color fadedColor = ColorTranslator.FromHtml(MAIN.themeCS.Faded);
-            Color backColor2 = ColorTranslator.FromHtml(MAIN.themeCS.SecondBackground);
+            if (MAIN.configCS?.Alarms == null) return;
+            foreach (Alarm alarm in MAIN.configCS.Alarms)
+                AddAlarm(alarm, false, false);
 
-            Alarm alarmInfo = new Alarm(Hour, Minute, IsRepeated, IsPM, Name, Message);
+            SortAlarms();
 
-            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
-            {
-                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+            MAIN.saveAlarm.Tag = null;
+            MAIN.deleteAlarm.Tag = null;
 
-                if (MAIN.alarmsList.Controls[i].Name == Name) return;
-            }
+            MAIN.alarmNameLabel.Tag = null;
+            MAIN.alarmMinutesSelector.Tag = null;
+            MAIN.alarmHoursSelector.Tag = null;
+            MAIN.alarmRepeatedToggle.Tag = null;
+            MAIN.AmPmToggle.Tag = null;
 
-            var newButton = new Guna2Button()
-            {
-                Name = Name,
-                Animated = true,
-                ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton,
+            MAIN.alarmNameLabel.Text = "Name";
 
-                FillColor = Color.FromArgb(((backColor.R + 10 <= 255) ? backColor.R + 10 : backColor.R - 10), ((backColor.G + 10 <= 255) ? backColor.G + 10 : backColor.G - 10), ((backColor.B + 10 <= 255) ? backColor.B + 10 : backColor.B - 10)),
-                Font = new Font("Segoe UI", 11.25f, FontStyle.Bold),
+            MAIN.alarmNameTextbox.Text = null;
+            MAIN.alarmMessageTextbox.Text = null;
 
-                ForeColor = foreColor,
-
-                Margin = new Padding(10, 3, 10, 3),
-                Size = new Size(263, 36),
-
-                TabStop = false,
-
-                Tag = alarmInfo,
-                Cursor = Cursors.Hand,
-
-                Text = Name,
-                TextAlign = HorizontalAlignment.Left,
-                UseTransparentBackground = true
-            };
-
-            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
-            {
-                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
-
-                if (MAIN.alarmsList.Controls[i].Name != Name) ((Guna2Button)MAIN.alarmsList.Controls[i]).Checked = false;
-            }
-
-            if (MAIN.configCS.Alarms.Count == 0)
-                MAIN.configCS.Alarms.Add(alarmInfo);
-
-            foreach (Alarm a in MAIN.configCS.Alarms)
-            {
-
-                if ((
-                    a.Hour == alarmInfo.Hour &&
-                    a.Minute == alarmInfo.Minute &&
-                    a.Name == alarmInfo.Name &&
-                    a.Message == alarmInfo.Message &&
-                    a.IsPM == alarmInfo.IsPM &&
-                    a.IsRepeated == alarmInfo.IsRepeated
-                    )) continue;
-
-                MAIN.configCS.Alarms.Add(alarmInfo);
-            }
-
-            newButton.Click += OnAlarmSelect;
-
-            MAIN.Invoke(new Action(() =>
-            {
-                MAIN.alarmsList.Controls.Add(newButton);
-
-                MAIN.saveAlarm.Tag = alarmInfo;
-                MAIN.deleteAlarm.Tag = alarmInfo;
-
-                MAIN.alarmNameLabel.Tag = alarmInfo;
-                MAIN.alarmMinutesSelector.Tag = alarmInfo;
-                MAIN.alarmHoursSelector.Tag = alarmInfo;
-                MAIN.alarmRepeatedToggle.Tag = alarmInfo;
-                MAIN.AmPmToggle.Tag = alarmInfo;
-
-                MAIN.alarmNameLabel.Text = alarmInfo.Name;
-                MAIN.alarmNameTextbox.Text = alarmInfo.Name;
-                MAIN.alarmMessageTextbox.Text = alarmInfo.Message;
-
-            }));
+            updateMaxScroll(MAIN.alarmsScrollbar, MAIN.alarmsList);
         }
 
         private static void OnAlarmSelect(object s, EventArgs e)
@@ -1134,24 +1204,25 @@ namespace VentileClient.LauncherUtils
                 MAIN.AmPmToggle.Tag = null;
 
                 MAIN.alarmNameLabel.Text = "Name";
-
-                MAIN.alarmMinutesSelector.Value = 1;
-                MAIN.alarmHoursSelector.Value = 1;
+                DateTime currentTime = DateTime.Now;
+                MAIN.alarmHoursSelector.Value = currentTime.Hour > 12 ? currentTime.Hour - 12 : currentTime.Hour;
+                MAIN.alarmMinutesSelector.Value = currentTime.Minute;
                 MAIN.alarmRepeatedToggle.Checked = false;
-                MAIN.AmPmToggle.Checked = false;
+                MAIN.AmPmToggle.Checked = currentTime.ToString("tt", CultureInfo.InvariantCulture).ToLower() == "pm";
 
                 MAIN.alarmNameTextbox.Text = null;
                 MAIN.alarmMessageTextbox.Text = null;
+                return;
             }
 
 
             // Profile was selected
             Alarm info = (Alarm)sender.Tag;
 
-            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
+            foreach (Control alarmButton in MAIN.alarmsList.Controls)
             {
-                if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
-                    ((Guna2Button)profileBtn).Checked = false;
+                if (alarmButton.GetType() == typeof(Guna2Button) && (Guna2Button)alarmButton != sender)
+                    ((Guna2Button)alarmButton).Checked = false;
             }
 
             MAIN.saveAlarm.Tag = info;
@@ -1173,35 +1244,69 @@ namespace VentileClient.LauncherUtils
             MAIN.AmPmToggle.Checked = info.IsPM;
         }
 
-        public static void GetAlarms()
+        public static void SortAlarms()
         {
-            if (MAIN.configCS?.Alarms == null) return;
-            for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
-            {
-                if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+            List<Guna2Button> sorted = MAIN.alarmsList.Controls.OfType<Guna2Button>().ToList();
+            sorted.Sort(CompareButtonTimes);
 
-                MAIN.alarmsList.Controls.RemoveAt(i);
-                i--;
+            int newIndex = 1;
+            foreach (Guna2Button button in sorted)
+            {
+                MAIN.alarmsList.Controls.SetChildIndex(button, newIndex);
+                newIndex++;
+            }
+        }
+
+        private static int CompareButtonTimes(Guna2Button x, Guna2Button y)
+        {
+            Alarm xInfo = x?.Tag as Alarm;
+            Alarm yInfo = y?.Tag as Alarm;
+
+            if (xInfo == null)
+            {
+                if (yInfo == null) return 0;
+                else return -1;
+            }
+            else
+            {
+                if (yInfo == null) return 1;
+                else
+                {
+                    if (xInfo.IsPM)
+                    {
+                        if (!yInfo.IsPM) return 1;
+
+                        if (xInfo.Hour < yInfo.Hour)
+                            return -1;
+                        else if (xInfo.Hour > yInfo.Hour)
+                            return 1;
+
+                        if (xInfo.Minute < yInfo.Minute)
+                            return -1;
+                        else if (xInfo.Minute > yInfo.Minute)
+                            return 1;
+
+                        return 0;
+                    }
+                    else
+                    {
+                        if (yInfo.IsPM) return 1;
+
+                        if (xInfo.Hour < yInfo.Hour)
+                            return -1;
+                        else if (xInfo.Hour > yInfo.Hour)
+                            return 1;
+
+                        if (xInfo.Minute < yInfo.Minute)
+                            return -1;
+                        else if (xInfo.Minute > yInfo.Minute)
+                            return 1;
+
+                        return 0;
+                    }
+                }
             }
 
-            foreach (Alarm alarm in MAIN.configCS.Alarms)
-                AddAlarm(alarm);
-
-            MAIN.saveAlarm.Tag = null;
-            MAIN.deleteAlarm.Tag = null;
-
-            MAIN.alarmNameLabel.Tag = null;
-            MAIN.alarmMinutesSelector.Tag = null;
-            MAIN.alarmHoursSelector.Tag = null;
-            MAIN.alarmRepeatedToggle.Tag = null;
-            MAIN.AmPmToggle.Tag = null;
-
-            MAIN.alarmNameLabel.Text = "Name";
-
-            MAIN.alarmNameTextbox.Text = null;
-            MAIN.alarmMessageTextbox.Text = null;
-
-            updateMaxScroll(MAIN.alarmsScrollbar, MAIN.alarmsList);
         }
 
         private static void updateMaxScroll(Guna2VScrollBar scrollbar, FlowLayoutPanel panel)
@@ -1216,51 +1321,6 @@ namespace VentileClient.LauncherUtils
 
             panel.Controls.Remove(tempControl);
             panel.AutoScrollPosition = prevScrollAmount;
-        }
-
-        private static void OnProfileSelect(object s, EventArgs e)
-        {
-            Guna2Button sender = (Guna2Button)s;
-
-            if (!sender.Checked) // Profile was de-selected
-            {
-                MAIN.deleteProfileButton.Enabled = false;
-                MAIN.loadProfileButton.Enabled = false;
-
-                MAIN.profileIconPictureBox.Tag = null;
-                MAIN.profileNameTextbox.Tag = null;
-                MAIN.saveProfileButton.Tag = null;
-                MAIN.saveProfileButton.Tag = null;
-                MAIN.deleteProfileButton.Tag = null;
-
-                MAIN.profileNameLabel.Text = "Profile Name";
-                MAIN.profileNameTextbox.Text = null;
-                MAIN.profileIconPictureBox.Image = null;
-                return;
-            }
-
-
-            // Profile was selected
-            ProfileInfo info = (ProfileInfo)sender.Tag;
-
-            MAIN.deleteProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
-            MAIN.loadProfileButton.Enabled = !MAIN.savingProfile.Contains(info.Name) || !MAIN.importing;
-
-            foreach (Control profileBtn in MAIN.packProfilesList.Controls)
-            {
-                if (profileBtn.GetType() == typeof(Guna2Button) && (Guna2Button)profileBtn != sender)
-                    ((Guna2Button)profileBtn).Checked = false;
-            }
-
-            MAIN.profileIconPictureBox.Tag = info;
-            MAIN.profileNameTextbox.Tag = info;
-            MAIN.saveProfileButton.Tag = info;
-            MAIN.saveProfileButton.Tag = info;
-            MAIN.deleteProfileButton.Tag = info;
-
-            MAIN.profileNameLabel.Text = info.Name;
-            MAIN.profileNameTextbox.Text = info.Name;
-            MAIN.profileIconPictureBox.Image = info.Image;
         }
 
         public static async Task GetMCVersions(bool force)
