@@ -4,9 +4,9 @@ using Microsoft.VisualBasic.FileIO;
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Management.Automation;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using VentileClient.Utils;
 
 namespace VentileClient.LauncherUtils
@@ -14,6 +14,14 @@ namespace VentileClient.LauncherUtils
     public static class VersionManager
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
+
+        public static async Task<bool> DevModeEnabled()
+        {
+            int devMode = int.Parse(await PowershellHelp.Return(@"Get-ItemPropertyValue -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense"));
+
+            MAIN.vLogger.Log("Developer Mode: " + (devMode == 0 ? "false" : "true"));
+            return devMode == 0 ? false : true;
+        }
 
 
         public static async Task ReRegisterPackage(string version, string gameDir, Guna2Button sndr)
@@ -23,20 +31,41 @@ namespace VentileClient.LauncherUtils
                 try
                 {
                     await MCDataManager.SaveProfile("Default", true, false);
-                    if ((await MCDataManager.MCInstallLoc()).StartsWith(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP")) //Means mc was installed from microsoft store
+                    if (!(await DevModeEnabled()))
                     {
-                        await UninstallMC();
+                        PowershellHelp.Invoke(@"Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1");
+                        if (!(await DevModeEnabled()))
+                        {
+                            PowershellHelp.Invoke("Start ms-settings:developers");
+
+                            MessageBox.Show("Enable \n\n'Developer Mode'\n'Install apps from any source, including loose files'\n\n Then click OK", "Developer Mode");
+                            if (!(await DevModeEnabled()))
+                            {
+                                Notif.Toast("Developer Mode", "Canceled, developer mode not enabled!");
+                                return;
+                            }
+
+                        }
                     }
+
+                    if ((await MCDataManager.MCInstallLoc()).StartsWith(@"C:\Program Files\WindowsApps\Microsoft.MinecraftUWP")) //Means mc was installed from microsoft store
+                        await UninstallMC();
+
+                    Notif.Toast("Version Switcher", "Switching Verison to: " + version);
                     MAIN.vLogger.Log("Registering Package: " + gameDir);
                     string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
                     if (File.Exists(manifestPath))
                     {
-                        PowerShell.Create()
-                            .AddScript($"Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"{manifestPath}\"")
-                            .Invoke();
+                        PowershellHelp.Invoke($"Add-AppxPackage -Register -ForceUpdateFromAnyVersion \"{manifestPath}\"");
+
                         MAIN.vLogger.Log($"Registered Package: {gameDir}");
+                        Notif.Toast("Version Switcher", $"Switched To Version: {version}");
+                        Task.Run(async () =>
+                        {
+                            MAIN.minecraftVersion.Text = await MCDataManager.GetMCVersion();
+                        });
+                        Notif.Toast("Version Switcher", $"Restoring Data...");
                         await MCDataManager.RestoreMCData();
-                        Notif.Toast("Version Manager", $"Switched To Version: {version}");
                         MAIN.allowSelectVersion--;
                         MAIN.allowClose--;
                         sndr.Invoke(new Action(() =>
@@ -78,9 +107,9 @@ namespace VentileClient.LauncherUtils
                 {
                     await MCDataManager.BackupRoamingState();
                     MAIN.vLogger.Log("Uninstalling Minecraft");
-                    PowerShell.Create()
-                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Remove-AppxPackage")
-                        .Invoke();
+
+                    PowershellHelp.Invoke("Get-AppxPackage Microsoft.MinecraftUWP | Remove-AppxPackage");
+
                     MAIN.vLogger.Log($"Uninstalled Minecraft");
                 }
                 catch (Exception err)

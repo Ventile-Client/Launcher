@@ -40,10 +40,10 @@ namespace VentileClient
 
         public VentileSettings ventile_settings = new VentileSettings()
         {
-            launcherVersion = new Version(4, 2, 2),
+            launcherVersion = new Version(4, 3, 0),
             clientVersion = null,
             cosmeticsVersion = new Version(1, 1, 0),
-            isBeta = false,
+            isBeta = true,
             rpcID = "832806990953840710",
             changelog = null, // Initialized in public MainWindow()
             help = Properties.Resources.Help.Trim().Split('\n')
@@ -155,7 +155,12 @@ namespace VentileClient
             ConfigManager.ReadTheme();
 
             // Set the version's text
-            version.Text = $"{(ventile_settings.isBeta ? "Beta " : "")}{ventile_settings.launcherVersion}";
+            Task.Run(async () =>
+            {
+                launcherVersionHomeLabel.Text = $"{(ventile_settings.isBeta ? "Beta " : "")}{ventile_settings.launcherVersion}";
+
+                minecraftVersion.Text = await MCDataManager.GetMCVersion();
+            });
 
 
             // Check for update
@@ -170,6 +175,8 @@ namespace VentileClient
                 // Checks for all avaliable dlls in github
                 DataManager.GetDLLS();
             }
+
+
         }
 
         public bool internet;

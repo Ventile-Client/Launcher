@@ -96,8 +96,9 @@ namespace VentileClient.LauncherUtils
             //Sidebar
             MAIN.sidebar.BackColor = backColor;
             MAIN.dragBar.BackColor = backColor;
-            MAIN.version.BackColor = backColor;
-            MAIN.version.ForeColor = fadedColor;
+            MAIN.launcherVersionHomeLabel.BackColor = backColor;
+            MAIN.launcherVersionHomeLabel.ForeColor = fadedColor;
+            MAIN.minecraftVersion.ForeColor = fadedColor;
             MAIN.launcherTitle.ForeColor = foreColor;
             MAIN.launcherTitle.BackColor = backColor;
             MAIN.line.ForeColor = foreColor;

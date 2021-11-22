@@ -2,3 +2,7 @@
  - Added:
     Windows Notifications
     Timers
+    Minecraft Version Indicator on Home Page
+
+ - Fixes:
+    Version Switcher & Performance Switcher

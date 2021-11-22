@@ -1,53 +1,42 @@
 ﻿using IWshRuntimeLibrary;
 using System;
 using System.IO;
-using System.Management.Automation;
-
 
 namespace VentileClient.Utils
 {
     public static class Shortcuts
     {
 
-        public static void CreateHard(string GotoPath, string ShortcutPath, string ShortcutName)
+        public static void CreateHard(string GotoPath, string ShortcutPath)
         {
             // Check necessary parameters first:
             if (String.IsNullOrEmpty(GotoPath))
                 throw new ArgumentNullException("GotoPath");
             if (String.IsNullOrEmpty(ShortcutPath))
                 throw new ArgumentNullException("ShortcutPath");
-            if (String.IsNullOrEmpty(ShortcutName))
-                throw new ArgumentNullException("ShortcutName");
 
-            PowerShell.Create()
-                .AddScript("New-Item -ItemType Junction -Path \"" + Path.Combine(ShortcutPath + ShortcutName) + "\" -Target \"" + GotoPath + "\"")
-                .Invoke();
+            PowershellHelp.Invoke("New-Item -ItemType Junction -Path \"" + ShortcutPath + "\" -Target \"" + GotoPath + "\"");
         }
 
-        public static void UpdateHard(string GotoPath, string ShortcutPath, string ShortcutName)
+        public static void UpdateHard(string GotoPath, string ShortcutPath)
         {
             // Check necessary parameters first:
             if (String.IsNullOrEmpty(GotoPath))
                 throw new ArgumentNullException("GotoPath");
             if (String.IsNullOrEmpty(ShortcutPath))
                 throw new ArgumentNullException("ShortcutPath");
-            if (String.IsNullOrEmpty(ShortcutName))
-                throw new ArgumentNullException("ShortcutName");
 
-            DeleteHard(ShortcutPath, ShortcutName);
-            CreateHard(GotoPath, ShortcutPath, ShortcutName);
+            DeleteHard(ShortcutPath);
+            CreateHard(GotoPath, ShortcutPath);
         }
 
-        public static void DeleteHard(string ShortcutPath, string ShortcutName)
+        public static void DeleteHard(string ShortcutPath)
         {
             // Check necessary parameters first:
             if (String.IsNullOrEmpty(ShortcutPath))
                 throw new ArgumentNullException("ShortcutPath");
-            if (String.IsNullOrEmpty(ShortcutName))
-                throw new ArgumentNullException("ShortcutName");
-            PowerShell.Create()
-                .AddScript($"(Get-Item {Path.Combine(ShortcutPath, ShortcutName)}).Delete()")
-                .Invoke();
+
+            PowershellHelp.Invoke($"(Get-Item {ShortcutPath}).Delete()");
 
         }
 

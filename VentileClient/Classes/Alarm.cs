@@ -89,7 +89,7 @@ namespace VentileClient.Classes
 
 
         /// <summary>
-        /// Cancels the alarm, by setting it to expired, and requesting cancel the AutoTrigger()
+        /// Cancels the alarm, by setting it to expired
         /// </summary>
         public void CancelAlarm()
         {

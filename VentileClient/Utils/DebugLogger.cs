@@ -117,13 +117,11 @@ namespace VentileClient
             }
         }
 
-        private static int EXTRA_METHODS_FROM_STACK_TRACE = 15; //Change to decide how many methods to skip at the end (Extra Methods)
-
         private Task<string> FormatOutput(LogLevel logLevel, string message)
         {
             string output = string.Format("{0}: {1} : {2}\n   ", logLevel.ToString(), DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss tt"), message);
             var st = new StackTrace(7, true);
-            for (int i = 0; i < st.GetFrames().Length - EXTRA_METHODS_FROM_STACK_TRACE; i++) // Change start index to decide how many methods to skip from the beginning (Extra Methods)
+            for (int i = 0; i < st.FrameCount - 15; i++)
             {
                 StackFrame sf = st.GetFrame(i);
                 output += string.Format("[Method: {0}, Line: {1}] <- ", sf.GetMethod(), sf.GetFileColumnNumber());

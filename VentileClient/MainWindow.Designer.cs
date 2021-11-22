@@ -36,7 +36,7 @@ namespace VentileClient
             this.versionButton = new Guna.UI2.WinForms.Guna2Button();
             this.versionButtonIcon = new FontAwesome.Sharp.IconPictureBox();
             this.homeButton = new Guna.UI2.WinForms.Guna2Button();
-            this.version = new System.Windows.Forms.Label();
+            this.launcherVersionHomeLabel = new System.Windows.Forms.Label();
             this.aboutButton = new Guna.UI2.WinForms.Guna2Button();
             this.aboutButtonIcon = new FontAwesome.Sharp.IconPictureBox();
             this.settingsButton = new Guna.UI2.WinForms.Guna2Button();
@@ -220,6 +220,7 @@ namespace VentileClient
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             this.SelectDLLTooltip = new Guna.UI2.WinForms.Guna2HtmlToolTip();
             this.alarmsTimer = new System.Windows.Forms.Timer(this.components);
+            this.minecraftVersion = new System.Windows.Forms.Label();
             this.dragBar.SuspendLayout();
             this.sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionButtonIcon)).BeginInit();
@@ -331,7 +332,7 @@ namespace VentileClient
             this.sidebar.Controls.Add(this.versionButton);
             this.sidebar.Controls.Add(this.versionButtonIcon);
             this.sidebar.Controls.Add(this.homeButton);
-            this.sidebar.Controls.Add(this.version);
+            this.sidebar.Controls.Add(this.launcherVersionHomeLabel);
             this.sidebar.Controls.Add(this.aboutButton);
             this.sidebar.Controls.Add(this.aboutButtonIcon);
             this.sidebar.Controls.Add(this.settingsButton);
@@ -418,18 +419,18 @@ namespace VentileClient
             this.homeButton.UseTransparentBackground = true;
             this.homeButton.Click += new System.EventHandler(this.homeButton_Click);
             // 
-            // version
+            // launcherVersionHomeLabel
             // 
-            this.FadeEffectBetweenPages.SetDecoration(this.version, Guna.UI2.AnimatorNS.DecorationType.None);
-            this.version.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.version.ForeColor = System.Drawing.Color.Silver;
-            this.version.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.version.Location = new System.Drawing.Point(0, 441);
-            this.version.Name = "version";
-            this.version.Size = new System.Drawing.Size(170, 25);
-            this.version.TabIndex = 14;
-            this.version.Text = "Version";
-            this.version.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.FadeEffectBetweenPages.SetDecoration(this.launcherVersionHomeLabel, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.launcherVersionHomeLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.launcherVersionHomeLabel.ForeColor = System.Drawing.Color.Silver;
+            this.launcherVersionHomeLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.launcherVersionHomeLabel.Location = new System.Drawing.Point(0, 441);
+            this.launcherVersionHomeLabel.Name = "launcherVersionHomeLabel";
+            this.launcherVersionHomeLabel.Size = new System.Drawing.Size(170, 25);
+            this.launcherVersionHomeLabel.TabIndex = 14;
+            this.launcherVersionHomeLabel.Text = "Version";
+            this.launcherVersionHomeLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // aboutButton
             // 
@@ -689,6 +690,7 @@ namespace VentileClient
             this.homeTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.homeTab.BackgroundImage = global::VentileClient.Properties.Resources.background;
             this.homeTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.homeTab.Controls.Add(this.minecraftVersion);
             this.homeTab.Controls.Add(this.launchMc);
             this.homeTab.Controls.Add(this.inject);
             this.homeTab.Controls.Add(this.selectDll);
@@ -3880,6 +3882,20 @@ namespace VentileClient
             this.alarmsTimer.Interval = 1000;
             this.alarmsTimer.Tick += new System.EventHandler(this.alarmsTimer_Tick);
             // 
+            // minecraftVersion
+            // 
+            this.minecraftVersion.BackColor = System.Drawing.Color.Transparent;
+            this.FadeEffectBetweenPages.SetDecoration(this.minecraftVersion, Guna.UI2.AnimatorNS.DecorationType.None);
+            this.minecraftVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.minecraftVersion.ForeColor = System.Drawing.Color.Silver;
+            this.minecraftVersion.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.minecraftVersion.Location = new System.Drawing.Point(443, 436);
+            this.minecraftVersion.Name = "minecraftVersion";
+            this.minecraftVersion.Size = new System.Drawing.Size(197, 25);
+            this.minecraftVersion.TabIndex = 17;
+            this.minecraftVersion.Text = "Minecraft Version";
+            this.minecraftVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3963,7 +3979,7 @@ namespace VentileClient
         public FontAwesome.Sharp.IconPictureBox settingsButtonIcon;
         public Guna.UI2.WinForms.Guna2Button aboutButton;
         public FontAwesome.Sharp.IconPictureBox aboutButtonIcon;
-        public System.Windows.Forms.Label version;
+        public System.Windows.Forms.Label launcherVersionHomeLabel;
         public System.Windows.Forms.TabPage aboutTab;
         public System.Windows.Forms.TabPage settingsTab;
         public System.Windows.Forms.TabPage cosmeticsTab;
@@ -4138,6 +4154,7 @@ namespace VentileClient
         public Guna.UI2.WinForms.Guna2TextBox alarmMessageTextbox;
         public Guna.UI2.WinForms.Guna2CustomCheckBox alarmRepeatedToggle;
         public System.Windows.Forms.Timer alarmsTimer;
+        public System.Windows.Forms.Label minecraftVersion;
     }
 }
 

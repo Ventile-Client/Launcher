@@ -122,6 +122,7 @@
     <Compile Include="LauncherUtils\CosmeticManager.cs" />
     <Compile Include="LauncherUtils\DataManager.cs" />
     <Compile Include="LauncherUtils\VersionManager.cs" />
+    <Compile Include="Utils\CompareDirs.cs" />
     <Compile Include="Utils\ConfigManager.cs" />
     <Compile Include="Utils\DownloadManager.cs" />
     <Compile Include="Utils\ControlManager.cs" />
@@ -144,6 +145,7 @@
     </Compile>
     <Compile Include="Utils\MCDataManager.cs" />
     <Compile Include="Utils\Notif.cs" />
+    <Compile Include="Utils\PowershellHelp.cs" />
     <Compile Include="Utils\RPC.cs" />
     <Compile Include="Forms\ToastForm.cs">
       <SubType>Form</SubType>
@@ -189,8 +191,6 @@
     <Content Include="ReleaseData\Changelog.txt" />
     <Content Include="Personal\Tasks.txt" />
     <Content Include="ReleaseData\Help.txt" />
-    <None Include="Resources\sun.svg" />
-    <None Include="Resources\moon.svg" />
     <None Include="Resources\GrassBlock.png" />
     <None Include="Resources\website_white.png" />
     <None Include="Resources\website_black.png" />

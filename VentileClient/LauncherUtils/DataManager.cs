@@ -23,7 +23,7 @@ namespace VentileClient.LauncherUtils
         static string MC_RESOURCE = MAIN.minecraftResourcePacks;
         static LinkSettings LINK_SETTINGS = MAIN.link_settings;
 
-        public static void Home()
+        public static async void Home()
         {
             // Reset button locations for bug
             MAIN.launchMc.Location = new Point(169, 171);
@@ -62,6 +62,7 @@ namespace VentileClient.LauncherUtils
             }
 
             MAIN.SelectDLLTooltip.SetToolTip(MAIN.selectDll, MAIN.configCS.DefaultDLL ?? "None...");
+            MAIN.minecraftVersion.Text = await MCDataManager.GetMCVersion();
 
         }
 
@@ -1072,7 +1073,7 @@ namespace VentileClient.LauncherUtils
         }
 
         public static void UpdateAlarm(string ID, int NewHour, int NewMinute, bool NewRepeated, bool isPM, string NewName = null, string NewMessage = null)
-        {           
+        {
             Image moonIcon = IconChar.Moon.ToBitmap(Color.DarkGray, 64);
             Image sunIcon = IconChar.Sun.ToBitmap(Color.FromArgb(249, 215, 28), 64);
 
@@ -1133,30 +1134,15 @@ namespace VentileClient.LauncherUtils
             MAIN.alarmNameLabel.Text = "Name";
 
 
+            MAIN.configCS.Alarms.Remove(alarm);
             for (int i = 0; i < MAIN.alarmsList.Controls.Count; i++)
             {
                 if (MAIN.alarmsList.Controls[i].GetType() != typeof(Guna2Button)) continue;
+                Alarm alarmInfo = MAIN.alarmsList.Controls[i].Tag as Alarm;
 
-                if (MAIN.alarmsList.Controls[i].Name == alarm.Name)
+                if (alarmInfo.ID == alarm.ID)
                 {
                     MAIN.alarmsList.Controls.RemoveAt(i);
-                    int j = 0;
-                    foreach (Alarm a in MAIN.configCS.Alarms)
-                    {
-                        if ((
-                            a.Hour == alarm.Hour &&
-                            a.Minute == alarm.Minute &&
-                            a.Name == alarm.Name &&
-                            a.Message == alarm.Message &&
-                            a.IsPM == alarm.IsPM &&
-                            a.IsRepeated == alarm.IsRepeated
-                            ))
-                        {
-                            MAIN.configCS.Alarms.RemoveAt(j);
-                            break;
-                        }
-                        j++;
-                    }
 
                     break;
                 }

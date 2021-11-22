@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Management.Automation;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VentileClient.LauncherUtils;
@@ -19,7 +18,6 @@ namespace VentileClient.Utils
 
         public static async Task SaveProfile(string ProfileName, bool isOverwrite, bool showPopup = true)
         {
-
             Directory.CreateDirectory(@"C:\temp\VentileClient\Profiles");
 
             if (MAIN.savingProfile.Contains(ProfileName))
@@ -31,6 +29,12 @@ namespace VentileClient.Utils
 
             string sourceDirName = Path.Combine(MAIN.gamesFolder, "com.mojang");
             string destDirName = @"C:\temp\VentileClient\Profiles\" + ProfileName;
+
+            if (CompareDirs.AreSame(sourceDirName, destDirName))
+            {
+                MAIN.vLogger.Log($"{sourceDirName} and {destDirName} were the same!");
+                return;
+            }
 
             if (!Directory.Exists(sourceDirName))
             {
@@ -53,11 +57,10 @@ namespace VentileClient.Utils
                     result = MessageBox.Show("Are you sure you want to overwrite the profile: \"" + ProfileName + "\"?", "Overwrite " + ProfileName, MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
+                    MAIN.vLogger.Log("Overwriting profile: " + ProfileName);
+                    Notif.Toast("Profile Manager", "Overwriting Data to Profile: " + ProfileName);
                     await Task.Run(() =>
                     {
-                        MAIN.vLogger.Log("Overwriting profile: " + ProfileName);
-                        Notif.Toast("Profile Manager", "Overwriting Data to Profile: " + ProfileName);
-
                         Directory.Delete(destDirName, true);
 
                         Directory.CreateDirectory(destDirName);
@@ -66,9 +69,9 @@ namespace VentileClient.Utils
 
                         DataManager.UpdateProfile(ProfileName, NewImage: Properties.Resources.GrassBlock);
 
-                        Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
-                        MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
                     });
+                    Notif.Toast("Profile Manager", $"Saved Minecraft Data to: {ProfileName}");
+                    MAIN.vLogger.Log($"Saved Minecraft Data to profile: {ProfileName}");
                 }
                 else
                 {
@@ -169,7 +172,7 @@ namespace VentileClient.Utils
             MAIN.importing = true;
 
 
-            string shortcutPath = MAIN.gamesFolder;
+            string shortcutPath = MAIN.gamesFolder + "com.mojang";
             string gotoPath = $@"C:\temp\VentileClient\Profiles\{ProfileName}";
 
             if (!Directory.Exists(gotoPath))
@@ -183,7 +186,7 @@ namespace VentileClient.Utils
             {
                 await Task.Run(() =>
                 {
-                    Shortcuts.CreateHard(gotoPath, shortcutPath, "com.mojang");
+                    Shortcuts.CreateHard(gotoPath, shortcutPath);
                 });
                 Notif.Toast("Profile Manager", $"Loaded Profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log("Imported Minecraft data!");
@@ -248,88 +251,53 @@ namespace VentileClient.Utils
             }
         }
 
-        public static async Task ImportRoamingState()
+        public static Task ImportRoamingState()
         {
-            await Task.Run(() =>
+            var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
+
+            if (!Directory.Exists(@"C:\temp\VentileClient\.data\RoamingState"))
             {
-                var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
+                MAIN.vLogger.Log($"No Roaming State Backup");
+            }
 
-                if (!Directory.Exists(@"C:\temp\VentileClient\.data\RoamingState"))
-                {
-                    MAIN.vLogger.Log($"No Roaming State Backup");
-                }
+            FileSystem.CopyDirectory(@"C:\temp\VentileClient\.data\RoamingState", data.RoamingFolder.Path, true);
+      
 
-                FileSystem.CopyDirectory(@"C:\temp\VentileClient\.data\RoamingState", data.RoamingFolder.Path, true);
-                MAIN.vLogger.Log($"Loaded Roaming State");
-            });
+            MAIN.vLogger.Log($"Loaded Roaming State");
+            return Task.CompletedTask;
         }
 
         public static async Task<string> MCInstallLoc()
         {
-            string installLoc = "none";
-            await Task.Run(() =>
-            {
-                MAIN.vLogger.Log("Checking Install Location Of Minecraft");
-                using (var powerShell = PowerShell.Create())
-                {
-                    powerShell
-                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty InstallLocation")
-                        .AddCommand("Out-String");
-                    var psOutput = powerShell.Invoke();
-                    var stringBuilder = new StringBuilder();
-                    foreach (var pSObject in psOutput)
-                        stringBuilder.AppendLine(pSObject.ToString());
+            string installLoc = await PowershellHelp.Return(@"Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty InstallLocation");
 
-                    installLoc = stringBuilder.ToString().Replace(Environment.NewLine, "");
-                }
-            });
-            MAIN.vLogger.Log(installLoc);
+            MAIN.vLogger.Log("Minecraft Location: " + installLoc);
             return installLoc;
         }
 
-
-        public static async Task<Version> GetMCVersion()
+        public static async Task<string> GetMCVersion()
         {
-            string version = "none";
-            await Task.Run(() =>
-            {
-                MAIN.vLogger.Log("Checking Version Of Minecraft");
-                using (var powerShell = PowerShell.Create())
-                {
-                    powerShell
-                        .AddScript("Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty Version")
-                        .AddCommand("Out-String");
-                    var psOutput = powerShell.Invoke();
-                    var stringBuilder = new StringBuilder();
-                    foreach (var pSObject in psOutput)
-                        stringBuilder.AppendLine(pSObject.ToString());
+            string version = await PowershellHelp.Return(@"Get-AppxPackage Microsoft.MinecraftUWP | Select -ExpandProperty Version");
 
-                    version = stringBuilder.ToString().Replace(Environment.NewLine, "");
-                }
-            });
-            MAIN.vLogger.Log(version);
-            return new Version(version);
+            return version;
         }
 
         public static async Task RestoreMCData()
         {
-            await Task.Run(async () =>
+            var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
+
+            if (!Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles\", MAIN.configCS.DefaultProfile ?? "Default")))
             {
-                var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
+                Notif.Toast("MC Data", $"Sorry, I couldn't find the \"{MAIN.configCS.DefaultProfile ?? "Default"}\" profile!");
+                MAIN.vLogger.Log($"Profile Didnt Exist");
+                return;
+            }
 
-                if (!Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles\", MAIN.configCS.DefaultProfile ?? "Default")))
-                {
-                    Notif.Toast("MC Data", $"Sorry, I couldn't find the \"{MAIN.configCS.DefaultProfile ?? "Default"}\" profile!");
-                    MAIN.vLogger.Log($"Profile Didnt Exist");
-                    return;
-                }
+            Directory.CreateDirectory(Path.Combine(data.LocalFolder.Path, "games"));
 
-                Directory.CreateDirectory(Path.Combine(data.LocalFolder.Path, "games"));
-
-                Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\"), "com.mojang");
-                MAIN.vLogger.Log($"Created Shortcut To Profile: {(MAIN.configCS.DefaultProfile ?? "Default")} in: {Path.Combine(data.LocalFolder.Path, @"games\")}");
-                await ImportRoamingState();
-            });
+            Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\com.mojang"));
+            MAIN.vLogger.Log($"Created Shortcut To Profile: {(MAIN.configCS.DefaultProfile ?? "Default")} in: {Path.Combine(data.LocalFolder.Path, @"games\")}");
+            await ImportRoamingState();
         }
 
     }
