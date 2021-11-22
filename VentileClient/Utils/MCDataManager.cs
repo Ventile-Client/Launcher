@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -172,7 +171,7 @@ namespace VentileClient.Utils
             MAIN.importing = true;
 
 
-            string shortcutPath = MAIN.gamesFolder + "com.mojang";
+            string shortcutPath = MAIN.gamesFolder;
             string gotoPath = $@"C:\temp\VentileClient\Profiles\{ProfileName}";
 
             if (!Directory.Exists(gotoPath))
@@ -184,10 +183,7 @@ namespace VentileClient.Utils
 
             try
             {
-                await Task.Run(() =>
-                {
-                    Shortcuts.CreateHard(gotoPath, shortcutPath);
-                });
+                Shortcuts.CreateHard(gotoPath, shortcutPath, "com.mojang");
                 Notif.Toast("Profile Manager", $"Loaded Profile: \"{ProfileName}\"");
                 MAIN.vLogger.Log("Imported Minecraft data!");
             }
@@ -256,12 +252,10 @@ namespace VentileClient.Utils
             var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
 
             if (!Directory.Exists(@"C:\temp\VentileClient\.data\RoamingState"))
-            {
                 MAIN.vLogger.Log($"No Roaming State Backup");
-            }
 
             FileSystem.CopyDirectory(@"C:\temp\VentileClient\.data\RoamingState", data.RoamingFolder.Path, true);
-      
+
 
             MAIN.vLogger.Log($"Loaded Roaming State");
             return Task.CompletedTask;
@@ -286,6 +280,8 @@ namespace VentileClient.Utils
         {
             var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_NAME);
 
+            await ImportRoamingState();
+
             if (!Directory.Exists(Path.Combine(@"C:\temp\VentileClient\Profiles\", MAIN.configCS.DefaultProfile ?? "Default")))
             {
                 Notif.Toast("MC Data", $"Sorry, I couldn't find the \"{MAIN.configCS.DefaultProfile ?? "Default"}\" profile!");
@@ -295,9 +291,8 @@ namespace VentileClient.Utils
 
             Directory.CreateDirectory(Path.Combine(data.LocalFolder.Path, "games"));
 
-            Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\com.mojang"));
+            Shortcuts.CreateHard(Path.Combine(@"C:\temp\VentileClient\Profiles\", (MAIN.configCS.DefaultProfile ?? "Default")), Path.Combine(data.LocalFolder.Path, @"games\"), "com.mojang");
             MAIN.vLogger.Log($"Created Shortcut To Profile: {(MAIN.configCS.DefaultProfile ?? "Default")} in: {Path.Combine(data.LocalFolder.Path, @"games\")}");
-            await ImportRoamingState();
         }
 
     }

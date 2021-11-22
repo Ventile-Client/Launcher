@@ -9,8 +9,7 @@ namespace VentileClient.Utils
     {
         public static void Invoke(string script)
         {
-                using (var powerShell = PowerShell.Create())
-                    powerShell.AddScript(script).Invoke();
+                PowerShell.Create().AddScript(script).Invoke();
         }
 
         public static async Task<string> Return(string script, string defaultReturn = null)
@@ -18,8 +17,7 @@ namespace VentileClient.Utils
             string output = defaultReturn;
             await Task.Run(() =>
             {
-                using (var powerShell = PowerShell.Create())
-                {
+                var powerShell = PowerShell.Create();
                     powerShell
                         .AddScript(script)
                         .AddCommand("Out-String");
@@ -29,7 +27,6 @@ namespace VentileClient.Utils
                         stringBuilder.AppendLine(pSObject.ToString());
 
                     output = stringBuilder.ToString().Replace(Environment.NewLine, "");
-                }
             });
             return output;
         }
