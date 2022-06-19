@@ -18,7 +18,7 @@
 ## Contributing
 To contribute, just fork the repository, change the code, then submit a pull request. 
 We will check your pull request and decide if to accept or deny it!
-You can check the <a href="https://github.com/Ventile-Client/Launcher/issues">issues</a> or the bugs channel in our discord server to see if you can find anything to help with!
+You can check the <a href="https://github.com/Ventile-Client/Launcher/issues">issues</a> or the bugs channel in our discord server to see if you can find anything to help with.
 
 ## License
 This is licensed under the Creative Commons Attribution-NonCommerical 4.0 International License. 
